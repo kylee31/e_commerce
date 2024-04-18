@@ -1,4 +1,7 @@
 import { useState, ChangeEvent } from "react";
+import Button from "./Button";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase";
 
 const Info: { [key: string]: string } = {
   name: "",
@@ -20,10 +23,19 @@ const SignUp = () => {
     value: string
   ) => {
     e.preventDefault();
+    //TODO: 이메일, 패스워드 양식 확인하기
     const newValue = e.target.value;
     const updatedValues = { ...inputValues, [value]: newValue };
     setInputValues(updatedValues);
     //console.log(updatedValues);
+  };
+
+  const handleSignUp = () => {
+    const [newUserEmail, newUserPassword] = [
+      inputValues["email"],
+      inputValues["password"],
+    ];
+    createUserWithEmailAndPassword(auth, newUserEmail, newUserPassword);
   };
 
   return (
@@ -54,9 +66,7 @@ const SignUp = () => {
           );
         })}
       </div>
-      <button type="button" className="bg-black text-white rounded-md">
-        회원가입
-      </button>
+      <Button text="회원가입" onClick={handleSignUp} />
     </div>
   );
 };

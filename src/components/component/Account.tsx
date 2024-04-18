@@ -1,4 +1,5 @@
 import { useState, ChangeEvent } from "react";
+import Button from "./Button";
 
 const Info: { [key: string]: string } = {
   email: "",
@@ -45,9 +46,7 @@ const Account = () => {
           );
         })}
       </div>
-      <button type="button" className="bg-black text-white rounded-md">
-        로그인
-      </button>
+      <Button text="로그인" onClick={() => {}} />
       <hr />
       {/*TODO: 소셜 로그인 구현하기*/}
     </div>
