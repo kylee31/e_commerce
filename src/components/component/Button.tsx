@@ -1,11 +1,20 @@
-const Button = ({ text, onClick }: { text: string; onClick: () => void }) => {
+const Button = ({
+  type,
+  text,
+  onClick,
+}: {
+  type: "button" | "reset" | "submit" | undefined;
+  text: string;
+  onClick?: () => void;
+}) => {
   return (
-    <div
+    <button
+      type={type}
       className="w-full h-8 flex justify-center items-center bg-black text-white rounded-md font-bold"
       onClick={onClick}
     >
       {text}
-    </div>
+    </button>
   );
 };
 

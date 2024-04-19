@@ -1,54 +1,66 @@
-import { useState, ChangeEvent } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import Button from "./Button";
+import { signInWithEmailAndPassword } from "firebase/auth/web-extension";
+import { auth } from "@/firebase";
+import { useNavigate } from "react-router-dom";
+import { AccountInputs } from "@/types/SignType";
+import { AccountInputData } from "@/services/data/SignData";
 
-const Info: { [key: string]: string } = {
-  email: "",
-  password: "",
-};
-
-const INPUT_LIST: { label: string; type: string; value: string }[] = [
-  { label: "이메일", type: "email", value: "email" },
-  { label: "비밀번호", type: "password", value: "password" },
-];
+const INPUT_LIST = AccountInputData;
 
 const Account = () => {
-  const [inputValues, setInputValues] = useState(Info);
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<AccountInputs>();
 
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    value: string
-  ) => {
-    e.preventDefault();
-    const newValue = e.target.value;
-    const updatedValues = { ...inputValues, [value]: newValue };
-    setInputValues(updatedValues);
-    //console.log(inputValues);
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<AccountInputs> = async (data) => {
+    const [userEmail, userPassword] = [data["email"], data["password"]];
+    try {
+      const userSignIn = await signInWithEmailAndPassword(
+        auth,
+        userEmail,
+        userPassword
+      );
+      const userOperationType = userSignIn.operationType;
+      userOperationType && (await navigate("/"));
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   return (
     <div className="w-full">
-      <div className="h-full flex flex-col justify-center items-start">
+      <form onSubmit={handleSubmit(onSubmit)}>
         {INPUT_LIST.map((ele, idx) => {
           return (
             <div
-              key={`account_${idx}`}
+              key={`signup_${idx}`}
               className="w-full flex flex-col items-start"
             >
               <span>{ele.label}</span>
               <input
                 type={ele.type}
-                id={`account_${ele.value}`}
                 placeholder={ele.value}
-                onChange={(e) => handleInputChange(e, ele.value)}
+                autoComplete="off"
                 className="w-full border-gray-500 border rounded-sm"
+                {...register(ele.value, ele.register)}
               />
+              {errors[ele.value] && (
+                <div className="text-red-400 text-xs">
+                  {errors[ele.value]?.message}
+                </div>
+              )}
             </div>
           );
         })}
-      </div>
-      <Button text="로그인" onClick={() => {}} />
-      <hr />
-      {/*TODO: 소셜 로그인 구현하기*/}
+        <div className="mt-5">
+          <Button type="submit" text="로그인하기" />
+        </div>
+      </form>
     </div>
   );
 };

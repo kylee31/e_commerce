@@ -1,7 +1,10 @@
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
+import PrivateSellerRoute from "./PrivateSellerRoute";
+import PrivateBuyerRoute from "./PrivateBuyerRoute";
+import Seller from "@/pages/Seller";
+import Buyer from "@/pages/Buyer";
 
 const PageRouter = () => {
   return (
@@ -12,12 +15,19 @@ const PageRouter = () => {
         <Route
           path="/seller"
           element={
-            <PrivateRoute>
-              <>ddd</>
-            </PrivateRoute>
+            <PrivateSellerRoute>
+              <Seller />
+            </PrivateSellerRoute>
           }
         />
-        <Route path="/category/:cate" element={<></>} />
+        <Route
+          path="/buyer"
+          element={
+            <PrivateBuyerRoute>
+              <Buyer />
+            </PrivateBuyerRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
