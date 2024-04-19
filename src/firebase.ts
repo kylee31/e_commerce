@@ -21,7 +21,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth=getAuth(app);
 export const db=getFirestore(app);
-//TODO:이렇게 브라우저에 로그인 정보 저장하는게 맞나?
 (async () => {
     await setPersistence(auth, browserLocalPersistence);
 })();

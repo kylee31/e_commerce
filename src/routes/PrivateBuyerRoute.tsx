@@ -7,7 +7,11 @@ const PrivateBuyerRoute = ({ children }: { children: React.ReactNode }) => {
   const user = useUser();
   const userInfo = useUserInfo();
   const isBuyer = !(userInfo as UserInfo).isSeller;
-  if (user == null || !isBuyer) {
+  const token = localStorage.get("token");
+
+  if (token && isBuyer == undefined) {
+    return null;
+  } else if (user == null || !isBuyer) {
     return <Navigate to="/" />;
   }
   return children;

@@ -25,3 +25,5 @@ export type SignUpInputList={
     register: object;
   }
 
+  //Discriminated Unions
+  //type guard

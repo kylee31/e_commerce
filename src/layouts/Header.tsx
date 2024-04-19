@@ -10,10 +10,10 @@ const Header = () => {
   const userLink = user ? (isUser ? "/seller" : "/buyer") : "/login";
 
   return (
-    <div className="w-full h-14 bg-gray-300 justify-between items-center flex flex-row px-5">
+    <div className="w-full h-14 bg-gray-300 justify-between items-center flex flex-row px-7">
       <div className="text-black">Logo</div>
       <div className="flex flex-row">
-        {isUser ? null : <img src="/imgs/cart.png" alt="" />}
+        {isUser ? null : <img src="/imgs/cart.png" alt="" className="mr-5" />}
         <Link to={userLink}>
           <img src="/imgs/user.png" alt="" />
         </Link>

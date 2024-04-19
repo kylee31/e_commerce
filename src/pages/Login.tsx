@@ -3,7 +3,6 @@ import SignUp from "@/components/component/SignUp";
 import { useState } from "react";
 
 const Login = () => {
-  //TODO: 로그인 실패 시 알림 창 띄워주기
   const [isToggle, setIsToggle] = useState(true);
 
   const handleIsAccount = () => {

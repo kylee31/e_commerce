@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import Button from "./Button";
+import Button from "../ui/Button";
 import { signInWithEmailAndPassword } from "firebase/auth/web-extension";
 import { auth } from "@/firebase";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,7 @@ const Account = () => {
 
   const navigate = useNavigate();
 
+  //TODO: 로그인 실패 시 알림 창 띄워주기
   const onSubmit: SubmitHandler<AccountInputs> = async (data) => {
     const [userEmail, userPassword] = [data["email"], data["password"]];
     try {
@@ -61,6 +62,10 @@ const Account = () => {
           <Button type="submit" text="로그인하기" />
         </div>
       </form>
+      <hr className="my-5 border-black" />
+      <span className="text-xs font-bold">회원가입 없이 한번에!</span>
+      {/*TODO:소셜 로그인*/}
+      <div className="w-full border-2 mt-5">소셜 로그인</div>
     </div>
   );
 };
