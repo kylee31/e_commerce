@@ -1,14 +1,14 @@
 import { auth } from "@/firebase";
 import { useNavigate } from "react-router-dom";
-import Button from "../ui/Button";
+import Button from "../common/Button";
 
 const SignOut = () => {
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
+    localStorage.removeItem("token");
     await auth.signOut();
     await navigate("/");
-    localStorage.removeItem("token");
   };
 
   return <Button text="로그아웃" type="button" onClick={handleSignOut} />;

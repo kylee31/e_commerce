@@ -20,7 +20,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem("token", (authUser as Token).accessToken);
         setUser(authUser.uid);
       } else {
-        setUser(authUser);
+        setUser(null);
         setUserInfo({});
       }
     });

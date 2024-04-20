@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import Button from "../ui/Button";
+import Button from "../common/Button";
 import { signInWithEmailAndPassword } from "firebase/auth/web-extension";
 import { auth } from "@/firebase";
 import { useNavigate } from "react-router-dom";

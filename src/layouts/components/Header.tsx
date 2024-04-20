@@ -1,22 +1,28 @@
 import { useUser, useUserInfo } from "@/services/UserProvider";
 import { UserInfo } from "@/types/UserType";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const user = useUser();
   const userInfo = useUserInfo();
-  const isUser = (userInfo as UserInfo).isSeller;
+  const isUserType = (userInfo as UserInfo).isSeller;
+  const navigate = useNavigate();
 
-  const userLink = user ? (isUser ? "/seller" : "/buyer") : "/login";
+  const handlePage = () => {
+    const userLink = user ? (isUserType ? "/seller" : "/buyer") : "/login";
+    navigate(userLink);
+  };
 
   return (
     <div className="w-full h-14 bg-gray-300 justify-between items-center flex flex-row px-7">
       <div className="text-black">Logo</div>
       <div className="flex flex-row">
-        {isUser ? null : <img src="/imgs/cart.png" alt="" className="mr-5" />}
-        <Link to={userLink}>
-          <img src="/imgs/user.png" alt="" />
-        </Link>
+        <img
+          src="/imgs/user.png"
+          alt=""
+          onClick={handlePage}
+          className="hover:cursor-pointer"
+        />
       </div>
     </div>
   );

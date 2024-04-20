@@ -1,4 +1,4 @@
-import Button from "../ui/Button";
+import Button from "../common/Button";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/firebase";
 import { useForm, SubmitHandler } from "react-hook-form";

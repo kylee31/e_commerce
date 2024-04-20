@@ -74,6 +74,11 @@ export const SignUpInputData:SignUpInputList[] = [
           value: 10,
           message: "패스워드를 10자 이상 입력해주세요.",
         },
+        pattern:{
+          //적어도 하나의 특수 문자를 포함하는지, 영문 대소문자, 숫자, 특수 문자 중에서 선택하는지
+          value: /^(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^*]+$/i,
+          message:"특수문자(!,@,#,$,%,^,*)를 1개 이상 포함해주세요"
+        }
       },
     },
   ];

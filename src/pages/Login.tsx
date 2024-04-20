@@ -1,5 +1,5 @@
-import Account from "@/components/component/Account";
-import SignUp from "@/components/component/SignUp";
+import Account from "@/components/login/Account";
+import SignUp from "@/components/login/SignUp";
 import { useState } from "react";
 
 const Login = () => {

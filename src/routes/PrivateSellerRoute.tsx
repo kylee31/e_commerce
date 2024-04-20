@@ -10,7 +10,8 @@ const PrivateSellerRoute = () => {
 
   if (token && isSeller === undefined) {
     return null; // 로딩 중일 때는 아무것도 렌더링하지 않음
-  } else if (!isSeller) {
+  }
+  if (!isSeller) {
     return <Navigate to="/" />;
   }
   return <Outlet />;
