@@ -5,6 +5,7 @@ import Button from "../common/Button";
 const SignOut = () => {
   const navigate = useNavigate();
 
+  //TODO: 모든 탭 로그아웃 구현하기 (storage 변경 감지 이벤트)
   const handleSignOut = async () => {
     localStorage.removeItem("token");
     await auth.signOut();

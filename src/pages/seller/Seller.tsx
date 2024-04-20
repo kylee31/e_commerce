@@ -13,7 +13,7 @@ const Seller = () => {
         </span>
         <SignOut />
       </div>
-      <div className="w-4/5 h-full flex flex-col justify-center items-center p-8">
+      <div className="w-4/5 h-full flex flex-col justify-center items-center px-8 pt-8">
         <Outlet />
       </div>
     </div>

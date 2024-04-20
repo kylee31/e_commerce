@@ -1,12 +1,15 @@
 import "./styles/App.css";
 import PageRouter from "./routes/PageRouter";
 import { UserProvider } from "./services/UserProvider";
+import { SellerProductProvider } from "./services/SellerProductProvider";
 
 function App() {
   return (
-    <UserProvider>
-      <PageRouter />
-    </UserProvider>
+    <SellerProductProvider>
+      <UserProvider>
+        <PageRouter />
+      </UserProvider>
+    </SellerProductProvider>
   );
 }
 
