@@ -1,56 +1,63 @@
-import Button from "@/components/common/Button";
-import { db } from "@/firebase";
-import { useUser } from "@/services/UserProvider";
 import { ProductInputData } from "@/services/data/ProductData";
+import Button from "../common/Button";
+import { useEffect, useState } from "react";
+import {
+  SubmitHandler,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 import { productInputs } from "@/types/ProductType";
-import { addDoc, collection } from "firebase/firestore";
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { DocumentData } from "firebase/firestore";
+import { deleteObject, ref } from "firebase/storage";
+import { storage } from "@/firebase";
 
 const INPUT_LIST = ProductInputData;
 
-const AddProduct = () => {
-  const { handleSubmit, register } = useForm<productInputs>();
+const ProductForm = ({
+  handleSubmit,
+  onSubmit,
+  updateProduct,
+  register,
+  setValue,
+  productId,
+}: {
+  handleSubmit: UseFormHandleSubmit<productInputs, undefined>;
+  onSubmit: SubmitHandler<productInputs>;
+  updateProduct?: DocumentData;
+  register: UseFormRegister<productInputs>;
+  setValue: UseFormSetValue<productInputs>;
+  productId: number;
+}) => {
   const [images, setImages] = useState<string[]>([]);
-  const userId = useUser();
-  const navigate = useNavigate();
 
-  const handlePreview = (e: React.ChangeEvent) => {
+  useEffect(() => {
+    if (updateProduct) {
+      setImages(updateProduct.imgs);
+    }
+  }, [updateProduct]);
+
+  //TODO: 동일 파일 연속으로 등록 불가한 사항 수정하기(input값에 cache되어있음?)
+  const handleSaveImage = async (e: React.ChangeEvent) => {
     const targetFiles = (e.target as HTMLInputElement).files as FileList;
     const targetFilesArray = Array.from(targetFiles);
     const selectedFiles: string[] = targetFilesArray.map((file) => {
       return URL.createObjectURL(file);
     });
     setImages((img) => [...img, ...selectedFiles]);
+    setValue("imgs", [...images, ...selectedFiles]);
   };
 
   const handleRemoveImage = (idx: number) => {
-    setImages((img) => img.filter((_, index) => index != idx));
-  };
-
-  const onSubmit: SubmitHandler<productInputs> = async (data) => {
-    const { name, category, price, count, description } = data;
-    if (userId) {
-      const productInfo: productInputs = {
-        name,
-        category,
-        price,
-        count,
-        description,
-        imgs: images,
-        uid: userId,
-      };
-      await addDoc(collection(db, "product"), productInfo);
-      await navigate("/seller");
-    }
-    alert("등록 완료!");
+    const filterImages = images.filter((_, index) => index != idx);
+    setImages(filterImages);
+    setValue("imgs", filterImages);
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full h-full flex flex-col pb-12"
+      className="w-full h-full flex flex-col pb-8"
     >
       <div className="w-full h-2/3 flex">
         {/*왼쪽*/}
@@ -70,8 +77,8 @@ const AddProduct = () => {
           <input
             type="file"
             accept="image/*"
-            {...register("imgs", { required: true })}
-            onChange={handlePreview}
+            multiple
+            onChange={handleSaveImage}
             className={`${images.length < 4 ? "none" : "hidden"}`}
           />
         </div>
@@ -86,6 +93,7 @@ const AddProduct = () => {
                     type={ele.type}
                     className="w-full border-gray-500 border rounded-sm"
                     {...register(ele.value, { required: true })}
+                    defaultValue={updateProduct ? updateProduct[ele.value] : ""}
                   />
                 </div>
               );
@@ -97,6 +105,7 @@ const AddProduct = () => {
                 type="text"
                 className="w-full border-gray-500 border rounded-sm"
                 {...register("count", { required: true })}
+                defaultValue={updateProduct ? updateProduct.count : ""}
               />
             </div>
           </div>
@@ -111,6 +120,7 @@ const AddProduct = () => {
             {...register("description", {
               required: { value: true, message: "상품명을 입력해주세요." },
             })}
+            defaultValue={updateProduct ? updateProduct.description : ""}
           />
         </div>
       </div>
@@ -119,4 +129,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default ProductForm;

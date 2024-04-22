@@ -22,14 +22,16 @@ export const SellerProductProvider = ({
       try {
         const q = query(collection(db, "product"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
-          const newSellerProducts: object[] = [];
+          const newSellerProducts: DocumentData[] = [];
           snapshot.forEach((doc) => {
             if (doc.data().uid == user) {
               newSellerProducts.push(doc.data());
             }
           });
-          //TODO: sort해서 저장하기
-          setSellerProduct([...sellerProduct, ...newSellerProducts]);
+          const newData = [...sellerProduct, ...newSellerProducts].sort(
+            (a, b) => a.name.localeCompare(b.name)
+          );
+          setSellerProduct(newData);
         });
         () => unsubscribe();
       } catch (error) {

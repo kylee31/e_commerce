@@ -5,11 +5,12 @@ export type ProductInputList={
   }
 
   export type productInputs = {
+    id:number;
     name: string;
     price:number;
     category:string;
     count:number;
     description:string;
-    imgs:object;
-    uid:string;
+    imgs:string[];
+    uid?:string;
   };
