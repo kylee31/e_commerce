@@ -1,6 +1,6 @@
 import { auth } from "@/firebase";
 import { useNavigate } from "react-router-dom";
-import Button from "../common/Button";
+import { Button } from "../ui/button";
 
 const SignOut = () => {
   const navigate = useNavigate();
@@ -12,7 +12,11 @@ const SignOut = () => {
     await navigate("/");
   };
 
-  return <Button text="로그아웃" type="button" onClick={handleSignOut} />;
+  return (
+    <Button className="w-full" onClick={handleSignOut}>
+      로그아웃
+    </Button>
+  );
 };
 
 export default SignOut;

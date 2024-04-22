@@ -1,5 +1,5 @@
-import Button from "@/components/common/Button";
 import Product from "@/components/product/Product";
+import { Button } from "@/components/ui/button";
 import { db, storage } from "@/firebase";
 import { useSellerProduct } from "@/services/SellerProductProvider";
 import { deleteDoc, doc } from "firebase/firestore";
@@ -31,17 +31,17 @@ const EditProduct = () => {
   };
 
   return (
-    <div className="w-full h-full pb-16">
+    <div className="w-full h-full">
       {
         /*상품 삭제 후 navigate로 이동하므로 0개일때 Item 컴포넌트에서 오류가 발생함. 해당 상황에 대한 처리*/
         info && (
-          <>
+          <div className="w-full h-full flex flex-col">
             <Product idx={idx} />
-            <div className="grid grid-cols-2 gap-2">
-              <Button type="button" text="수정" onClick={handleUpdateProduct} />
-              <Button type="button" text="삭제" onClick={handleDeleteProduct} />
+            <div className="w-full grid grid-cols-2 gap-3">
+              <Button onClick={handleUpdateProduct}>수정</Button>
+              <Button onClick={handleDeleteProduct}>삭제</Button>
             </div>
-          </>
+          </div>
         )
       }
     </div>

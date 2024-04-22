@@ -14,3 +14,4 @@ export type ProductInputList={
     imgs:string[];
     uid?:string;
   };
+

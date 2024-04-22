@@ -1,6 +1,6 @@
 import ProductForm from "@/components/product/ProductForm";
 import { db } from "@/firebase";
-import downloadUrl from "@/libs/downloadUrl";
+import downloadUrl from "@/lib/downloadUrl";
 import { useSellerProduct } from "@/services/SellerProductProvider";
 import { useUser } from "@/services/UserProvider";
 import { productInputs } from "@/types/ProductType";
@@ -49,13 +49,15 @@ const CreateProduct = () => {
   };
 
   return (
-    <ProductForm
-      handleSubmit={handleSubmit}
-      onSubmit={onSubmit}
-      register={register}
-      setValue={setValue}
-      productId={productId}
-    />
+    <>
+      <ProductForm
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+        register={register}
+        setValue={setValue}
+        productId={productId}
+      />
+    </>
   );
 };
 

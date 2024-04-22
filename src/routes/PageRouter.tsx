@@ -49,7 +49,7 @@ const PageRouter = () => {
           <Route path="" element={<Buyer />} />
         </Route>
       </Route>
-      {/*레이아웃 미적용*/}
+      {/*TODO: 로그인 시 접근 불가, 레이아웃 미적용*/}
       <Route path="/login" element={<Login />} />
     </Routes>
   );

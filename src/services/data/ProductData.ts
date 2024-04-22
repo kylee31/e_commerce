@@ -17,3 +17,18 @@ export const ProductInputData:ProductInputList[]=[
         value:"price"
     }
 ]
+
+export const productFieldData = [
+    {
+      label: "상품명",
+      value: "name",
+    },
+    {
+      label: "카테고리",
+      value: "category",
+    },
+    {
+      label: "가격",
+      value: "price",
+    },
+  ];
