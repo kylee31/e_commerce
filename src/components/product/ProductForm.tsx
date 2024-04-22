@@ -52,6 +52,11 @@ const ProductForm = ({
     const filterImages = images.filter((_, index) => index != idx);
     setImages(filterImages);
     setValue("imgs", filterImages);
+    //수정할 때만 적용, 저장되어 있던 이미지 삭제하면 해당 이미지 storage에서 삭제하기
+    if (updateProduct) {
+      const desertRef = ref(storage, `images/${productId}-${idx}.png`);
+      deleteObject(desertRef);
+    }
   };
 
   return (

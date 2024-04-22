@@ -33,8 +33,8 @@ const EditProduct = () => {
   return (
     <div className="w-full h-full pb-16">
       {
-        /*상품 삭제 후 navigate로 이동하므로 0개일때 Item 컴포넌트에서 오류가 발생함. 해당 상황에 대한 처리(삼항)*/
-        info ? (
+        /*상품 삭제 후 navigate로 이동하므로 0개일때 Item 컴포넌트에서 오류가 발생함. 해당 상황에 대한 처리*/
+        info && (
           <>
             <Product idx={idx} />
             <div className="grid grid-cols-2 gap-2">
@@ -42,8 +42,6 @@ const EditProduct = () => {
               <Button type="button" text="삭제" onClick={handleDeleteProduct} />
             </div>
           </>
-        ) : (
-          <></>
         )
       }
     </div>
