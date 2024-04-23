@@ -35,7 +35,7 @@ const ReadProduct = () => {
       }
     };
     await deleteDoc(doc(db, "product", productRefId));
-    await deleteImages();
+    await deleteImages;
     //상품 삭제 후 뒤로가기 막기
     await navigate("/seller", { replace: true });
   };
@@ -48,10 +48,13 @@ const ReadProduct = () => {
       >
         상품 등록
       </div>
-      <div className="w-full grid grid-cols-4 gap-3 pt-16">
+      <div className="w-full grid grid-cols-4 gap-7 pt-16">
         {sellerProduct.map((info, idx) => {
           return (
-            <div key={`privewproduct_${idx}`} className="w-full relative">
+            <div
+              key={`privewproduct_${idx}`}
+              className="w-full relative hover:cursor-pointer"
+            >
               <div className="w-full mt-1 absolute flex justify-end pr-2">
                 <div onClick={() => handleUpdateProduct(idx)} className="mr-2">
                   수정

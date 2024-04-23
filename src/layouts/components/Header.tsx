@@ -1,6 +1,7 @@
 import { useUser, useUserInfo } from "@/services/UserProvider";
 import { UserInfo } from "@/types/UserType";
 import { useNavigate } from "react-router-dom";
+import Logo from "./Logo";
 
 const Header = () => {
   const user = useUser();
@@ -15,7 +16,9 @@ const Header = () => {
 
   return (
     <div className="w-full h-14 bg-gray-300 justify-between items-center flex flex-row px-7">
-      <div className="text-black">Logo</div>
+      <div className="pt-5">
+        <Logo />
+      </div>
       <div className="flex flex-row">
         <img
           src="/imgs/user.png"

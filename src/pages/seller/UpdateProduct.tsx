@@ -18,17 +18,14 @@ const UpdateProduct = () => {
   const navigate = useNavigate();
 
   const { handleSubmit, register, setValue } = useForm<productInputs>();
-  const [isButtonClicked, setIsButtonClickted] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const onSubmit: SubmitHandler<productInputs> = async (data, event) => {
-    if (!isButtonClicked) {
-      setIsButtonClickted(true);
-      event?.preventDefault();
-    }
     const { name, category, price, count, description, imgs } = data;
     //즉, 추가로 submit된 imgs가 없다면 받아온 정보 그대로를 세팅해주고, submit된 이미지가 있다면 아래 로직 실행
     const isEditImgs = Boolean(imgs);
     const urls: string[] = []; //추가된 이미지까지 저장해서 다운로드 url로 반환해주는 배열
+
     if (isEditImgs) {
       // 저장한 각 이미지의 다운로드 url 추가, 이미 다운로드 url로 변환된 파일이면 그대로 추가하기
       for (let idx = 0; idx < imgs.length; idx++) {
@@ -54,15 +51,18 @@ const UpdateProduct = () => {
         imgs: isEditImgs ? urls : info.imgs,
       };
 
+      if (urls.length != 0) {
+        setIsUploading(true);
+        event?.preventDefault();
+      }
+
       const uploadImgsLength = isEditImgs ? urls.length : info.imgs;
       if (uploadImgsLength == 0) {
         return;
       }
-      await updateDoc(productRef, productInfo);
-      await alert("수정 완료!");
-      await navigate("/seller", { replace: true });
-    } else {
-      alert("파일 등록 필요");
+      await updateDoc(productRef, productInfo).then(() => {
+        navigate("/seller", { replace: true });
+      });
     }
   };
   return (
@@ -72,7 +72,7 @@ const UpdateProduct = () => {
       onSubmit={onSubmit}
       register={register}
       setValue={setValue}
-      isButtonClicked={isButtonClicked}
+      isUploading={isUploading}
     />
   );
 };

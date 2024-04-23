@@ -28,7 +28,7 @@ const EditProduct = () => {
       }
     };
     await deleteDoc(doc(db, "product", productRefId));
-    await deleteImages();
+    await deleteImages;
     await navigate("/seller", { replace: true });
   };
 

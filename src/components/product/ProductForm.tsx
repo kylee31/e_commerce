@@ -19,6 +19,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
+import { Loader2 } from "lucide-react";
 
 const INPUT_LIST = ProductInputData;
 
@@ -28,14 +29,14 @@ const ProductForm = ({
   updateProduct,
   register,
   setValue,
-  isButtonClicked,
+  isUploading,
 }: {
   handleSubmit: UseFormHandleSubmit<productInputs, undefined>;
   onSubmit: SubmitHandler<productInputs>;
   updateProduct?: DocumentData;
   register: UseFormRegister<productInputs>;
   setValue: UseFormSetValue<productInputs>;
-  isButtonClicked: boolean;
+  isUploading: boolean;
 }) => {
   const [images, setImages] = useState<string[]>([]);
 
@@ -73,11 +74,11 @@ const ProductForm = ({
     //수정일 땐 바로 막아도 됨, 생성일땐 react-hook-form에서 required true로 설정해줬지만
     //이미지에 대해서 1개 이상 등록했는지 확인해줘야 함
     if (updateProduct) {
-      if (isButtonClicked) {
+      if (isUploading) {
         e.preventDefault();
       }
     } else {
-      if (isButtonClicked && images.length > 0) {
+      if (isUploading && images.length > 0) {
         e.preventDefault();
       }
     }
@@ -178,7 +179,7 @@ const ProductForm = ({
         </div>
       </div>
       <Button className="w-full" type="submit" onClick={handlePreventEvent}>
-        {/*<Loader2 className="mr-2 h-4 w-4 animate-spin" />*/}
+        {isUploading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         저장
       </Button>
     </form>

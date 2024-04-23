@@ -10,24 +10,23 @@ import { useNavigate } from "react-router-dom";
 
 const CreateProduct = () => {
   const { handleSubmit, register, setValue } = useForm<productInputs>();
-  const [isButtonClicked, setIsButtonClickted] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const userId = useUser();
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<productInputs> = async (data, event) => {
     //create는 update와 다르게 조건이 추가 되어야 함..
-    if (!isButtonClicked) {
-      setIsButtonClickted(true);
-      event?.preventDefault();
-    }
     const { name, category, price, count, description, imgs } = data;
-    const urls: string[] = [];
-    if (imgs == undefined) {
+    if (imgs != undefined) {
+      setIsUploading(true);
+      event?.preventDefault();
+    } else {
       return;
     }
 
     if (userId) {
       // 저장한 각 이미지의 다운로드 url 추가
+      const urls: string[] = [];
       const productRef = doc(collection(db, "product"));
       const productRefId = productRef.id;
       for (let idx = 0; idx < data.imgs.length; idx++) {
@@ -59,7 +58,7 @@ const CreateProduct = () => {
         onSubmit={onSubmit}
         register={register}
         setValue={setValue}
-        isButtonClicked={isButtonClicked}
+        isUploading={isUploading}
       />
     </>
   );
