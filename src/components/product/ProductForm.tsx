@@ -8,13 +8,17 @@ import {
 } from "react-hook-form";
 import { productInputs } from "@/types/ProductType";
 import { DocumentData } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
-import { storage } from "@/firebase";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
 import { Textarea } from "../ui/textarea";
-import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../ui/carousel";
 
 const INPUT_LIST = ProductInputData;
 
@@ -24,14 +28,14 @@ const ProductForm = ({
   updateProduct,
   register,
   setValue,
-  productId,
+  isButtonClicked,
 }: {
   handleSubmit: UseFormHandleSubmit<productInputs, undefined>;
   onSubmit: SubmitHandler<productInputs>;
   updateProduct?: DocumentData;
   register: UseFormRegister<productInputs>;
   setValue: UseFormSetValue<productInputs>;
-  productId: number;
+  isButtonClicked: boolean;
 }) => {
   const [images, setImages] = useState<string[]>([]);
 
@@ -48,6 +52,13 @@ const ProductForm = ({
     const selectedFiles: string[] = targetFilesArray.map((file) => {
       return URL.createObjectURL(file);
     });
+
+    //최대 4개 업로드
+    const maxAllowFiles = 4;
+    if (targetFilesArray.length + images.length > maxAllowFiles) {
+      return;
+    }
+
     setImages((img) => [...img, ...selectedFiles]);
     setValue("imgs", [...images, ...selectedFiles]);
   };
@@ -56,10 +67,19 @@ const ProductForm = ({
     const filterImages = images.filter((_, index) => index != idx);
     setImages(filterImages);
     setValue("imgs", filterImages);
-    //수정할 때만 적용하는 로직, 저장되어 있던 이미지 삭제하면 해당 이미지 storage에서 삭제하기
+  };
+
+  const handlePreventEvent = (e: React.MouseEvent) => {
+    //수정일 땐 바로 막아도 됨, 생성일땐 react-hook-form에서 required true로 설정해줬지만
+    //이미지에 대해서 1개 이상 등록했는지 확인해줘야 함
     if (updateProduct) {
-      const desertRef = ref(storage, `images/${productId}-${idx}.png`);
-      deleteObject(desertRef);
+      if (isButtonClicked) {
+        e.preventDefault();
+      }
+    } else {
+      if (isButtonClicked && images.length > 0) {
+        e.preventDefault();
+      }
     }
   };
 
@@ -71,33 +91,42 @@ const ProductForm = ({
       <div className="w-full h-2/3 flex">
         {/*왼쪽*/}
         <div className="w-1/2 h-full flex flex-col justify-center items-center pr-3">
-          {images.length != 0 ? (
-            <ScrollArea className="w-full h-full whitespace-nowrap rounded-md border">
-              <div className="flex w-max h-full space-x-4 p-5 items-center overflow-hidden">
-                {images.map((url, idx) => {
-                  return (
-                    <div
-                      key={`inputImg_${idx}`}
-                      className="w-full border-2 rounded-sm space-x-2"
-                    >
-                      <img src={url} alt="" width={140} />
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveImage(idx)}
+          <div className="size-full relative flex justify-center items-center">
+            {images.length != 0 ? (
+              <Carousel className="w-3/4 h-full rounded-md flex justify-center items-center text-sm mb-1 border">
+                <CarouselContent>
+                  {images.map((url, idx) => {
+                    return (
+                      <CarouselItem
+                        key={`previewimg_${idx}`}
+                        className="w-full h-full flex flex-col justify-center items-center"
                       >
-                        삭제
-                      </button>
-                    </div>
-                  );
-                })}
+                        <div onClick={() => handleRemoveImage(idx)}>삭제</div>
+                        <img src={url} alt="" width={150} />
+                      </CarouselItem>
+                    );
+                  })}
+                </CarouselContent>
+                <CarouselPrevious type="button" />
+                <CarouselNext type="button" />
+              </Carousel>
+            ) : (
+              <div className="size-full whitespace-nowrap rounded-md border flex justify-center items-center text-sm ">
+                {images.length == 0 ? (
+                  <div>
+                    사진은 최소 1장 이상 추가해주세요!
+                    <br />
+                    <span className="text-xs text-red-400">(최대 4개)</span>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
-              <ScrollBar className="hover:none" orientation="horizontal" />
-            </ScrollArea>
-          ) : (
-            <div className="size-full whitespace-nowrap rounded-md border flex justify-center items-center text-sm">
-              사진은 최소 1장 이상 추가해주세요!
+            )}
+            <div className="size-6 bg-black absolute right-2 bottom-2 text-white flex justify-center items-center rounded-full">
+              {images.length}
             </div>
-          )}
+          </div>
           <Input
             type="file"
             accept="image/*"
@@ -148,7 +177,7 @@ const ProductForm = ({
           />
         </div>
       </div>
-      <Button className="w-full" type="submit">
+      <Button className="w-full" type="submit" onClick={handlePreventEvent}>
         {/*<Loader2 className="mr-2 h-4 w-4 animate-spin" />*/}
         저장
       </Button>

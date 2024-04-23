@@ -1,3 +1,4 @@
+import AlertAnswer from "@/components/common/AlertAnswer";
 import Product from "@/components/product/Product";
 import { Button } from "@/components/ui/button";
 import { db, storage } from "@/firebase";
@@ -17,9 +18,9 @@ const EditProduct = () => {
   };
 
   const handleDeleteProduct = async () => {
-    //상품 삭제 시 저장된 이미지도 삭제하기
     const productRefId = info.id;
 
+    //상품 삭제 시 저장된 이미지도 삭제하기
     const deleteImages = () => {
       for (let i = 0; i < info.imgs.length; i++) {
         const desertRef = ref(storage, `images/${productRefId}-${i}.png`);
@@ -28,7 +29,6 @@ const EditProduct = () => {
     };
     await deleteDoc(doc(db, "product", productRefId));
     await deleteImages();
-    //상품 삭제 후 뒤로가기 막기
     await navigate("/seller", { replace: true });
   };
 
@@ -41,7 +41,13 @@ const EditProduct = () => {
             <Product idx={idx} />
             <div className="w-full grid grid-cols-2 gap-3 mt-1">
               <Button onClick={handleUpdateProduct}>수정</Button>
-              <Button onClick={handleDeleteProduct}>삭제</Button>
+              <AlertAnswer
+                onTrueClick={handleDeleteProduct}
+                answer="해당 상품을 삭제하시겠습니까?"
+                text=""
+              >
+                <Button>삭제</Button>
+              </AlertAnswer>
             </div>
           </div>
         )

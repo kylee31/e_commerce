@@ -5,6 +5,7 @@ import { useSellerProduct } from "@/services/SellerProductProvider";
 import { useUser } from "@/services/UserProvider";
 import { productInputs } from "@/types/ProductType";
 import { doc, updateDoc } from "firebase/firestore";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -17,7 +18,13 @@ const UpdateProduct = () => {
   const navigate = useNavigate();
 
   const { handleSubmit, register, setValue } = useForm<productInputs>();
-  const onSubmit: SubmitHandler<productInputs> = async (data) => {
+  const [isButtonClicked, setIsButtonClickted] = useState(false);
+
+  const onSubmit: SubmitHandler<productInputs> = async (data, event) => {
+    if (!isButtonClicked) {
+      setIsButtonClickted(true);
+      event?.preventDefault();
+    }
     const { name, category, price, count, description, imgs } = data;
     //즉, 추가로 submit된 imgs가 없다면 받아온 정보 그대로를 세팅해주고, submit된 이미지가 있다면 아래 로직 실행
     const isEditImgs = Boolean(imgs);
@@ -46,13 +53,16 @@ const UpdateProduct = () => {
         //편집된게 있으면 수정한 url정보로, 그대로라면 기존 imgs 정보 세팅
         imgs: isEditImgs ? urls : info.imgs,
       };
-      if (productInfo.imgs.length > 0) {
-        await updateDoc(productRef, productInfo);
-        await navigate("/seller", { replace: true });
-        alert("수정 완료!");
-      } else {
-        alert("파일 등록 필요");
+
+      const uploadImgsLength = isEditImgs ? urls.length : info.imgs;
+      if (uploadImgsLength == 0) {
+        return;
       }
+      await updateDoc(productRef, productInfo);
+      await alert("수정 완료!");
+      await navigate("/seller", { replace: true });
+    } else {
+      alert("파일 등록 필요");
     }
   };
   return (
@@ -62,7 +72,7 @@ const UpdateProduct = () => {
       onSubmit={onSubmit}
       register={register}
       setValue={setValue}
-      productId={info.id}
+      isButtonClicked={isButtonClicked}
     />
   );
 };

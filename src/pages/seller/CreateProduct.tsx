@@ -1,29 +1,40 @@
 import ProductForm from "@/components/product/ProductForm";
 import { db } from "@/firebase";
 import downloadUrl from "@/lib/downloadUrl";
-import { useSellerProduct } from "@/services/SellerProductProvider";
 import { useUser } from "@/services/UserProvider";
 import { productInputs } from "@/types/ProductType";
 import { collection, doc, setDoc } from "firebase/firestore";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 const CreateProduct = () => {
   const { handleSubmit, register, setValue } = useForm<productInputs>();
+  const [isButtonClicked, setIsButtonClickted] = useState(false);
   const userId = useUser();
-  const sellerProduct = useSellerProduct();
-  const productId = sellerProduct.length;
   const navigate = useNavigate();
 
-  //업로드 시 가져온 string(blob url)을 모두 storage에 저장하고 다운로드 url로 변환
-
-  const onSubmit: SubmitHandler<productInputs> = async (data) => {
+  const onSubmit: SubmitHandler<productInputs> = async (data, event) => {
+    //create는 update와 다르게 조건이 추가 되어야 함..
+    if (!isButtonClicked) {
+      setIsButtonClickted(true);
+      event?.preventDefault();
+    }
     const { name, category, price, count, description, imgs } = data;
     const urls: string[] = [];
+    if (imgs == undefined) {
+      return;
+    }
 
     if (userId) {
+      // 저장한 각 이미지의 다운로드 url 추가
       const productRef = doc(collection(db, "product"));
       const productRefId = productRef.id;
+      for (let idx = 0; idx < data.imgs.length; idx++) {
+        const img = imgs[idx];
+        const url = await downloadUrl({ img, productRefId, idx });
+        urls.push(url);
+      }
       const productInfo: productInputs = {
         id: productRefId,
         name,
@@ -34,16 +45,11 @@ const CreateProduct = () => {
         imgs: urls,
         uid: userId,
       };
-      // 저장한 각 이미지의 다운로드 url 추가
-      for (let idx = 0; idx < imgs.length; idx++) {
-        const img = imgs[idx];
-        const url = await downloadUrl({ img, productRefId, idx });
-        urls.push(url);
-      }
-      await setDoc(productRef, productInfo);
-      await navigate("/seller");
+
+      await setDoc(productRef, productInfo).then(() => {
+        navigate("/seller");
+      });
     }
-    alert("등록 완료!");
   };
 
   return (
@@ -53,7 +59,7 @@ const CreateProduct = () => {
         onSubmit={onSubmit}
         register={register}
         setValue={setValue}
-        productId={productId}
+        isButtonClicked={isButtonClicked}
       />
     </>
   );

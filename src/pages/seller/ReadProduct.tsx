@@ -1,8 +1,13 @@
+import AlertAnswer from "@/components/common/AlertAnswer";
 import PreviewProduct from "@/components/product/PreviewProduct";
+import { db, storage } from "@/firebase";
 import { useSellerProduct } from "@/services/SellerProductProvider";
+import { deleteDoc, doc } from "firebase/firestore";
+import { deleteObject, ref } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 
 const ReadProduct = () => {
+  const sellerProduct = useSellerProduct();
   const navigate = useNavigate();
 
   const handleCreateProduct = () => {
@@ -13,7 +18,27 @@ const ReadProduct = () => {
     navigate(`edit-product/${idx + 1}`);
   };
 
-  const sellerProduct = useSellerProduct();
+  const handleUpdateProduct = (idx: number) => {
+    navigate(`/seller/update-product/${idx + 1}`);
+  };
+
+  const handleDeleteProduct = async (idx: number) => {
+    const info = sellerProduct[idx];
+
+    //상품 삭제 시 저장된 이미지도 삭제하기
+    const productRefId = info.id;
+
+    const deleteImages = () => {
+      for (let i = 0; i < info.imgs.length; i++) {
+        const desertRef = ref(storage, `images/${productRefId}-${i}.png`);
+        deleteObject(desertRef);
+      }
+    };
+    await deleteDoc(doc(db, "product", productRefId));
+    await deleteImages();
+    //상품 삭제 후 뒤로가기 막기
+    await navigate("/seller", { replace: true });
+  };
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start relative">
@@ -26,11 +51,25 @@ const ReadProduct = () => {
       <div className="w-full grid grid-cols-4 gap-3 pt-16">
         {sellerProduct.map((info, idx) => {
           return (
-            <PreviewProduct
-              key={`sellerProduct_${idx}`}
-              info={info}
-              onClick={() => handleEditProduct(idx)}
-            />
+            <div key={`privewproduct_${idx}`} className="w-full relative">
+              <div className="w-full mt-1 absolute flex justify-end pr-2">
+                <div onClick={() => handleUpdateProduct(idx)} className="mr-2">
+                  수정
+                </div>
+                <AlertAnswer
+                  answer="해당 상품을 삭제하시겠습니까?"
+                  text=""
+                  onTrueClick={() => handleDeleteProduct(idx)}
+                >
+                  <div>삭제</div>
+                </AlertAnswer>
+              </div>
+              <PreviewProduct
+                key={`sellerProduct_${idx}`}
+                info={info}
+                onClick={() => handleEditProduct(idx)}
+              />
+            </div>
           );
         })}
       </div>
