@@ -4,7 +4,7 @@ import downloadUrl from "@/lib/downloadUrl";
 import { useSellerProduct } from "@/services/SellerProductProvider";
 import { useUser } from "@/services/UserProvider";
 import { productInputs } from "@/types/ProductType";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -21,16 +21,11 @@ const CreateProduct = () => {
     const { name, category, price, count, description, imgs } = data;
     const urls: string[] = [];
 
-    // 저장한 각 이미지의 다운로드 url 추가
-    for (let idx = 0; idx < imgs.length; idx++) {
-      const img = imgs[idx];
-      const url = await downloadUrl({ img, productId, idx });
-      urls.push(url);
-    }
-
     if (userId) {
+      const productRef = doc(collection(db, "product"));
+      const productRefId = productRef.id;
       const productInfo: productInputs = {
-        id: productId,
+        id: productRefId,
         name,
         category,
         price,
@@ -39,10 +34,13 @@ const CreateProduct = () => {
         imgs: urls,
         uid: userId,
       };
-      await setDoc(
-        doc(db, "product", String(sellerProduct.length)),
-        productInfo
-      );
+      // 저장한 각 이미지의 다운로드 url 추가
+      for (let idx = 0; idx < imgs.length; idx++) {
+        const img = imgs[idx];
+        const url = await downloadUrl({ img, productRefId, idx });
+        urls.push(url);
+      }
+      await setDoc(productRef, productInfo);
       await navigate("/seller");
     }
     alert("등록 완료!");

@@ -9,7 +9,7 @@ const Product = ({ idx }: { idx: number }) => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
-      <div className="w-full h-56 flex">
+      <div className="w-full h-64 flex">
         {/*왼쪽*/}
         <div className="w-1/2 h-full flex flex-col justify-center items-center pr-3">
           <div className="size-full flex justify-between rounded-md">
@@ -67,7 +67,7 @@ const Product = ({ idx }: { idx: number }) => {
       <hr className="w-full border-2 my-4" />
       <div className="w-full h-auto flex flex-col justify-center items-start">
         <span>설명</span>
-        <div className="w-full h-auto bg-gray-100 mt-3 min-h-28 p-8 rounded-md">
+        <div className="w-full h-auto bg-gray-100 mt-2 min-h-24 p-8 rounded-md overflow-auto break-words">
           {productInfo.description}
         </div>
       </div>

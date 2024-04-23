@@ -5,20 +5,13 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { DocumentData } from "firebase/firestore";
 
 const PreviewProduct = ({
-  name,
-  price,
-  img,
-  count,
-  category,
+  info,
   onClick,
 }: {
-  name: string;
-  price: number;
-  img: string[];
-  count: number;
-  category: string;
+  info: DocumentData;
   onClick: () => void;
 }) => {
   return (
@@ -26,21 +19,21 @@ const PreviewProduct = ({
       <Card className="w-full border-gray-300" onClick={onClick}>
         <CardHeader>
           <img
-            src={img[0]}
+            src={info.imgs[0]}
             alt=""
             className="h-24 border border-gray-300 rounded-md"
           />
-          <CardTitle>{name}</CardTitle>
-          <CardDescription>{category}</CardDescription>
+          <CardTitle>{info.name}</CardTitle>
+          <CardDescription>{info.category}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="w-full flex justify-between border-b">
             <span>가격💸</span>
-            {price}원
+            {info.price}원
           </div>
           <div className="w-full flex justify-between border-b">
             <span>재고📦</span>
-            {count}개
+            {info.count}개
           </div>
         </CardContent>
       </Card>

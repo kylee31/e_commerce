@@ -18,13 +18,15 @@ const EditProduct = () => {
 
   const handleDeleteProduct = async () => {
     //상품 삭제 시 저장된 이미지도 삭제하기
+    const productRefId = info.id;
+
     const deleteImages = () => {
       for (let i = 0; i < info.imgs.length; i++) {
-        const desertRef = ref(storage, `images/${info.id}-${i}.png`);
+        const desertRef = ref(storage, `images/${productRefId}-${i}.png`);
         deleteObject(desertRef);
       }
     };
-    await deleteDoc(doc(db, "product", String(info.id)));
+    await deleteDoc(doc(db, "product", productRefId));
     await deleteImages();
     //상품 삭제 후 뒤로가기 막기
     await navigate("/seller", { replace: true });
@@ -37,7 +39,7 @@ const EditProduct = () => {
         info && (
           <div className="w-full h-full flex flex-col">
             <Product idx={idx} />
-            <div className="w-full grid grid-cols-2 gap-3">
+            <div className="w-full grid grid-cols-2 gap-3 mt-1">
               <Button onClick={handleUpdateProduct}>수정</Button>
               <Button onClick={handleDeleteProduct}>삭제</Button>
             </div>

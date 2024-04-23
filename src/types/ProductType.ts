@@ -5,7 +5,7 @@ export type ProductInputList={
   }
 
   export type productInputs = {
-    id:number;
+    id?:string;
     name: string;
     price:number;
     category:string;

@@ -24,15 +24,11 @@ const ReadProduct = () => {
         상품 등록
       </div>
       <div className="w-full grid grid-cols-4 gap-3 pt-16">
-        {sellerProduct.map((item, idx) => {
+        {sellerProduct.map((info, idx) => {
           return (
             <PreviewProduct
               key={`sellerProduct_${idx}`}
-              name={item.name}
-              price={item.price}
-              img={item.imgs}
-              count={item.count}
-              category={item.category}
+              info={info}
               onClick={() => handleEditProduct(idx)}
             />
           );
