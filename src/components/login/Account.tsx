@@ -1,10 +1,12 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import Button from "../common/Button";
 import { signInWithEmailAndPassword } from "firebase/auth/web-extension";
 import { auth } from "@/firebase";
 import { useNavigate } from "react-router-dom";
 import { AccountInputs } from "@/types/SignType";
 import { AccountInputData } from "@/services/data/SignData";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 const INPUT_LIST = AccountInputData;
 
@@ -17,7 +19,6 @@ const Account = () => {
 
   const navigate = useNavigate();
 
-  //TODO: 로그인 실패 시 알림 창 띄워주기
   const onSubmit: SubmitHandler<AccountInputs> = async (data) => {
     const [userEmail, userPassword] = [data["email"], data["password"]];
     try {
@@ -40,10 +41,10 @@ const Account = () => {
           return (
             <div
               key={`signup_${idx}`}
-              className="w-full flex flex-col items-start"
+              className="w-full flex flex-col items-start mb-3"
             >
-              <span>{ele.label}</span>
-              <input
+              <Label className="mb-2">{ele.label}</Label>
+              <Input
                 type={ele.type}
                 placeholder={ele.value}
                 autoComplete="off"
@@ -51,7 +52,7 @@ const Account = () => {
                 {...register(ele.value, ele.register)}
               />
               {errors[ele.value] && (
-                <div className="text-red-400 text-xs">
+                <div className="text-red-400 text-xs mt-1">
                   {errors[ele.value]?.message}
                 </div>
               )}
@@ -59,7 +60,9 @@ const Account = () => {
           );
         })}
         <div className="mt-5">
-          <Button type="submit" text="로그인하기" />
+          <Button className="w-full" type="submit">
+            로그인하기
+          </Button>
         </div>
       </form>
       <hr className="my-5 border-black" />

@@ -7,9 +7,9 @@ const Seller = () => {
   const userInfo = useUserInfo();
   return (
     <div className="w-full h-full flex">
-      <div className="w-1/5 h-full flex flex-col justify-center items-center bg-slate-200 p-5 ">
-        <span className="font-bold mb-3">
-          {(userInfo as UserInfo).name}님(판매자)
+      <div className="w-1/5 h-full flex flex-col justify-start items-center bg-slate-200 px-5 ">
+        <span className="font-bold my-7">
+          {(userInfo as UserInfo).name}님 (판매자💁‍♂️)
         </span>
         <SignOut />
       </div>
