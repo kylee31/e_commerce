@@ -7,8 +7,8 @@ const Buyer = () => {
 
   return (
     <div className="w-full h-full flex">
-      <div className="w-1/5 h-full flex flex-col justify-center items-center bg-slate-200 p-5">
-        <span className="font-bold mb-3">
+      <div className="w-1/5 h-full flex flex-col justify-start items-center bg-slate-200 p-5">
+        <span className="font-bold my-4">
           {(userInfo as UserInfo).nickname}님, 환영합니다!
         </span>
         <SignOut />
