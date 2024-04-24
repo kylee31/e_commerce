@@ -11,13 +11,22 @@ import { useNavigate } from "react-router-dom";
 const CreateProduct = () => {
   const { handleSubmit, register, setValue } = useForm<productInputs>();
   const [isUploading, setIsUploading] = useState(false);
+  const nowDate = new Date();
   const userId = useUser();
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<productInputs> = async (data, event) => {
     //create는 update와 다르게 조건이 추가 되어야 함..
-    const { name, category, price, count, description, imgs } = data;
-    if (imgs != undefined) {
+    //const { name, category, price, count, description, imgs } = data;
+    const {
+      productName,
+      productPrice,
+      productQunatity,
+      productDescription,
+      productCategory,
+      productImages,
+    } = data;
+    if (productImages != undefined) {
       setIsUploading(true);
       event?.preventDefault();
     } else {
@@ -29,25 +38,28 @@ const CreateProduct = () => {
       const urls: string[] = [];
       const productRef = doc(collection(db, "product"));
       const productRefId = productRef.id;
-      for (let idx = 0; idx < data.imgs.length; idx++) {
-        const img = imgs[idx];
+      for (let idx = 0; idx < data.productImages.length; idx++) {
+        const img = productImages[idx];
         const url = await downloadUrl({ img, productRefId, idx });
         urls.push(url);
       }
       const productInfo: productInputs = {
         id: productRefId,
-        name,
-        category,
-        price,
-        count,
-        description,
-        imgs: urls,
-        uid: userId,
+        sellerId: userId,
+        productName,
+        productPrice,
+        productQunatity,
+        productDescription,
+        productCategory,
+        productImages: urls,
+        createdAt: nowDate,
+        updatedAt: nowDate,
       };
 
-      await setDoc(productRef, productInfo).then(() => {});
+      await setDoc(productRef, productInfo).then(() => {
+        navigate("/seller");
+      });
     }
-    await navigate("/seller");
   };
 
   return (

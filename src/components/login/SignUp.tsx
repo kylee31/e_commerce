@@ -20,11 +20,13 @@ const SignUp = () => {
   } = useForm<SignUpInputs>();
 
   const navigate = useNavigate();
+  const nowDate = new Date();
+  console.log(nowDate);
 
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
     try {
       //객체 리터럴 단축 속성명
-      const { isSeller, name, nickname, email, password } = data;
+      const { email, isSeller, name, nickname, password } = data;
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -33,11 +35,13 @@ const SignUp = () => {
       const userId = userCredential.user.uid;
       const userInfo = {
         uid: userId,
+        email,
         isSeller,
         name,
         nickname,
-        email,
         password,
+        createdAt: nowDate,
+        updatedAt: nowDate,
       };
       await setDoc(doc(db, "user", userId), userInfo);
       await navigate("/");

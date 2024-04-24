@@ -50,10 +50,10 @@ const ProductForm = ({
 
   useEffect(() => {
     if (updateProduct) {
-      setImages(updateProduct.imgs);
-      setValue("category", updateProduct.category);
+      setImages(updateProduct.productImages);
+      setValue("productCategory", updateProduct.productCategory);
     }
-  }, [updateProduct]);
+  }, []);
 
   //TODO: 동일 파일 연속으로 등록 불가한 사항 수정하기(input값에 cache되어있음?)
   const handleSaveImage = async (e: React.ChangeEvent) => {
@@ -70,17 +70,17 @@ const ProductForm = ({
     }
 
     setImages((img) => [...img, ...selectedFiles]);
-    setValue("imgs", [...images, ...selectedFiles]);
+    setValue("productImages", [...images, ...selectedFiles]);
   };
 
   const handleRemoveImage = (idx: number) => {
     const filterImages = images.filter((_, index) => index != idx);
     setImages(filterImages);
-    setValue("imgs", filterImages);
+    setValue("productImages", filterImages);
   };
 
   const handleCategoryChange = (ele: string) => {
-    setValue("category", ele);
+    setValue("productCategory", ele);
   };
 
   const handlePreventEvent = (e: React.MouseEvent) => {
@@ -88,7 +88,6 @@ const ProductForm = ({
     //이미지에 대해서 1개 이상 등록했는지 확인해줘야 함
     if (updateProduct) {
       if (isUploading) {
-        console.log("dd");
         e.preventDefault();
       }
     } else {
@@ -155,7 +154,7 @@ const ProductForm = ({
           <div className="w-full">
             <div className="w-full flex mb-3"></div>
             {INPUT_LIST.map((ele, idx) => {
-              const isCategory = ele.value == "category";
+              const isCategory = ele.value == "productCategory";
               return (
                 <div key={`product_${idx}`} className="w-full flex mb-3">
                   <Label className="w-1/3 flex justify-start">
@@ -170,7 +169,7 @@ const ProductForm = ({
                     >
                       <SelectTrigger className="w-full border-gray-500">
                         <SelectValue
-                          {...register("category", { required: true })}
+                          {...register("productCategory", { required: true })}
                         />
                       </SelectTrigger>
                       <SelectContent>
@@ -202,8 +201,10 @@ const ProductForm = ({
               <Input
                 type="text"
                 className="w-full border-gray-500 border rounded-sm"
-                {...register("count", { required: true })}
-                defaultValue={updateProduct ? updateProduct.count : ""}
+                {...register("productQunatity", { required: true })}
+                defaultValue={
+                  updateProduct ? updateProduct.productCategory : ""
+                }
               />
             </div>
           </div>
@@ -215,8 +216,8 @@ const ProductForm = ({
           <Label>설명</Label>
           <Textarea
             className="w-full h-1/2 border-gray-500 border rounded-sm mt-3 resize-none"
-            {...register("description", { required: true })}
-            defaultValue={updateProduct ? updateProduct.description : ""}
+            {...register("productDescription", { required: true })}
+            defaultValue={updateProduct ? updateProduct.productQunatity : ""}
           />
         </div>
       </div>

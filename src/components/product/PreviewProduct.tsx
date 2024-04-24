@@ -18,22 +18,22 @@ const PreviewProduct = ({
     <Card className="w-full border-gray-300" onClick={onClick}>
       <CardHeader>
         <img
-          src={info.imgs[0]}
+          src={info.productImages[0]}
           alt=""
           className="h-28 border border-gray-300 rounded-md"
         />
-        <CardTitle>{info.name}</CardTitle>
-        <CardDescription>{info.category}</CardDescription>
+        <CardTitle>{info.productName}</CardTitle>
+        <CardDescription>{info.productCategory}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="w-full flex justify-between border-b">
           <span>가격💸</span>
-          {info.price}원
+          {info.productPrice}원
         </div>
         {/*재고는 판매자한테만 보여주는 정보*/}
         <div className="w-full flex justify-between border-b">
           <span>재고📦</span>
-          {info.count}개
+          {info.productQunatity}개
         </div>
       </CardContent>
     </Card>

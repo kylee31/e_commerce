@@ -24,12 +24,12 @@ export const SellerProductProvider = ({
         const unsubscribe = onSnapshot(q, (snapshot) => {
           const newSellerProducts: DocumentData[] = [];
           snapshot.forEach((doc) => {
-            if (doc.data().uid == user) {
+            if (doc.data().sellerId == user) {
               newSellerProducts.push(doc.data());
             }
           });
           const newData = [...sellerProduct, ...newSellerProducts].sort(
-            (a, b) => a.name.localeCompare(b.name)
+            (a, b) => a.productName.localeCompare(b.productName)
           );
           setSellerProduct(newData);
         });

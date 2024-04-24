@@ -22,13 +22,13 @@ const EditProduct = () => {
 
     //상품 삭제 시 저장된 이미지도 삭제하기
     const deleteImages = () => {
-      for (let i = 0; i < info.imgs.length; i++) {
+      for (let i = 0; i < info.productImages.length; i++) {
         const desertRef = ref(storage, `images/${productRefId}-${i}.png`);
         deleteObject(desertRef);
       }
     };
     await deleteDoc(doc(db, "product", productRefId));
-    await deleteImages;
+    await deleteImages();
     await navigate("/seller", { replace: true });
   };
 

@@ -20,7 +20,7 @@ const Account = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<AccountInputs> = async (data) => {
-    const [userEmail, userPassword] = [data["email"], data["password"]];
+    const [userEmail, userPassword] = [data.email, data.password];
     try {
       const userSignIn = await signInWithEmailAndPassword(
         auth,

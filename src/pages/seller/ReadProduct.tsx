@@ -5,10 +5,19 @@ import { useSellerProduct } from "@/services/SellerProductProvider";
 import { deleteDoc, doc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 const ReadProduct = () => {
   const sellerProduct = useSellerProduct();
   const navigate = useNavigate();
+
+  //TODO:무한 스크롤 적용하기
+  const { ref: viewRef, inView } = useInView({
+    threshold: 0,
+  });
+
+  //const res = useInfiniteQuery({});
 
   const handleCreateProduct = () => {
     navigate("create-product");
@@ -28,13 +37,13 @@ const ReadProduct = () => {
 
     //상품 삭제 시 저장된 이미지도 삭제하기
     const deleteImages = () => {
-      for (let i = 0; i < info.imgs.length; i++) {
+      for (let i = 0; i < info.productImages.length; i++) {
         const desertRef = ref(storage, `images/${productRefId}-${i}.png`);
         deleteObject(desertRef);
       }
     };
     await deleteDoc(doc(db, "product", productRefId));
-    await deleteImages;
+    await deleteImages();
     //상품 삭제 후 뒤로가기 막기
     await navigate("/seller", { replace: true });
   };
@@ -58,6 +67,7 @@ const ReadProduct = () => {
               <div
                 key={`privewproduct_${idx}`}
                 className="w-full relative hover:cursor-pointer"
+                ref={viewRef}
               >
                 <div className="w-full mt-1 absolute flex justify-end pr-2">
                   <div
