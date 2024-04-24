@@ -20,6 +20,14 @@ import {
   CarouselPrevious,
 } from "../ui/carousel";
 import { Loader2 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const INPUT_LIST = ProductInputData;
 
@@ -43,6 +51,7 @@ const ProductForm = ({
   useEffect(() => {
     if (updateProduct) {
       setImages(updateProduct.imgs);
+      setValue("category", updateProduct.category);
     }
   }, [updateProduct]);
 
@@ -70,11 +79,16 @@ const ProductForm = ({
     setValue("imgs", filterImages);
   };
 
+  const handleCategoryChange = (ele: string) => {
+    setValue("category", ele);
+  };
+
   const handlePreventEvent = (e: React.MouseEvent) => {
     //수정일 땐 바로 막아도 됨, 생성일땐 react-hook-form에서 required true로 설정해줬지만
     //이미지에 대해서 1개 이상 등록했는지 확인해줘야 함
     if (updateProduct) {
       if (isUploading) {
+        console.log("dd");
         e.preventDefault();
       }
     } else {
@@ -139,18 +153,46 @@ const ProductForm = ({
         {/*오른쪽*/}
         <div className="w-1/2 h-full flex justify-center items-center pl-3">
           <div className="w-full">
+            <div className="w-full flex mb-3"></div>
             {INPUT_LIST.map((ele, idx) => {
+              const isCategory = ele.value == "category";
               return (
                 <div key={`product_${idx}`} className="w-full flex mb-3">
                   <Label className="w-1/3 flex justify-start">
                     {ele.label}
                   </Label>
-                  <Input
-                    type={ele.type}
-                    className="w-full border-gray-500 border rounded-sm"
-                    {...register(ele.value, { required: true })}
-                    defaultValue={updateProduct ? updateProduct[ele.value] : ""}
-                  />
+                  {isCategory ? (
+                    <Select
+                      defaultValue={
+                        updateProduct ? updateProduct[ele.value] : null
+                      }
+                      onValueChange={handleCategoryChange}
+                    >
+                      <SelectTrigger className="w-full border-gray-500">
+                        <SelectValue
+                          {...register("category", { required: true })}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="홈리빙">홈리빙</SelectItem>
+                          <SelectItem value="공예">공예</SelectItem>
+                          <SelectItem value="반려동물">반려동물</SelectItem>
+                          <SelectItem value="식품">식품</SelectItem>
+                          <SelectItem value="기타">기타</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <Input
+                      type={ele.type}
+                      className="w-full border-gray-500 border rounded-sm"
+                      {...register(ele.value, { required: true })}
+                      defaultValue={
+                        updateProduct ? updateProduct[ele.value] : ""
+                      }
+                    />
+                  )}
                 </div>
               );
             })}

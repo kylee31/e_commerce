@@ -24,10 +24,9 @@ const ReadProduct = () => {
 
   const handleDeleteProduct = async (idx: number) => {
     const info = sellerProduct[idx];
-
-    //상품 삭제 시 저장된 이미지도 삭제하기
     const productRefId = info.id;
 
+    //상품 삭제 시 저장된 이미지도 삭제하기
     const deleteImages = () => {
       for (let i = 0; i < info.imgs.length; i++) {
         const desertRef = ref(storage, `images/${productRefId}-${i}.png`);
@@ -48,34 +47,43 @@ const ReadProduct = () => {
       >
         상품 등록
       </div>
-      <div className="w-full grid grid-cols-4 gap-7 pt-16">
-        {sellerProduct.map((info, idx) => {
-          return (
-            <div
-              key={`privewproduct_${idx}`}
-              className="w-full relative hover:cursor-pointer"
-            >
-              <div className="w-full mt-1 absolute flex justify-end pr-2">
-                <div onClick={() => handleUpdateProduct(idx)} className="mr-2">
-                  수정
+      {sellerProduct.length == 0 ? (
+        <div className="size-full flex justify-center items-center">
+          등록한 상품이 없습니다💬
+        </div>
+      ) : (
+        <div className="w-full grid grid-cols-4 gap-7 pt-16">
+          {sellerProduct.map((info, idx) => {
+            return (
+              <div
+                key={`privewproduct_${idx}`}
+                className="w-full relative hover:cursor-pointer"
+              >
+                <div className="w-full mt-1 absolute flex justify-end pr-2">
+                  <div
+                    onClick={() => handleUpdateProduct(idx)}
+                    className="mr-2"
+                  >
+                    수정
+                  </div>
+                  <AlertAnswer
+                    answer="해당 상품을 삭제하시겠습니까?"
+                    text=""
+                    onTrueClick={() => handleDeleteProduct(idx)}
+                  >
+                    <div>삭제</div>
+                  </AlertAnswer>
                 </div>
-                <AlertAnswer
-                  answer="해당 상품을 삭제하시겠습니까?"
-                  text=""
-                  onTrueClick={() => handleDeleteProduct(idx)}
-                >
-                  <div>삭제</div>
-                </AlertAnswer>
+                <PreviewProduct
+                  key={`sellerProduct_${idx}`}
+                  info={info}
+                  onClick={() => handleEditProduct(idx)}
+                />
               </div>
-              <PreviewProduct
-                key={`sellerProduct_${idx}`}
-                info={info}
-                onClick={() => handleEditProduct(idx)}
-              />
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

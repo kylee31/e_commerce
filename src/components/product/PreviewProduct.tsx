@@ -30,6 +30,7 @@ const PreviewProduct = ({
           <span>가격💸</span>
           {info.price}원
         </div>
+        {/*재고는 판매자한테만 보여주는 정보*/}
         <div className="w-full flex justify-between border-b">
           <span>재고📦</span>
           {info.count}개

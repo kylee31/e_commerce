@@ -51,14 +51,13 @@ const UpdateProduct = () => {
         imgs: isEditImgs ? urls : info.imgs,
       };
 
-      if (urls.length != 0) {
-        setIsUploading(true);
-        event?.preventDefault();
-      }
-
       const uploadImgsLength = isEditImgs ? urls.length : info.imgs;
+
       if (uploadImgsLength == 0) {
         return;
+      } else {
+        setIsUploading(true);
+        event?.preventDefault();
       }
       await updateDoc(productRef, productInfo).then(() => {
         navigate("/seller", { replace: true });

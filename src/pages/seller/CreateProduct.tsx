@@ -45,10 +45,9 @@ const CreateProduct = () => {
         uid: userId,
       };
 
-      await setDoc(productRef, productInfo).then(() => {
-        navigate("/seller");
-      });
+      await setDoc(productRef, productInfo).then(() => {});
     }
+    await navigate("/seller");
   };
 
   return (
