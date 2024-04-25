@@ -1,4 +1,4 @@
-import { ProductInputData } from "@/services/data/ProductData";
+import { ProductCategory, ProductInputData } from "@/services/data/ProductData";
 import { useEffect, useState } from "react";
 import {
   SubmitHandler,
@@ -37,6 +37,7 @@ const ProductForm = ({
   updateProduct,
   register,
   setValue,
+  isUpdate,
   isUploading,
 }: {
   handleSubmit: UseFormHandleSubmit<productInputs, undefined>;
@@ -45,6 +46,7 @@ const ProductForm = ({
   register: UseFormRegister<productInputs>;
   setValue: UseFormSetValue<productInputs>;
   isUploading: boolean;
+  isUpdate: boolean;
 }) => {
   const [images, setImages] = useState<string[]>([]);
 
@@ -53,7 +55,7 @@ const ProductForm = ({
       setImages(updateProduct.productImages);
       setValue("productCategory", updateProduct.productCategory);
     }
-  }, []);
+  }, [updateProduct]);
 
   //TODO: 동일 파일 연속으로 등록 불가한 사항 수정하기(input값에 cache되어있음?)
   const handleSaveImage = async (e: React.ChangeEvent) => {
@@ -62,8 +64,6 @@ const ProductForm = ({
     const selectedFiles: string[] = targetFilesArray.map((file) => {
       return URL.createObjectURL(file);
     });
-
-    //최대 4개 업로드
     const maxAllowFiles = 4;
     if (targetFilesArray.length + images.length > maxAllowFiles) {
       return;
@@ -84,8 +84,6 @@ const ProductForm = ({
   };
 
   const handlePreventEvent = (e: React.MouseEvent) => {
-    //수정일 땐 바로 막아도 됨, 생성일땐 react-hook-form에서 required true로 설정해줬지만
-    //이미지에 대해서 1개 이상 등록했는지 확인해줘야 함
     if (updateProduct) {
       if (isUploading) {
         e.preventDefault();
@@ -96,6 +94,9 @@ const ProductForm = ({
       }
     }
   };
+  if (updateProduct == undefined && isUpdate) {
+    return <></>;
+  }
 
   return (
     <form
@@ -163,7 +164,7 @@ const ProductForm = ({
                   {isCategory ? (
                     <Select
                       defaultValue={
-                        updateProduct ? updateProduct[ele.value] : null
+                        updateProduct ? updateProduct.productCategory : null
                       }
                       onValueChange={handleCategoryChange}
                     >
@@ -174,11 +175,16 @@ const ProductForm = ({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value="홈리빙">홈리빙</SelectItem>
-                          <SelectItem value="공예">공예</SelectItem>
-                          <SelectItem value="반려동물">반려동물</SelectItem>
-                          <SelectItem value="식품">식품</SelectItem>
-                          <SelectItem value="기타">기타</SelectItem>
+                          {ProductCategory.map((cate, idx) => {
+                            return (
+                              <SelectItem
+                                key={`productCate_${idx}`}
+                                value={cate}
+                              >
+                                {cate}
+                              </SelectItem>
+                            );
+                          })}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -203,7 +209,7 @@ const ProductForm = ({
                 className="w-full border-gray-500 border rounded-sm"
                 {...register("productQunatity", { required: true })}
                 defaultValue={
-                  updateProduct ? updateProduct.productCategory : ""
+                  updateProduct ? updateProduct.productQunatity : ""
                 }
               />
             </div>

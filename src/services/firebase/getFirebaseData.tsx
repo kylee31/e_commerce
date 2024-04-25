@@ -1,6 +1,8 @@
 import { db } from "@/firebase";
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -9,6 +11,13 @@ import {
   where,
 } from "firebase/firestore";
 
+export const getSellerProductInfo = async (productId: string) => {
+  const docRef = doc(db, "product", productId);
+  const docData = await getDoc(docRef).then((doc) => doc.data());
+  return docData;
+};
+
+//인피니티 스크롤 snap
 export const getSellerProductSnap = async ({
   user,
   pageParam,
@@ -16,8 +25,7 @@ export const getSellerProductSnap = async ({
   user: string | null;
   pageParam: any;
 }) => {
-  //처음 불러올때, 이후 불러올때 달라지기
-  const q = user
+  const q = pageParam
     ? query(
         collection(db, "product"),
         where("sellerId", "==", user),

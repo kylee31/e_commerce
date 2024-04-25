@@ -1,16 +1,16 @@
-import { useUser, useUserInfo } from "@/services/UserProvider";
+import { useUserInfo } from "@/services/UserProvider";
 import { UserInfo } from "@/types/UserType";
 import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 
 const Header = () => {
-  const user = useUser();
+  const token = localStorage.getItem("token");
   const userInfo = useUserInfo();
   const isUserType = (userInfo as UserInfo).isSeller;
   const navigate = useNavigate();
 
   const handlePage = () => {
-    const userLink = user ? (isUserType ? "/seller" : "/buyer") : "/login";
+    const userLink = token ? (isUserType ? "/seller" : "/buyer") : "/login";
     navigate(userLink);
   };
 

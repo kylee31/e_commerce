@@ -4,16 +4,15 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
-const useInfiniteFetching = (querykey: string) => {
+const useInfiniteSellerFetching = () => {
   const user = useUser();
 
-  //TODO:무한 스크롤 적용하기
   const { ref: viewRef, inView } = useInView({
     threshold: 0,
   });
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: [querykey, user],
+  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
+    queryKey: ["sellerProduct", user],
     queryFn: ({ pageParam }: { pageParam: any }) => {
       return getSellerProductSnap({ user, pageParam });
     },
@@ -28,7 +27,7 @@ const useInfiniteFetching = (querykey: string) => {
   const allData = useMemo(() => {
     if (data) {
       return data.pages.flatMap((page) =>
-        page.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        page.docs.map((doc) => ({ ...doc.data() }))
       );
     }
   }, [data]);
@@ -43,4 +42,4 @@ const useInfiniteFetching = (querykey: string) => {
   return { allData, viewRef };
 };
 
-export default useInfiniteFetching;
+export default useInfiniteSellerFetching;

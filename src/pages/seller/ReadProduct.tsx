@@ -1,49 +1,37 @@
 import AlertAnswer from "@/components/common/AlertAnswer";
 import PreviewProduct from "@/components/product/PreviewProduct";
-import { db, storage } from "@/firebase";
-import { useSellerProduct } from "@/services/SellerProductProvider";
-import { deleteDoc, doc } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
+import useInfiniteSellerFetching from "@/hooks/useInfiniteSellerFetching";
+import { deleteFirebaseData } from "@/services/firebase/deleteFirebaseData";
 import { useNavigate } from "react-router-dom";
-import useInfiniteFetching from "@/hooks/useInfiniteFetching";
-import { useEffect } from "react";
 
 const ReadProduct = () => {
-  //모든 데이터 불러오는 provider
-  const sellerProduct = useSellerProduct();
+  const { allData: products, viewRef } = useInfiniteSellerFetching();
   const navigate = useNavigate();
-  const { allData: products, viewRef } = useInfiniteFetching("sellerProduct");
-  useEffect(() => {
-    //console.log(products);
-  }, []);
 
   const handleCreateProduct = () => {
     navigate("create-product");
   };
 
   const handleEditProduct = (idx: number) => {
-    navigate(`edit-product/${idx + 1}`);
+    if (products) {
+      const productId = products[idx].id;
+      navigate(`edit-product/${productId}`);
+    }
   };
 
   const handleUpdateProduct = (idx: number) => {
-    navigate(`/seller/update-product/${idx + 1}`);
+    if (products) {
+      const productId = products[idx].id;
+      navigate(`/seller/update-product/${productId}`);
+    }
   };
 
+  //TODO: 변경사항 즉시 반영하기
   const handleDeleteProduct = async (idx: number) => {
-    const info = sellerProduct[idx];
-    const productRefId = info.id;
-
-    //상품 삭제 시 저장된 이미지도 삭제하기
-    const deleteImages = () => {
-      for (let i = 0; i < info.productImages.length; i++) {
-        const desertRef = ref(storage, `images/${productRefId}-${i}.png`);
-        deleteObject(desertRef);
-      }
-    };
-    await deleteDoc(doc(db, "product", productRefId));
-    await deleteImages();
-    //상품 삭제 후 뒤로가기 막기
-    await navigate("/seller", { replace: true });
+    if (products) {
+      const productInfo = products[idx];
+      await deleteFirebaseData(productInfo);
+    }
   };
 
   return (
@@ -67,16 +55,15 @@ const ReadProduct = () => {
                 className="w-full relative hover:cursor-pointer"
                 ref={viewRef}
               >
-                <div className="w-full mt-1 absolute flex justify-end pr-2">
+                <div className="w-full mt-2 absolute flex justify-end pr-2 text-xs">
                   <div
                     onClick={() => handleUpdateProduct(idx)}
                     className="mr-2"
                   >
-                    수정
+                    <div>빠른 수정</div>
                   </div>
                   <AlertAnswer
                     answer="해당 상품을 삭제하시겠습니까?"
-                    text=""
                     onTrueClick={() => handleDeleteProduct(idx)}
                   >
                     <div>삭제</div>

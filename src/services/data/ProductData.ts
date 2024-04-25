@@ -1,5 +1,7 @@
 import { ProductInputList } from "@/types/ProductType";
 
+export const ProductCategory=["홈리빙","공예","반려동물","식품","기타"]
+
 export const ProductInputData:ProductInputList[]=[
     {
         label:"상품명",

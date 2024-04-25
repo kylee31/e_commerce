@@ -1,57 +1,51 @@
 import AlertAnswer from "@/components/common/AlertAnswer";
 import Product from "@/components/product/Product";
 import { Button } from "@/components/ui/button";
-import { db, storage } from "@/firebase";
-import { useSellerProduct } from "@/services/SellerProductProvider";
-import { deleteDoc, doc } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
+import { deleteFirebaseData } from "@/services/firebase/deleteFirebaseData";
+import { getSellerProductInfo } from "@/services/firebase/getFirebaseData";
+import { DocumentData } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditProduct = () => {
+  const productId = useParams().id!; //Q: 확실하다면 !로 강제해서 써도 괜찮은지?
+  const [productInfo, setProductInfo] = useState<DocumentData>();
   const navigate = useNavigate();
-  const idx = Number(useParams().id) - 1;
-  const sellerProduct = useSellerProduct();
-  const info = sellerProduct[idx];
+
+  useEffect(() => {
+    const getProductInfo = async () => {
+      const sellerProductInfo = await getSellerProductInfo(productId);
+      setProductInfo(sellerProductInfo);
+    };
+    getProductInfo();
+  }, []);
 
   const handleUpdateProduct = () => {
-    navigate(`/seller/update-product/${idx + 1}`);
+    navigate(`/seller/update-product/${productId}`);
   };
 
   const handleDeleteProduct = async () => {
-    const productRefId = info.id;
-
-    //상품 삭제 시 저장된 이미지도 삭제하기
-    const deleteImages = () => {
-      for (let i = 0; i < info.productImages.length; i++) {
-        const desertRef = ref(storage, `images/${productRefId}-${i}.png`);
-        deleteObject(desertRef);
-      }
-    };
-    await deleteDoc(doc(db, "product", productRefId));
-    await deleteImages();
+    await deleteFirebaseData(productInfo);
     await navigate("/seller", { replace: true });
   };
 
+  //TODO:상품 클릭 데이터 prefetching
   return (
     <div className="w-full h-full">
-      {
-        /*상품 삭제 후 navigate로 이동하므로 0개일때 Item 컴포넌트에서 오류가 발생함. 해당 상황에 대한 처리*/
-        info && (
-          <div className="w-full h-full flex flex-col">
-            <Product idx={idx} />
-            <div className="w-full grid grid-cols-2 gap-3 mt-1">
-              <Button onClick={handleUpdateProduct}>수정</Button>
-              <AlertAnswer
-                onTrueClick={handleDeleteProduct}
-                answer="해당 상품을 삭제하시겠습니까?"
-                text=""
-              >
-                <Button>삭제</Button>
-              </AlertAnswer>
-            </div>
+      {productInfo && (
+        <div className="w-full h-full flex flex-col">
+          <Product productInfo={productInfo} />
+          <div className="w-full grid grid-cols-2 gap-3 mt-1">
+            <Button onClick={handleUpdateProduct}>수정</Button>
+            <AlertAnswer
+              onTrueClick={handleDeleteProduct}
+              answer="해당 상품을 삭제하시겠습니까?"
+            >
+              <Button>삭제</Button>
+            </AlertAnswer>
           </div>
-        )
-      }
+        </div>
+      )}
     </div>
   );
 };
