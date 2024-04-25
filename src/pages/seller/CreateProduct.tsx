@@ -35,14 +35,14 @@ const CreateProduct = () => {
       // 저장한 각 이미지의 다운로드 url 추가
       const urls: string[] = [];
       const productRef = doc(collection(db, "product"));
-      const productRefId = productRef.id;
+      const productId = productRef.id;
       for (let idx = 0; idx < data.productImages.length; idx++) {
         const img = productImages[idx];
-        const url = await downloadUrl({ img, productRefId, idx });
+        const url = await downloadUrl({ img, productId, idx });
         urls.push(url);
       }
       const productInfo: productInputs = {
-        id: productRefId,
+        id: productId,
         sellerId: userId,
         productName,
         productPrice,
@@ -63,6 +63,7 @@ const CreateProduct = () => {
   return (
     <>
       <ProductForm
+        isUpdate={false}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
         register={register}

@@ -1,4 +1,3 @@
-import { useSellerProduct } from "@/services/SellerProductProvider";
 import { productFieldData } from "@/services/data/ProductData";
 import {
   Carousel,
@@ -7,13 +6,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
+import { DocumentData } from "firebase/firestore";
 
 const FIELD_LIST = productFieldData;
 
-const Product = ({ idx }: { idx: number }) => {
-  const sellerProduct = useSellerProduct();
-  const info = sellerProduct[idx];
-
+const Product = ({ productInfo }: { productInfo: DocumentData }) => {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       <div className="w-full h-64 flex">
@@ -22,7 +19,7 @@ const Product = ({ idx }: { idx: number }) => {
           <div className="size-full flex justify-center items-center rounded-md">
             <Carousel className="w-3/4 h-full rounded-md border flex justify-center items-center text-sm mb-1">
               <CarouselContent>
-                {info.productImages.map((url: string, idx: number) => {
+                {productInfo.productImages.map((url: string, idx: number) => {
                   return (
                     <CarouselItem
                       key={`previewimg_${idx}`}
@@ -49,7 +46,7 @@ const Product = ({ idx }: { idx: number }) => {
                 >
                   <span className="w-1/3 flex justify-start">{ele.label}</span>
                   <span className="size-full flex justify-end">
-                    {info[ele.value]}
+                    {productInfo[ele.value]}
                   </span>
                 </div>
               );
@@ -60,7 +57,7 @@ const Product = ({ idx }: { idx: number }) => {
               <div className="size-8 bg-gray-300 flex justify-center items-center font-bold text-3xl">
                 -
               </div>
-              <span className="mx-16">{info.productQunatity}</span>
+              <span className="mx-16">{productInfo.productQunatity}</span>
               <div className="size-8 bg-gray-300 flex justify-center items-center font-bold text-3xl">
                 +
               </div>
@@ -72,7 +69,7 @@ const Product = ({ idx }: { idx: number }) => {
       <div className="w-full h-auto flex flex-col justify-center items-start">
         <span>설명</span>
         <div className="w-full h-auto bg-gray-100 mt-2 min-h-24 p-8 rounded-md overflow-auto break-words">
-          {info.productDescription}
+          {productInfo.productDescription}
         </div>
       </div>
     </div>
