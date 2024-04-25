@@ -5,19 +5,17 @@ import { useSellerProduct } from "@/services/SellerProductProvider";
 import { deleteDoc, doc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
-import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import useInfiniteFetching from "@/hooks/useInfiniteFetching";
+import { useEffect } from "react";
 
 const ReadProduct = () => {
+  //모든 데이터 불러오는 provider
   const sellerProduct = useSellerProduct();
   const navigate = useNavigate();
-
-  //TODO:무한 스크롤 적용하기
-  const { ref: viewRef, inView } = useInView({
-    threshold: 0,
-  });
-
-  //const res = useInfiniteQuery({});
+  const { allData: products, viewRef } = useInfiniteFetching("sellerProduct");
+  useEffect(() => {
+    //console.log(products);
+  }, []);
 
   const handleCreateProduct = () => {
     navigate("create-product");
@@ -56,13 +54,13 @@ const ReadProduct = () => {
       >
         상품 등록
       </div>
-      {sellerProduct.length == 0 ? (
+      {products?.length == 0 ? (
         <div className="size-full flex justify-center items-center">
           등록한 상품이 없습니다💬
         </div>
       ) : (
         <div className="w-full grid grid-cols-4 gap-7 pt-16">
-          {sellerProduct.map((info, idx) => {
+          {products?.map((info, idx) => {
             return (
               <div
                 key={`privewproduct_${idx}`}

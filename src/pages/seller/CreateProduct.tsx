@@ -16,8 +16,6 @@ const CreateProduct = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<productInputs> = async (data, event) => {
-    //create는 update와 다르게 조건이 추가 되어야 함..
-    //const { name, category, price, count, description, imgs } = data;
     const {
       productName,
       productPrice,

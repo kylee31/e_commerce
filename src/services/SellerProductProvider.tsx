@@ -17,6 +17,7 @@ export const SellerProductProvider = ({
   const [sellerProduct, setSellerProduct] = useState<DocumentData[]>([]);
   const user = auth.currentUser?.uid;
 
+  //로그인 한 판매자 등록 상품
   useEffect(() => {
     const fetchData = async () => {
       try {

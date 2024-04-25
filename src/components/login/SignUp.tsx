@@ -21,7 +21,6 @@ const SignUp = () => {
 
   const navigate = useNavigate();
   const nowDate = new Date();
-  console.log(nowDate);
 
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
     try {
