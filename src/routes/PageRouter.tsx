@@ -11,6 +11,7 @@ import Login from "@/pages/Login";
 import EditProduct from "@/pages/seller/EditProduct";
 import { useEffect } from "react";
 import UpdateProduct from "@/pages/seller/UpdateProduct";
+import Category from "@/pages/category/Category";
 
 const PageRouter = () => {
   const location = useLocation();
@@ -34,6 +35,7 @@ const PageRouter = () => {
       {/*레이아웃 적용*/}
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/category/:cate" element={<Category />} />
         {/*TODO: private 라우팅 더 좋은 방법 있는지 고민해보기*/}
         {/*판매자 private*/}
         <Route path="/seller" element={<PrivateSellerRoute />}>
