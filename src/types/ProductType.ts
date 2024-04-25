@@ -1,17 +1,19 @@
 export type ProductInputList={
     label: string;
     type: string;
-    value: "price" | "category" | "name";
+    value: "productPrice" | "productCategory" | "productName";
   }
 
   export type productInputs = {
     id?:string;
-    name: string;
-    price:number;
-    category:string;
-    count:number;
-    description:string;
-    imgs:string[];
-    uid?:string;
+    sellerId?:string;
+    productName: string;
+    productPrice:number;
+    productQunatity:number;
+    productDescription:string;
+    productCategory:string;
+    productImages:string[];
+    createdAt?:object;
+    updatedAt:object;
   };
 
