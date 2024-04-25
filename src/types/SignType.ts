@@ -4,11 +4,12 @@ export type AccountInputs = {
     register: object;
   };
 
-  
 export type SignUpInputs = AccountInputs&{
     isSeller: boolean;
     nickname:string;
     name: string;
+    createdAt:string;
+    updatedAt:string;
   };
 
 export type AccountInputList={
@@ -21,7 +22,7 @@ export type AccountInputList={
 export type SignUpInputList={
     label: string;
     type: string;
-    value: "name" | "nickname"|"email" | "password";
+    value: "name" | "nickname"| "email" | "password";
     register: object;
   }
 

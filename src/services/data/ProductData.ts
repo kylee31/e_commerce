@@ -1,34 +1,36 @@
 import { ProductInputList } from "@/types/ProductType";
 
+export const ProductCategory=["홈리빙","공예","반려동물","식품","기타"]
+
 export const ProductInputData:ProductInputList[]=[
     {
         label:"상품명",
         type:"text",
-        value:"name"
+        value:"productName"
     },
     {
         label:"카테고리",
         type:"text",
-        value:"category"
+        value:"productCategory"
     },
     {
         label:"가격",
         type:"text",
-        value:"price"
+        value:"productPrice"
     }
 ]
 
 export const productFieldData = [
     {
       label: "상품명",
-      value: "name",
+      value: "productName",
     },
     {
       label: "카테고리",
-      value: "category",
+      value: "productCategory",
     },
     {
       label: "가격",
-      value: "price",
+      value: "productPrice",
     },
   ];

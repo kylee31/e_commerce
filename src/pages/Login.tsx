@@ -1,5 +1,6 @@
 import Account from "@/components/login/Account";
 import SignUp from "@/components/login/SignUp";
+import Logo from "@/layouts/components/Logo";
 import { useState } from "react";
 
 const Login = () => {
@@ -15,7 +16,9 @@ const Login = () => {
 
   return (
     <div className="flex flex-col justify-center items-center h-screen w-full">
-      <div className="mb-5">Logo</div>
+      <div className="mb-5">
+        <Logo />
+      </div>
       <div className="flex flex-col justify-start items-center w-96 h-96">
         <div className="w-full flex justify-center items-center mb-5">
           <span

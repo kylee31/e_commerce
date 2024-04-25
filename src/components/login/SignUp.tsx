@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Checkbox } from "../ui/checkbox";
+import { useState } from "react";
 
 const INPUT_LIST = SignUpInputData;
 
@@ -19,12 +20,19 @@ const SignUp = () => {
     formState: { errors },
   } = useForm<SignUpInputs>();
 
+  const [checkedBox, setCheckedBox] = useState(false);
   const navigate = useNavigate();
+  const nowDate = new Date();
+
+  const handleCheckedBox = () => {
+    checkedBox ? setCheckedBox(false) : setCheckedBox(true);
+  };
 
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
     try {
       //객체 리터럴 단축 속성명
-      const { isSeller, name, nickname, email, password } = data;
+      const { email, name, nickname, password } = data;
+      console.log(checkedBox);
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -33,11 +41,13 @@ const SignUp = () => {
       const userId = userCredential.user.uid;
       const userInfo = {
         uid: userId,
-        isSeller,
+        email,
+        isSeller: checkedBox,
         name,
         nickname,
-        email,
         password,
+        createdAt: nowDate,
+        updatedAt: nowDate,
       };
       await setDoc(doc(db, "user", userId), userInfo);
       await navigate("/");
@@ -72,7 +82,12 @@ const SignUp = () => {
           );
         })}
         <div className="items-top justify-center flex">
-          <Checkbox className="mr-1" id="isSeller" {...register("isSeller")} />
+          <Checkbox
+            className="mr-1"
+            id="isSeller"
+            checked={checkedBox}
+            onCheckedChange={handleCheckedBox}
+          />
           <Label htmlFor="isSeller">판매자로 회원가입 하시겠습니까?</Label>
         </div>
         <div className="mt-5">
