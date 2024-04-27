@@ -1,5 +1,5 @@
 import AlertAnswer from "@/components/common/AlertAnswer";
-import PreviewProduct from "@/components/product/PreviewProduct";
+import PreviewProduct from "@/components/common/PreviewProduct";
 import useInfiniteSellerFetching from "@/hooks/useInfiniteSellerFetching";
 import { deleteFirebaseData } from "@/services/firebase/deleteFirebaseData";
 import { useNavigate } from "react-router-dom";
@@ -73,6 +73,7 @@ const ReadProduct = () => {
                   key={`sellerProduct_${idx}`}
                   info={info}
                   onClick={() => handleEditProduct(idx)}
+                  isVisible={true}
                 />
               </div>
             );
