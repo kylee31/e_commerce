@@ -1,6 +1,22 @@
-import { ProductInputList } from "@/types/ProductType";
+import { ProductCategoryType, ProductInputList } from "@/types/ProductType";
 
 export const ProductCategory=["홈리빙","공예","반려동물","식품","기타"]
+export const ProductCategoryInfo:ProductCategoryType[]=[{
+  cate:"홈리빙",
+  url:"/imgs/logo2.png",
+},{
+  cate:"공예",
+  url:"/imgs/logo.png"
+},{
+  cate:"반려동물",
+  url:"/imgs/logo3.png"
+},{
+  cate:"식품",
+  url:"/imgs/logo2.png"
+},{
+  cate:"기타",
+  url:"/imgs/logo.png"
+}]
 
 export const ProductInputData:ProductInputList[]=[
     {

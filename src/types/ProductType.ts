@@ -17,3 +17,7 @@ export type ProductInputList={
     updatedAt:object;
   };
 
+  export type ProductCategoryType={
+    cate:string,
+    url:string
+  }

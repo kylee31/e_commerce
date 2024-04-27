@@ -10,9 +10,11 @@ import { DocumentData } from "firebase/firestore";
 const PreviewProduct = ({
   info,
   onClick,
+  isVisible,
 }: {
   info: DocumentData;
   onClick: () => void;
+  isVisible: boolean;
 }) => {
   return (
     <Card className="w-full border-gray-300" onClick={onClick}>
@@ -20,7 +22,7 @@ const PreviewProduct = ({
         <img
           src={info.productImages[0]}
           alt=""
-          className="h-28 border border-gray-300 rounded-md"
+          className="border border-gray-300 rounded-md"
         />
         <CardTitle>{info.productName}</CardTitle>
         <CardDescription>{info.productCategory}</CardDescription>
@@ -30,11 +32,12 @@ const PreviewProduct = ({
           <span>가격💸</span>
           {info.productPrice}원
         </div>
-        {/*재고는 판매자한테만 보여주는 정보*/}
-        <div className="w-full flex justify-between border-b">
-          <span>재고📦</span>
-          {info.productQunatity}개
-        </div>
+        {isVisible && (
+          <div className="w-full flex justify-between border-b">
+            <span>재고📦</span>
+            {info.productQunatity}개
+          </div>
+        )}
       </CardContent>
     </Card>
   );
