@@ -24,7 +24,7 @@ const CategoryCarousel = ({ info }: { info: ProductCategoryType[] }) => {
   return (
     <Carousel
       plugins={[plugin.current]}
-      className="w-full h-44 rounded-md border flex justify-center items-center text-sm my-10 bg-gray-200"
+      className="w-full h-44 rounded-md border flex justify-center items-center text-sm mb-10 bg-gray-200"
     >
       <CarouselContent>
         {info.map((info, idx) => {

@@ -12,23 +12,16 @@ import EditProduct from "@/pages/seller/EditProduct";
 import { useEffect } from "react";
 import UpdateProduct from "@/pages/seller/UpdateProduct";
 import Category from "@/pages/category/Category";
+import DetailProduct from "@/pages/product/DetailProduct";
+import Pre from "@/pages/Pre";
+import changePathname from "@/util/changePathname";
 
 const PageRouter = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const locName = () => {
-      const path = location.pathname.split("/");
-      if (path[2] == "edit-product") {
-        return "edit-product";
-      }
-      if (path[2] == "update-product") {
-        return "update-product";
-      }
-      return path[path.length - 1] !== "" ? path[path.length - 1] : "home";
-    };
-    document.title = `${locName()} | Logo`;
-  }, [location.pathname]);
+    changePathname(location.pathname);
+  }, [location]);
 
   return (
     <Routes>
@@ -36,6 +29,8 @@ const PageRouter = () => {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/category/:cate" element={<Category />} />
+        <Route path="/category/:cate/:id" element={<DetailProduct />} />
+        <Route path="/pre" element={<Pre />} />
         {/*TODO: private 라우팅 더 좋은 방법 있는지 고민해보기*/}
         {/*판매자 private*/}
         <Route path="/seller" element={<PrivateSellerRoute />}>
@@ -51,7 +46,7 @@ const PageRouter = () => {
           <Route path="" element={<Buyer />} />
         </Route>
       </Route>
-      {/*TODO: 로그인 시 접근 불가, 레이아웃 미적용*/}
+      {/*레이아웃 미적용*/}
       <Route path="/login" element={<Login />} />
     </Routes>
   );

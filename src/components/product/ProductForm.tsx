@@ -175,16 +175,11 @@ const ProductForm = ({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {ProductCategory.map((cate, idx) => {
-                            return (
-                              <SelectItem
-                                key={`productCate_${idx}`}
-                                value={cate}
-                              >
-                                {cate}
-                              </SelectItem>
-                            );
-                          })}
+                          {ProductCategory.map((cate, idx) => (
+                            <SelectItem key={`productCate_${idx}`} value={cate}>
+                              {cate}
+                            </SelectItem>
+                          ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>

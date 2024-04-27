@@ -2,6 +2,7 @@ import { useUserInfo } from "@/services/UserProvider";
 import { UserInfo } from "@/types/UserType";
 import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";
+import CartList from "@/components/cart/CartList";
 
 const Header = () => {
   const token = localStorage.getItem("token");
@@ -20,11 +21,12 @@ const Header = () => {
         <Logo />
       </div>
       <div className="flex flex-row">
+        <CartList />
         <img
           src="/imgs/user.png"
           alt=""
           onClick={handlePage}
-          className="hover:cursor-pointer"
+          className="hover:cursor-pointer ml-7"
         />
       </div>
     </div>

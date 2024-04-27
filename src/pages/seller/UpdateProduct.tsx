@@ -1,10 +1,10 @@
 import ProductForm from "@/components/product/ProductForm";
 import { db } from "@/firebase";
-import downloadUrl from "@/lib/downloadUrl";
-import { getSellerProductInfo } from "@/services/firebase/getFirebaseData";
+import useGetProductInfo from "@/hooks/useGetProductInfo";
+import downloadUrl from "@/util/downloadUrl";
 import { productInputs } from "@/types/ProductType";
-import { DocumentData, doc, updateDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { doc, updateDoc } from "firebase/firestore";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,16 +13,8 @@ const UpdateProduct = () => {
   const nowDate = new Date();
   const { handleSubmit, register, setValue } = useForm<productInputs>();
   const [isUploading, setIsUploading] = useState(false);
-  const [productInfo, setProductInfo] = useState<DocumentData>();
+  const { productInfo } = useGetProductInfo(productId);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const getProductInfo = async () => {
-      const sellerProductInfo = await getSellerProductInfo(productId);
-      setProductInfo(sellerProductInfo);
-    };
-    getProductInfo();
-  }, []);
 
   const onSubmit: SubmitHandler<productInputs> = async (data, event) => {
     const {
