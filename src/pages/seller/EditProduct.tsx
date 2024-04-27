@@ -1,24 +1,14 @@
 import AlertAnswer from "@/components/common/AlertAnswer";
 import Product from "@/components/product/Product";
 import { Button } from "@/components/ui/button";
+import useGetProductInfo from "@/hooks/useGetProductInfo";
 import { deleteFirebaseData } from "@/services/firebase/deleteFirebaseData";
-import { getSellerProductInfo } from "@/services/firebase/getFirebaseData";
-import { DocumentData } from "firebase/firestore";
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditProduct = () => {
   const productId = useParams().id!; //Q: 확실하다면 !로 강제해서 써도 괜찮은지?
-  const [productInfo, setProductInfo] = useState<DocumentData>();
+  const { productInfo } = useGetProductInfo(productId);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const getProductInfo = async () => {
-      const sellerProductInfo = await getSellerProductInfo(productId);
-      setProductInfo(sellerProductInfo);
-    };
-    getProductInfo();
-  }, []);
 
   const handleUpdateProduct = () => {
     navigate(`/seller/update-product/${productId}`);

@@ -32,7 +32,6 @@ const SignUp = () => {
     try {
       //객체 리터럴 단축 속성명
       const { email, name, nickname, password } = data;
-      console.log(checkedBox);
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,

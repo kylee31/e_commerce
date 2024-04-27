@@ -11,23 +11,35 @@ const PreviewProduct = ({
   info,
   onClick,
   isVisible,
+  viewRef,
 }: {
-  info: DocumentData;
+  info: DocumentData | undefined;
   onClick: () => void;
   isVisible: boolean;
+  viewRef?: (node?: Element | null | undefined) => void;
 }) => {
+  if (info == undefined) {
+    return <></>;
+  }
+
   return (
-    <Card className="w-full border-gray-300" onClick={onClick}>
-      <CardHeader>
-        <img
-          src={info.productImages[0]}
-          alt=""
-          className="border border-gray-300 rounded-md"
-        />
+    <Card
+      className="w-full h-full border-gray-300 flex flex-col justify-end"
+      onClick={onClick}
+      ref={viewRef}
+    >
+      <CardHeader className="h-full">
+        <div className="h-full flex justify-center items-center">
+          <img
+            src={info.productImages[0]}
+            alt=""
+            className="border border-gray-300 rounded-md"
+          />
+        </div>
         <CardTitle>{info.productName}</CardTitle>
         <CardDescription>{info.productCategory}</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="">
         <div className="w-full flex justify-between border-b">
           <span>가격💸</span>
           {info.productPrice}원

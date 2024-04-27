@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import StickyCart from "./components/StickyCart";
 
 const Layout = () => {
   return (
@@ -10,8 +11,9 @@ const Layout = () => {
       </header>
       <main className="flex-1">
         <Outlet />
-        <Footer />
+        <StickyCart />
       </main>
+      <Footer />
     </div>
   );
 };

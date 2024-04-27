@@ -1,6 +1,6 @@
 import ProductForm from "@/components/product/ProductForm";
 import { db } from "@/firebase";
-import downloadUrl from "@/lib/downloadUrl";
+import downloadUrl from "@/util/downloadUrl";
 import { useUser } from "@/services/UserProvider";
 import { productInputs } from "@/types/ProductType";
 import { collection, doc, setDoc } from "firebase/firestore";
