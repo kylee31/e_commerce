@@ -19,16 +19,14 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
           <div className="size-full flex justify-center items-center rounded-md">
             <Carousel className="w-3/4 h-full rounded-md border flex justify-center items-center text-sm mb-1">
               <CarouselContent>
-                {productInfo.productImages.map((url: string, idx: number) => {
-                  return (
-                    <CarouselItem
-                      key={`previewimg_${idx}`}
-                      className="w-full h-full flex flex-col justify-center items-center"
-                    >
-                      <img src={url} alt="" width={150} />
-                    </CarouselItem>
-                  );
-                })}
+                {productInfo.productImages.map((url: string, idx: number) => (
+                  <CarouselItem
+                    key={`previewimg_${idx}`}
+                    className="w-full h-full flex flex-col justify-center items-center"
+                  >
+                    <img src={url} alt="" width={150} />
+                  </CarouselItem>
+                ))}
               </CarouselContent>
               <CarouselPrevious type="button" />
               <CarouselNext type="button" />
@@ -38,19 +36,17 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
         {/*오른쪽*/}
         <div className="w-1/2 h-full pl-3 flex justify-center items-center">
           <div className="w-full h-full">
-            {FIELD_LIST.map((ele, idx) => {
-              return (
-                <div
-                  key={`productSchema_${idx}`}
-                  className="w-full h-1/5 flex mb-2"
-                >
-                  <span className="w-1/3 flex justify-start">{ele.label}</span>
-                  <span className="size-full flex justify-end">
-                    {productInfo[ele.value]}
-                  </span>
-                </div>
-              );
-            })}
+            {FIELD_LIST.map((ele, idx) => (
+              <div
+                key={`productSchema_${idx}`}
+                className="w-full h-1/5 flex mb-2"
+              >
+                <span className="w-1/3 flex justify-start">{ele.label}</span>
+                <span className="size-full flex justify-end">
+                  {productInfo[ele.value]}
+                </span>
+              </div>
+            ))}
             <hr className="border-2 my-4" />
             <div className="w-full flex justify-between mb-3 ">
               <span className="w-1/3 flex justify-start">수량</span>

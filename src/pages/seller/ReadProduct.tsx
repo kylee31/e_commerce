@@ -1,11 +1,15 @@
 import AlertAnswer from "@/components/common/AlertAnswer";
 import PreviewProduct from "@/components/common/PreviewProduct";
-import useInfiniteSellerFetching from "@/hooks/useInfiniteSellerFetching";
+import useInfiniteFetching from "@/hooks/useInfiniteFetching";
 import { deleteFirebaseData } from "@/services/firebase/deleteFirebaseData";
 import { useNavigate } from "react-router-dom";
 
 const ReadProduct = () => {
-  const { allData: products, viewRef } = useInfiniteSellerFetching();
+  const { datas: products, viewRef } = useInfiniteFetching({
+    getQueryKey: "sellerProducts",
+    type: "product",
+    docLength: 12,
+  });
   const navigate = useNavigate();
 
   const handleCreateProduct = () => {
