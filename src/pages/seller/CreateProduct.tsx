@@ -1,4 +1,4 @@
-import ProductForm from "@/components/product/ProductForm";
+import ProductForm from "@/components/seller/ProductForm";
 import { db } from "@/firebase";
 import downloadUrl from "@/util/downloadUrl";
 import { useUser } from "@/services/UserProvider";
@@ -24,7 +24,7 @@ const CreateProduct = () => {
       productCategory,
       productImages,
     } = data;
-    if (productImages != undefined) {
+    if (productImages.length > 0) {
       setIsUploading(true);
       event?.preventDefault();
     } else {
@@ -61,16 +61,14 @@ const CreateProduct = () => {
   };
 
   return (
-    <>
-      <ProductForm
-        isUpdate={false}
-        handleSubmit={handleSubmit}
-        onSubmit={onSubmit}
-        register={register}
-        setValue={setValue}
-        isUploading={isUploading}
-      />
-    </>
+    <ProductForm
+      isUpdate={false}
+      handleSubmit={handleSubmit}
+      onSubmit={onSubmit}
+      register={register}
+      setValue={setValue}
+      isUploading={isUploading}
+    />
   );
 };
 

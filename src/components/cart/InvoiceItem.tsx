@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { TableCell, TableRow } from "../ui/table";
+import Counter from "../common/Counter";
 
 type dummyType = {
   productPrice: string;
@@ -7,40 +7,15 @@ type dummyType = {
 };
 
 const InvoiceItem = ({ info }: { info: dummyType }) => {
-  const [count, setCount] = useState(1);
-  const totalProductPrice = count * Number(info.productPrice);
-  const handlePlusCounter = () => {
-    if (count < 100) {
-      setCount(count + 1);
-    }
-  };
-  const handleMinusCounter = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
-  };
+  //const totalProductPrice = count * Number(info.productPrice);
   return (
     <TableRow>
       <TableCell>{info.productName}</TableCell>
       <TableCell>
-        <div className="w-full flex justify-between items-center">
-          <div
-            onClick={handleMinusCounter}
-            className="size-8 bg-gray-300 flex justify-center items-center font-bold text-3xl"
-          >
-            -
-          </div>
-          <span>{count}</span>
-          <div
-            onClick={handlePlusCounter}
-            className="size-8 bg-gray-300 flex justify-center items-center font-bold text-3xl"
-          >
-            +
-          </div>
-        </div>
+        <Counter />
       </TableCell>
       <TableCell className="flex justify-between">
-        {totalProductPrice}
+        {"총액"}
         <div
           className="bg-black rounded-full text-white size-5 flex justify-center items-center hover:cursor-pointer"
           onClick={() => {}}

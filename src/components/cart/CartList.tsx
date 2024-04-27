@@ -10,8 +10,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useUserInfo } from "@/services/UserProvider";
+import { UserInfo } from "@/types/UserType";
 
 const CartList = () => {
+  const userInfo = useUserInfo();
+  const userNickname = (userInfo as UserInfo).nickname;
   return (
     <div className="w-full h-full relative flex justify-end">
       <Sheet>
@@ -22,7 +26,7 @@ const CartList = () => {
         </SheetTrigger>
         <SheetContent className="w-full flex flex-col justify-center">
           <SheetHeader className="flex flex-col justify-center items-center">
-            <SheetTitle>{"아이디 넣기"} 장바구니</SheetTitle>
+            <SheetTitle>{userNickname}님 장바구니</SheetTitle>
             <SheetDescription>상품 목록</SheetDescription>
           </SheetHeader>
           <div className="w-full h-96 flex justify-center items-center">

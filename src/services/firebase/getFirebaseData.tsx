@@ -1,7 +1,5 @@
 import { db } from "@/firebase";
 import {
-  DocumentData,
-  Query,
   collection,
   doc,
   getDoc,

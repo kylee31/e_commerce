@@ -4,7 +4,7 @@ import {
   getSellerProductSnap,
 } from "@/services/firebase/getFirebaseData";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 const useInfiniteFetching = ({
@@ -45,26 +45,30 @@ const useInfiniteFetching = ({
     initialPageParam: null,
   });
 
-  const datas = useMemo(() => {
+  const [datas, setDatas] = useState<{ [x: string]: any }[]>();
+
+  useEffect(() => {
     if (data) {
-      return data.pages.flatMap((page) =>
+      const updateDatas = data.pages.flatMap((page) =>
         page.docs.map((doc) => ({ ...doc.data() }))
       );
+      setDatas(updateDatas);
     }
   }, [data]);
 
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
-      console.log(inView);
     }
-  }, [inView]);
+  }, [inView, hasNextPage, fetchNextPage]);
 
   useEffect(() => {
-    refetch();
-  }, [sortedType]);
+    if (sortedType) {
+      refetch();
+    }
+  }, [sortedType, refetch]);
 
-  return { datas, viewRef };
+  return { datas, setDatas, viewRef };
 };
 
 export default useInfiniteFetching;
