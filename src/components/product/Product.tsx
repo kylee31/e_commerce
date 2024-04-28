@@ -6,6 +6,8 @@ import { useCartStore } from "@/stores/cartStore";
 import { useState } from "react";
 import { useUserInfo } from "@/services/UserProvider";
 import { UserInfo } from "@/types/UserType";
+import AlertAnswer from "../common/AlertAnswer";
+import { useNavigate } from "react-router-dom";
 
 const FIELD_LIST = productFieldData;
 
@@ -13,10 +15,14 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
   const userInfo = useUserInfo();
   const isSeller = (userInfo as UserInfo).isSeller;
   const cartItems = useCartStore((state) => state.cartItems);
-  const itemIndex = cartItems.indexOf(productInfo);
+  const isIncludes = cartItems.some(
+    (item: DocumentData) => item.id === productInfo.id
+  );
   const setAddToCart = useCartStore((state) => state.addToCart);
-  const setIncreaseCartItem = useCartStore((state) => state.increaseCartItem);
   const [count, setCount] = useState(1);
+  const navigate = useNavigate();
+
+  console.log(cartItems);
 
   const handlePlusCounter = () => {
     if (count < 100) {
@@ -29,16 +35,15 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
     }
   };
 
+  const handleIsLogin = () => {
+    navigate("/login");
+  };
+
   const handleAddToCartItem = () => {
-    if (isSeller !== false) {
-      return;
-    } else {
-      if (!cartItems.includes(productInfo)) {
-        setAddToCart(productInfo, count);
-      } else {
-        setIncreaseCartItem(itemIndex, count);
-      }
+    if (!isIncludes) {
+      setAddToCart(productInfo, count);
     }
+    setCount(1);
   };
 
   return (
@@ -88,13 +93,45 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
                   </div>
                 </div>
               </div>
-              <Button
-                type="button"
-                className="w-full mt-5"
-                onClick={handleAddToCartItem}
-              >
-                장바구니 담기
-              </Button>
+              {/*로그인 여부로 alert 다르게 보여주기*/}
+              {isSeller === false ? (
+                isIncludes ? (
+                  <AlertAnswer
+                    answer="이미 담겨있는 상품입니다. 장바구니에서 수량을 변경해주세요"
+                    trueButton="확인"
+                    falseButton="취소"
+                    onTrueClick={handleAddToCartItem}
+                  >
+                    <Button type="button" className="w-full mt-5">
+                      장바구니 담기
+                    </Button>
+                  </AlertAnswer>
+                ) : (
+                  <AlertAnswer
+                    answer={`${count}개의 상품을 장바구니에 담을까요?`}
+                    trueButton="확인"
+                    falseButton="취소"
+                    onTrueClick={handleAddToCartItem}
+                  >
+                    <Button type="button" className="w-full mt-5">
+                      장바구니 담기
+                    </Button>
+                  </AlertAnswer>
+                )
+              ) : (
+                <AlertAnswer
+                  answer={`${
+                    isSeller === true && "구매자 "
+                  }로그인 후 이용해주세요!`}
+                  trueButton="로그인 하러가기"
+                  falseButton="취소"
+                  onTrueClick={handleIsLogin}
+                >
+                  <Button type="button" className="w-full mt-5">
+                    장바구니 담기
+                  </Button>
+                </AlertAnswer>
+              )}
             </div>
           </div>
         </div>

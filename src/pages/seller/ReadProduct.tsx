@@ -72,6 +72,9 @@ const ReadProduct = () => {
                   </div>
                   <AlertAnswer
                     answer="해당 상품을 삭제하시겠습니까?"
+                    text="삭제 시 복구가 불가능합니다"
+                    trueButton="삭제"
+                    falseButton="취소"
                     onTrueClick={() => handleDeleteProduct(idx)}
                   >
                     <div>삭제</div>

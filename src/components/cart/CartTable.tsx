@@ -12,8 +12,6 @@ import InvoiceItem from "./InvoiceItem";
 import { useCartStore } from "@/stores/cartStore";
 import useCalcTotalPrice from "@/hooks/useCalcTotalPrice";
 
-//TODO: 수량 어떻게?
-
 const CartTable = () => {
   const cartItems = useCartStore((state) => state.cartItems);
   const productTotalPrice = useCalcTotalPrice();
