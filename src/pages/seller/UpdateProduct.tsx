@@ -47,8 +47,8 @@ const UpdateProduct = () => {
       const newProductInfo: productInputs = {
         productName,
         productCategory,
-        productPrice,
-        productQunatity,
+        productPrice: Number(productPrice),
+        productQunatity: Number(productQunatity),
         productDescription,
         //편집된게 있으면 수정한 url정보로, 그대로라면 기존 imgs 정보 세팅
         productImages: isEditImgs ? urls : productInfo.productImages,

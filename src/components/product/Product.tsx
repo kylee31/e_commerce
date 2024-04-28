@@ -2,11 +2,45 @@ import { productFieldData } from "@/services/data/ProductData";
 import { DocumentData } from "firebase/firestore";
 import ProductImageCarousel from "./ProductImageCarousel";
 import { Button } from "../ui/button";
-import Counter from "../common/Counter";
+import { useCartStore } from "@/stores/cartStore";
+import { useState } from "react";
+import { useUserInfo } from "@/services/UserProvider";
+import { UserInfo } from "@/types/UserType";
 
 const FIELD_LIST = productFieldData;
 
 const Product = ({ productInfo }: { productInfo: DocumentData }) => {
+  const userInfo = useUserInfo();
+  const isSeller = (userInfo as UserInfo).isSeller;
+  const cartItems = useCartStore((state) => state.cartItems);
+  const itemIndex = cartItems.indexOf(productInfo);
+  const setAddToCart = useCartStore((state) => state.addToCart);
+  const setIncreaseCartItem = useCartStore((state) => state.increaseCartItem);
+  const [count, setCount] = useState(1);
+
+  const handlePlusCounter = () => {
+    if (count < 100) {
+      setCount(count + 1);
+    }
+  };
+  const handleMinusCounter = () => {
+    if (count > 1) {
+      setCount(count - 1);
+    }
+  };
+
+  const handleAddToCartItem = () => {
+    if (isSeller !== false) {
+      return;
+    } else {
+      if (!cartItems.includes(productInfo)) {
+        setAddToCart(productInfo, count);
+      } else {
+        setIncreaseCartItem(itemIndex, count);
+      }
+    }
+  };
+
   return (
     <div className="common-padding">
       <div className="w-full h-full flex flex-col justify-center items-center">
@@ -38,9 +72,27 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
               <hr className="border-2 my-4" />
               <div className="w-full flex justify-between mb-3 ">
                 <span className="w-1/2 flex justify-start">수량</span>
-                <Counter />
+                <div className="w-full flex justify-between items-center">
+                  <div
+                    onClick={handleMinusCounter}
+                    className="size-8 bg-gray-300 flex justify-center items-center font-bold text-3xl"
+                  >
+                    -
+                  </div>
+                  <span>{count}</span>
+                  <div
+                    onClick={handlePlusCounter}
+                    className="size-8 bg-gray-300 flex justify-center items-center font-bold text-3xl"
+                  >
+                    +
+                  </div>
+                </div>
               </div>
-              <Button type="button" className="w-full mt-5">
+              <Button
+                type="button"
+                className="w-full mt-5"
+                onClick={handleAddToCartItem}
+              >
                 장바구니 담기
               </Button>
             </div>

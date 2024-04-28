@@ -9,27 +9,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import InvoiceItem from "./InvoiceItem";
+import { useCartStore } from "@/stores/cartStore";
+import useCalcTotalPrice from "@/hooks/useCalcTotalPrice";
 
 //TODO: 수량 어떻게?
-const dummy: dummyType[] = [
-  {
-    productPrice: "2800",
-    productName: "상품명",
-  },
-  {
-    productPrice: "540000",
-    productName: "상품명2",
-  },
-];
-type dummyType = {
-  productPrice: string;
-  productName: string;
-};
 
 const CartTable = () => {
+  const cartItems = useCartStore((state) => state.cartItems);
+  const productTotalPrice = useCalcTotalPrice();
   return (
     <div className="w-full h-full overflow-y-auto">
-      {dummy.length > 0 ? (
+      {cartItems.length > 0 ? (
         <Table>
           <TableCaption>장바구니에 담은 상품 목록입니다.</TableCaption>
           <TableHeader>
@@ -40,14 +30,14 @@ const CartTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {dummy.map((info, idx) => (
+            {cartItems.map((info, idx) => (
               <InvoiceItem key={`invoiceItem_${idx}`} info={info} />
             ))}
           </TableBody>
           <TableFooter>
             <TableRow>
               <TableCell colSpan={2}>합계</TableCell>
-              <TableCell>$2,500.00</TableCell>
+              <TableCell>{productTotalPrice}</TableCell>
             </TableRow>
           </TableFooter>
         </Table>

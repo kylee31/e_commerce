@@ -7,7 +7,7 @@ import { UserInfo } from "@/types/UserType";
 
 const Layout = () => {
   const userInfo = useUserInfo();
-  const isNotSeller = !(userInfo as UserInfo).isSeller;
+  const isSeller = (userInfo as UserInfo).isSeller;
   return (
     <div className="flex flex-col h-screen">
       <header className="z-10">
@@ -15,7 +15,7 @@ const Layout = () => {
       </header>
       <main className="flex-1">
         <Outlet />
-        {isNotSeller && <StickyCart />}
+        {isSeller === false && <StickyCart />}
       </main>
       <Footer />
     </div>
