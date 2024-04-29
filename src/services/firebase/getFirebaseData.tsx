@@ -1,7 +1,5 @@
 import { db } from "@/firebase";
 import {
-  DocumentData,
-  Query,
   collection,
   doc,
   getDoc,
@@ -72,7 +70,6 @@ export const getCategoryProductSnap = async ({
     ? query(
         collection(db, "product"),
         where("productCategory", "==", cate),
-        orderBy("productCategory"),
         orderBy("updatedAt", "desc"),
         startAfter(pageParam),
         limit(10)
@@ -80,7 +77,6 @@ export const getCategoryProductSnap = async ({
     : query(
         collection(db, "product"),
         where("productCategory", "==", cate),
-        orderBy("productCategory"),
         orderBy("updatedAt", "desc"),
         limit(10)
       );
@@ -90,7 +86,6 @@ export const getCategoryProductSnap = async ({
       ? query(
           collection(db, "product"),
           where("productCategory", "==", cate),
-          orderBy("productCategory"),
           orderBy("updatedAt", "desc"),
           startAfter(pageParam),
           limit(10)
@@ -98,7 +93,6 @@ export const getCategoryProductSnap = async ({
       : query(
           collection(db, "product"),
           where("productCategory", "==", cate),
-          orderBy("productCategory"),
           orderBy("updatedAt", "desc"),
           limit(10)
         );
@@ -107,7 +101,6 @@ export const getCategoryProductSnap = async ({
       ? query(
           collection(db, "product"),
           where("productCategory", "==", cate),
-          orderBy("productCategory"),
           orderBy("productPrice", "desc"),
           startAfter(pageParam),
           limit(10)
@@ -123,7 +116,6 @@ export const getCategoryProductSnap = async ({
       ? query(
           collection(db, "product"),
           where("productCategory", "==", cate),
-          orderBy("productCategory"),
           orderBy("productPrice", "asc"),
           startAfter(pageParam),
           limit(10)

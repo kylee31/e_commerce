@@ -14,7 +14,7 @@ const PreviewCategory = ({ info }: { info: string }) => {
       setCategoryInfo(productAboutCategory.slice(0, 4));
     };
     getCategoryInfo();
-  }, []);
+  }, [info]);
 
   const handleClickMore = () => {
     navigate(`/category/${info}`);

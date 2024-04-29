@@ -1,4 +1,4 @@
-import ProductItem from "@/components/category/ProductItem";
+import Product from "@/components/product/Product";
 import useGetProductInfo from "@/hooks/useGetProductInfo";
 import { useParams } from "react-router-dom";
 
@@ -10,11 +10,7 @@ const DetailProduct = () => {
     return <></>;
   }
 
-  return (
-    <div className="common-padding">
-      <ProductItem productInfo={productInfo} />
-    </div>
-  );
+  return <Product productInfo={productInfo} />;
 };
 
 export default DetailProduct;

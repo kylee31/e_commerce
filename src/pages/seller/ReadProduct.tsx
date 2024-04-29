@@ -5,7 +5,11 @@ import { deleteFirebaseData } from "@/services/firebase/deleteFirebaseData";
 import { useNavigate } from "react-router-dom";
 
 const ReadProduct = () => {
-  const { datas: products, viewRef } = useInfiniteFetching({
+  const {
+    datas: products,
+    setDatas: setUpdateProducts,
+    viewRef,
+  } = useInfiniteFetching({
     getQueryKey: "sellerProducts",
     type: "product",
     docLength: 12,
@@ -30,10 +34,10 @@ const ReadProduct = () => {
     }
   };
 
-  //TODO: 변경사항 즉시 반영하기
   const handleDeleteProduct = async (idx: number) => {
     if (products) {
       const productInfo = products[idx];
+      setUpdateProducts(products.filter((_, productIdx) => productIdx != idx));
       await deleteFirebaseData(productInfo);
     }
   };
@@ -68,6 +72,9 @@ const ReadProduct = () => {
                   </div>
                   <AlertAnswer
                     answer="해당 상품을 삭제하시겠습니까?"
+                    text="삭제 시 복구가 불가능합니다"
+                    trueButton="삭제"
+                    falseButton="취소"
                     onTrueClick={() => handleDeleteProduct(idx)}
                   >
                     <div>삭제</div>
