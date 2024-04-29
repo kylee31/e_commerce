@@ -55,7 +55,7 @@ const ProductForm = ({
       setImages(updateProduct.productImages);
       setValue("productCategory", updateProduct.productCategory);
     }
-  }, [updateProduct]);
+  }, [updateProduct, setValue]);
 
   //TODO: 동일 파일 연속으로 등록 불가한 사항 수정하기(input값에 cache되어있음?)
   const handleSaveImage = async (e: React.ChangeEvent) => {
