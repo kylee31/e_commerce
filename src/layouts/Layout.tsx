@@ -1,9 +1,13 @@
 import { Outlet } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import StickyCart from "./components/StickyCart";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
+import StickyCart from "../components/layout/StickyCart";
+import { useUserInfo } from "@/services/UserProvider";
+import { UserInfo } from "@/types/UserType";
 
 const Layout = () => {
+  const userInfo = useUserInfo();
+  const isSeller = (userInfo as UserInfo).isSeller;
   return (
     <div className="flex flex-col h-screen">
       <header className="z-10">
@@ -11,7 +15,7 @@ const Layout = () => {
       </header>
       <main className="flex-1">
         <Outlet />
-        <StickyCart />
+        {isSeller === false && <StickyCart />}
       </main>
       <Footer />
     </div>

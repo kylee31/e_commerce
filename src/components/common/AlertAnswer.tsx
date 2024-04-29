@@ -13,11 +13,17 @@ import {
 const AlertAnswer = ({
   children,
   answer,
+  text,
+  trueButton,
+  falseButton,
   onTrueClick,
   onFalseClick,
 }: {
   children: React.ReactNode;
   answer: string;
+  text?: string;
+  trueButton: string;
+  falseButton: string;
   onTrueClick: () => void;
   onFalseClick?: () => void;
 }) => {
@@ -27,13 +33,15 @@ const AlertAnswer = ({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{answer}</AlertDialogTitle>
-          <AlertDialogDescription>
-            삭제 시 복구가 불가능합니다!
-          </AlertDialogDescription>
+          <AlertDialogDescription>{text}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction onClick={onTrueClick}>삭제</AlertDialogAction>
-          <AlertDialogCancel onClick={onFalseClick}>취소</AlertDialogCancel>
+          <AlertDialogAction onClick={onTrueClick}>
+            {trueButton}
+          </AlertDialogAction>
+          <AlertDialogCancel onClick={onFalseClick}>
+            {falseButton}
+          </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

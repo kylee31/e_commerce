@@ -9,6 +9,7 @@ const SignOut = () => {
   const handleSignOut = async () => {
     localStorage.removeItem("token");
     await auth.signOut();
+    await localStorage.removeItem("cartItems");
     await navigate("/");
   };
 

@@ -1,6 +1,6 @@
 import CategoryCarousel from "@/components/category/CategoryCarousel";
 import CategoryTag from "@/components/category/CategoryTag";
-import PreviewCategory from "@/components/category/PreviewCategory";
+import PreviewCategory from "@/components/home/PreviewCategory";
 import {
   ProductCategory,
   ProductCategoryInfo,

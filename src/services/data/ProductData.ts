@@ -49,5 +49,5 @@ export const productFieldData = [
     {
       label: "가격",
       value: "productPrice",
-    },
+    }
   ];

@@ -1,4 +1,4 @@
-import ProductForm from "@/components/product/ProductForm";
+import ProductForm from "@/components/seller/ProductForm";
 import { db } from "@/firebase";
 import useGetProductInfo from "@/hooks/useGetProductInfo";
 import downloadUrl from "@/util/downloadUrl";
@@ -47,23 +47,21 @@ const UpdateProduct = () => {
       const newProductInfo: productInputs = {
         productName,
         productCategory,
-        productPrice,
-        productQunatity,
+        productPrice: Number(productPrice),
+        productQunatity: Number(productQunatity),
         productDescription,
         //편집된게 있으면 수정한 url정보로, 그대로라면 기존 imgs 정보 세팅
         productImages: isEditImgs ? urls : productInfo.productImages,
         updatedAt: nowDate,
       };
 
-      const uploadImgsLength = isEditImgs
-        ? urls.length
-        : productInfo.productImages;
+      const uploadImgsLength = isEditImgs ? urls : productInfo.productImages;
 
-      if (uploadImgsLength == 0) {
-        return;
-      } else {
+      if (uploadImgsLength.length > 0) {
         setIsUploading(true);
         event?.preventDefault();
+      } else {
+        return;
       }
       await updateDoc(productRef, newProductInfo).then(() => {
         navigate("/seller", { replace: true });
