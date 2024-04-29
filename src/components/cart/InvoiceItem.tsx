@@ -20,7 +20,7 @@ const InvoiceItem = ({ info }: { info: DocumentData }) => {
   };
 
   const handlePlusCounter = () => {
-    if (count < 100 && isEdit) {
+    if (count < 100 && isEdit && count < info.productQunatity) {
       setCount(count + 1);
       setIncreaseCartItem(itemIndex, 1);
     }

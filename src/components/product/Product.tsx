@@ -22,10 +22,8 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
   const [count, setCount] = useState(1);
   const navigate = useNavigate();
 
-  console.log(cartItems);
-
   const handlePlusCounter = () => {
-    if (count < 100) {
+    if (count < 100 && productInfo.productQunatity > count) {
       setCount(count + 1);
     }
   };
@@ -40,7 +38,7 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
   };
 
   const handleAddToCartItem = () => {
-    if (!isIncludes) {
+    if (!isIncludes && count <= productInfo.productQunatity) {
       setAddToCart(productInfo, count);
     }
     setCount(1);
@@ -93,7 +91,6 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
                   </div>
                 </div>
               </div>
-              {/*로그인 여부로 alert 다르게 보여주기*/}
               {isSeller === false ? (
                 isIncludes ? (
                   <AlertAnswer
@@ -106,9 +103,20 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
                       장바구니 담기
                     </Button>
                   </AlertAnswer>
-                ) : (
+                ) : count <= productInfo.productQunatity ? (
                   <AlertAnswer
                     answer={`${count}개의 상품을 장바구니에 담을까요?`}
+                    trueButton="확인"
+                    falseButton="취소"
+                    onTrueClick={handleAddToCartItem}
+                  >
+                    <Button type="button" className="w-full mt-5">
+                      장바구니 담기
+                    </Button>
+                  </AlertAnswer>
+                ) : (
+                  <AlertAnswer
+                    answer="품절 상품입니다!"
                     trueButton="확인"
                     falseButton="취소"
                     onTrueClick={handleAddToCartItem}
@@ -121,7 +129,7 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
               ) : (
                 <AlertAnswer
                   answer={`${
-                    isSeller === true && "구매자 "
+                    isSeller === true ? "구매자 " : ""
                   }로그인 후 이용해주세요!`}
                   trueButton="로그인 하러가기"
                   falseButton="취소"
