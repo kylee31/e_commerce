@@ -1,8 +1,8 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import PrivateSellerRoute from "./PrivateSellerRoute";
 import PrivateBuyerRoute from "./PrivateBuyerRoute";
-import Seller from "@/pages/seller/Seller";
-import Buyer from "@/pages/buyer/Buyer";
+import SellerLayout from "@/layouts/SellerLayout";
+import BuyerLayout from "@/layouts/BuyerLayout";
 import ReadProduct from "@/pages/seller/ReadProduct";
 import Layout from "@/layouts/Layout";
 import CreateProduct from "@/pages/seller/CreateProduct";
@@ -31,10 +31,9 @@ const PageRouter = () => {
         <Route path="/category/:cate" element={<Category />} />
         <Route path="/category/:cate/:id" element={<DetailProduct />} />
         <Route path="/pre" element={<Pre />} />
-        {/*TODO: private 라우팅 더 좋은 방법 있는지 고민해보기*/}
         {/*판매자 private*/}
         <Route path="/seller" element={<PrivateSellerRoute />}>
-          <Route path="" element={<Seller />}>
+          <Route path="" element={<SellerLayout />}>
             <Route path="" element={<ReadProduct />} />
             <Route path="create-product" element={<CreateProduct />} />
             <Route path="edit-product/:id" element={<EditProduct />} />
@@ -43,7 +42,9 @@ const PageRouter = () => {
         </Route>
         {/*구매자 private*/}
         <Route path="/buyer" element={<PrivateBuyerRoute />}>
-          <Route path="" element={<Buyer />} />
+          <Route path="" element={<BuyerLayout />}>
+            {/*TODO: 추가하기*/}
+          </Route>
         </Route>
       </Route>
       {/*레이아웃 미적용*/}

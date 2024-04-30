@@ -1,19 +1,26 @@
 import { TableCell, TableRow } from "../ui/table";
 import { DocumentData } from "firebase/firestore";
-import { useCartStore } from "@/stores/cartStore";
+import {
+  useCartItemsCountState,
+  useCartItemsState,
+  useDecreaseCartItemAction,
+  useDeleteToCartAction,
+  useIncreaseCartItemAction,
+} from "@/stores/cartStore";
 import { useState } from "react";
+import convertKRW from "@/util/convertKRW";
 
 const InvoiceItem = ({ info }: { info: DocumentData }) => {
-  const cartItems = useCartStore((state) => state.cartItems);
+  const cartItems = useCartItemsState();
+  const cartItemsCount = useCartItemsCountState();
   const itemIndex = cartItems.indexOf(info);
-  const cartItemsCount = useCartStore((state) => state.cartItemsCount);
-  const productSum = info.productPrice * cartItemsCount[itemIndex];
+  const productSum = convertKRW(info.productPrice * cartItemsCount[itemIndex]);
 
   const [isEdit, setIsEdit] = useState(false);
   const [count, setCount] = useState(cartItemsCount[itemIndex]);
-  const setIncreaseCartItem = useCartStore((state) => state.increaseCartItem);
-  const setDecreaseCartItem = useCartStore((state) => state.decreaseCartItem);
-  const setDeleteToCart = useCartStore((state) => state.deleteToCart);
+  const setIncreaseCartItem = useIncreaseCartItemAction();
+  const setDecreaseCartItem = useDecreaseCartItemAction();
+  const setDeleteToCart = useDeleteToCartAction();
 
   const handleEditQuantity = () => {
     setIsEdit(!isEdit);

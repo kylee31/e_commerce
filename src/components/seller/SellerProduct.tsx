@@ -2,10 +2,12 @@ import { productFieldData } from "@/services/data/ProductData";
 import { DocumentData } from "firebase/firestore";
 import ProductImageCarousel from "../product/ProductImageCarousel";
 import ProductQunatity from "./ProductQunatity";
+import convertKRW from "@/util/convertKRW";
 
 const FIELD_LIST = productFieldData;
 
 const SellerProduct = ({ productInfo }: { productInfo: DocumentData }) => {
+  const productPrice = convertKRW(productInfo.productPrice);
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       <div className="w-full h-64 flex">
@@ -23,7 +25,9 @@ const SellerProduct = ({ productInfo }: { productInfo: DocumentData }) => {
               >
                 <span className="w-1/3 flex justify-start">{ele.label}</span>
                 <span className="size-full flex justify-end">
-                  {productInfo[ele.value]}
+                  {ele.value === "productPrice"
+                    ? productPrice
+                    : productInfo[ele.value]}
                 </span>
               </div>
             ))}

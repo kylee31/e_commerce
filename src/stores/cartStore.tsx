@@ -1,16 +1,7 @@
-import { DocumentData } from "firebase/firestore";
+import { CartType } from "@/types/CartType";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { devtools } from "zustand/middleware";
-
-type CartType = {
-  cartItems: object[];
-  cartItemsCount: number[];
-  addToCart: (product: DocumentData, cnt: number) => void;
-  deleteToCart: (idx: number) => void;
-  increaseCartItem: (idx: number, cnt: number) => void;
-  decreaseCartItem: (idx: number, cnt: number) => void;
-};
 
 const initialCartItems = {
   cartItems: [],
@@ -61,6 +52,16 @@ export const useCartStore = create(
   )
 );
 
-export const useCartItemsStore = () => useCartStore((state) => state.cartItems);
-export const useCartItemsCountStore = () =>
+//state
+export const useCartItemsState = () => useCartStore((state) => state.cartItems);
+export const useCartItemsCountState = () =>
   useCartStore((state) => state.cartItemsCount);
+//action
+export const useAddToCartAction = () =>
+  useCartStore((state) => state.addToCart);
+export const useDeleteToCartAction = () =>
+  useCartStore((state) => state.deleteToCart);
+export const useIncreaseCartItemAction = () =>
+  useCartStore((state) => state.increaseCartItem);
+export const useDecreaseCartItemAction = () =>
+  useCartStore((state) => state.decreaseCartItem);

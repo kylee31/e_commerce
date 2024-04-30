@@ -9,12 +9,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import InvoiceItem from "./InvoiceItem";
-import { useCartStore } from "@/stores/cartStore";
+import { useCartItemsState } from "@/stores/cartStore";
 import useCalcTotalPrice from "@/hooks/useCalcTotalPrice";
+import convertKRW from "@/util/convertKRW";
 
 const CartTable = () => {
-  const cartItems = useCartStore((state) => state.cartItems);
-  const productTotalPrice = useCalcTotalPrice();
+  const cartItems = useCartItemsState();
+  const totalPrice = useCalcTotalPrice();
+  const productTotalPrice = convertKRW(totalPrice);
   return (
     <div className="w-full h-full overflow-y-auto">
       {cartItems.length > 0 ? (

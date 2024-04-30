@@ -9,7 +9,7 @@ const PrivateSellerRoute = () => {
   const token = localStorage.getItem("token");
 
   if (token && isSeller === undefined) {
-    return null; // 로딩 중일 때는 아무것도 렌더링하지 않음
+    return null;
   }
   if (!isSeller) {
     return <Navigate to="/" />;

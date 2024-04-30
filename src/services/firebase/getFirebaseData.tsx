@@ -28,7 +28,6 @@ export const getProductAboutCategory = async (cate: string) => {
   return docData;
 };
 
-//인피니티 스크롤 snap
 export const getSellerProductSnap = async ({
   user,
   pageParam,

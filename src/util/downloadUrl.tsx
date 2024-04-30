@@ -1,6 +1,7 @@
 import { storage } from "@/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
+//blob string을 다운로드 url로 변경하기
 const downloadUrl = async ({
   img,
   productId,
@@ -10,7 +11,6 @@ const downloadUrl = async ({
   productId: string;
   idx: number;
 }) => {
-  //blob string을 다운로드 url로 변경하기
   const convertImg = await fetch(img).then((file) => file.blob());
   const storageRef = ref(storage, `images/${productId}-${idx}.png`);
   const uploadImg = await uploadBytes(storageRef, convertImg);

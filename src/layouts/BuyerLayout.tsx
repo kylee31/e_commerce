@@ -2,7 +2,7 @@ import SignOut from "@/components/login/SignOut";
 import { useUserInfo } from "@/services/UserProvider";
 import { UserInfo } from "@/types/UserType";
 
-const Buyer = () => {
+const BuyerLayout = () => {
   const userInfo = useUserInfo();
 
   return (
@@ -20,4 +20,4 @@ const Buyer = () => {
   );
 };
 
-export default Buyer;
+export default BuyerLayout;

@@ -3,7 +3,7 @@ import { useUserInfo } from "@/services/UserProvider";
 import { UserInfo } from "@/types/UserType";
 import { Outlet } from "react-router-dom";
 
-const Seller = () => {
+const SellerLayout = () => {
   const userInfo = useUserInfo();
   return (
     <div className="w-full h-full flex">
@@ -20,4 +20,4 @@ const Seller = () => {
   );
 };
 
-export default Seller;
+export default SellerLayout;
