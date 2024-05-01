@@ -13,8 +13,10 @@ import { useEffect } from "react";
 import UpdateProduct from "@/pages/seller/UpdateProduct";
 import Category from "@/pages/category/Category";
 import DetailProduct from "@/pages/product/DetailProduct";
-import Pre from "@/pages/Pre";
 import changePathname from "@/util/changePathname";
+import ReadCartItems from "@/pages/buyer/ReadCartItems";
+import OrderCartItems from "@/pages/buyer/OrderCartItems";
+import OrderManagement from "@/pages/seller/OrderManagement";
 
 const PageRouter = () => {
   const location = useLocation();
@@ -30,20 +32,21 @@ const PageRouter = () => {
         <Route path="/" element={<Home />} />
         <Route path="/category/:cate" element={<Category />} />
         <Route path="/category/:cate/:id" element={<DetailProduct />} />
-        <Route path="/pre" element={<Pre />} />
         {/*판매자 private*/}
         <Route path="/seller" element={<PrivateSellerRoute />}>
-          <Route path="" element={<SellerLayout />}>
+          <Route element={<SellerLayout />}>
             <Route path="" element={<ReadProduct />} />
             <Route path="create-product" element={<CreateProduct />} />
             <Route path="edit-product/:id" element={<EditProduct />} />
             <Route path="update-product/:id" element={<UpdateProduct />} />
+            <Route path="order-management" element={<OrderManagement />} />
           </Route>
         </Route>
         {/*구매자 private*/}
         <Route path="/buyer" element={<PrivateBuyerRoute />}>
-          <Route path="" element={<BuyerLayout />}>
-            {/*TODO: 추가하기*/}
+          <Route element={<BuyerLayout />}>
+            <Route path="" element={<ReadCartItems />} />
+            <Route path="order-list" element={<OrderCartItems />} />
           </Route>
         </Route>
       </Route>

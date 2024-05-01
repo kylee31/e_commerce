@@ -70,6 +70,7 @@ const CartList = () => {
                   trueButton="로그인 하러가기"
                   falseButton="취소"
                   onTrueClick={handleOrderProducts}
+                  className="w-full"
                 >
                   <Button
                     type="button"
@@ -86,6 +87,7 @@ const CartList = () => {
                   trueButton="로그인 하러가기"
                   falseButton="취소"
                   onTrueClick={handleOrderProducts}
+                  className="w-full"
                 >
                   <Button
                     type="button"

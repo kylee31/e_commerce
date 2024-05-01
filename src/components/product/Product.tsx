@@ -9,7 +9,13 @@ import convertKRW from "@/util/convertKRW";
 
 const FIELD_LIST = productFieldData;
 
-const Product = ({ productInfo }: { productInfo: DocumentData }) => {
+const Product = ({
+  productInfo,
+  children,
+}: {
+  productInfo: DocumentData;
+  children?: React.ReactNode;
+}) => {
   const productPrice = convertKRW(productInfo.productPrice);
   const cartItems = useCartItemsState();
   const isIncludes = cartItems.some(
@@ -123,7 +129,7 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
           </div>
         </div>
         <hr className="w-full border-2 my-4" />
-        {"추천상품 보여주기"}
+        {children}
         <div className="w-full h-auto flex flex-col justify-center items-start">
           <span>설명</span>
           <div className="w-full h-auto bg-gray-100 mt-2 min-h-24 p-8 rounded-md overflow-auto break-words">

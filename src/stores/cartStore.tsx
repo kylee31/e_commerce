@@ -32,16 +32,10 @@ export const useCartStore = create(
               cartItemsCount: deletedCartItemsCount,
             };
           }),
-        increaseCartItem: (idx, cnt) =>
+        updateCountCartItem: (idx, cnt) =>
           set((state) => {
             const updatedCartItems = [...state.cartItemsCount];
-            updatedCartItems[idx] += cnt;
-            return { ...state, cartItemsCount: updatedCartItems };
-          }),
-        decreaseCartItem: (idx, cnt) =>
-          set((state) => {
-            const updatedCartItems = [...state.cartItemsCount];
-            updatedCartItems[idx] -= cnt;
+            updatedCartItems[idx] = cnt;
             return { ...state, cartItemsCount: updatedCartItems };
           }),
       }),
@@ -61,7 +55,5 @@ export const useAddToCartAction = () =>
   useCartStore((state) => state.addToCart);
 export const useDeleteToCartAction = () =>
   useCartStore((state) => state.deleteToCart);
-export const useIncreaseCartItemAction = () =>
-  useCartStore((state) => state.increaseCartItem);
-export const useDecreaseCartItemAction = () =>
-  useCartStore((state) => state.decreaseCartItem);
+export const useUpdateCountCartItemAction = () =>
+  useCartStore((state) => state.updateCountCartItem);

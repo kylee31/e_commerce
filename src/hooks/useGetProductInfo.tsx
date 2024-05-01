@@ -4,16 +4,18 @@ import { useEffect, useState } from "react";
 
 const useGetProductInfo = (productId: string) => {
   const [productInfo, setProductInfo] = useState<DocumentData>();
+  const [productDocSnap, setProductDocSnap] = useState<DocumentData>();
 
   useEffect(() => {
     const getProductInfo = async () => {
-      const sellerProductInfo = await getSellerProductInfo(productId);
-      setProductInfo(sellerProductInfo);
+      const { docData, docSnap } = await getSellerProductInfo(productId);
+      setProductInfo(docData);
+      setProductDocSnap(docSnap);
     };
     getProductInfo();
   }, [productId]);
 
-  return { productInfo };
+  return { productInfo, productDocSnap };
 };
 
 export default useGetProductInfo;
