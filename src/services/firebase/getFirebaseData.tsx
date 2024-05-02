@@ -151,3 +151,20 @@ export const getCategoryProductSnap = async ({
   const docSnap = await getDocs(q);
   return docSnap;
 };
+
+export const getOrderItems = async ({
+  id,
+  user,
+}: {
+  id: string;
+  user: string | null;
+}) => {
+  const q = query(
+    collection(db, "order"),
+    where(id, "==", user),
+    orderBy("updatedAt", "desc")
+  );
+  const docSnap = await getDocs(q);
+  const docData = docSnap.docs.map((doc) => doc.data());
+  return docData;
+};

@@ -5,14 +5,18 @@ export type CartType = {
   cartItemsCount: number[];
   addToCart: (product: DocumentData, cnt: number) => void;
   deleteToCart: (idx: number) => void;
+  clearToCart:()=>void,
   updateCountCartItem: (idx: number, cnt: number) => void;
 };
 
 export type CartItemsType={
+  merchantUid:string,
   id:string,
   sellerId:string,
   buyerId?:string,
   productId:string,
+  productName:string,
+  productTotalPrice:number,
   productQunatity:number,
   Status:string,
   createdAt?:object,
@@ -22,12 +26,7 @@ export type CartItemsType={
 export type OrderFormType={
   type:string,
   label:string,
-  value:"buyerName"|"buyerPhoneNumber"|"receiverName"|"receiverPhoneNumber"|"address",
+  value:string,
   placeholder:string,
   register:object
 }
-
-
-
-//주문 처리(완료), 발송 대기, 발송 시작(출고), 주문 취소
-export type OrderType="PROCESSING"|"PENDING"|"SHIPPED"|"CANCLED"

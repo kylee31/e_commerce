@@ -17,7 +17,7 @@ import changePathname from "@/util/changePathname";
 import ReadCartItems from "@/pages/buyer/ReadCartItems";
 import OrderCartItems from "@/pages/buyer/OrderCartItems";
 import OrderManagement from "@/pages/seller/OrderManagement";
-import OrderSheet from "@/components/buyer/OrderSheet";
+import OrderSheet from "@/pages/buyer/OrderSheet";
 
 const PageRouter = () => {
   const location = useLocation();

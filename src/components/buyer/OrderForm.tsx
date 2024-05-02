@@ -4,25 +4,103 @@ import { Label } from "@radix-ui/react-label";
 import CartTable from "@/components/cart/CartTable";
 import { OrderFormInputData } from "@/services/data/OrderData";
 import { useForm } from "react-hook-form";
-import { Dispatch, SetStateAction } from "react";
+import { db } from "@/firebase";
+import { CartItemsType } from "@/types/CartType";
+import {
+  DocumentData,
+  collection,
+  doc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
+import { useUser } from "@/services/UserProvider";
+import {
+  useCartItemsCountState,
+  useCartItemsState,
+  useClearToCartAction,
+} from "@/stores/cartStore";
+import { useNavigate } from "react-router-dom";
+import useCalcTotalPrice from "@/hooks/useCalcTotalPrice";
+
+declare global {
+  interface Window {
+    IMP: any;
+  }
+}
 
 const INPUT_LIST = OrderFormInputData;
+const IMP_CODE = import.meta.env.VITE_APP_IMP_CODE;
 
-const OrderForm = ({
-  setIsModalOpen,
-}: {
-  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
+const OrderForm = () => {
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
+  const userId = useUser();
+  const nowDate = new Date();
+  const totalPrice = useCalcTotalPrice();
+  const cartItems = useCartItemsState();
+  const cartItemsCount = useCartItemsCountState();
+  const setClearToCart = useClearToCartAction();
 
-  const onPaymentSubmit = async () => {
-    setIsModalOpen(true);
-    //정보 따로 저장? state로 저장해서 상품 결제 시 함께 저장?
-    //zustand에 따로 전역적으로 저장하고 modal 컴포넌트에서 사용?
+  const callback = async (response: any) => {
+    const { success, merchant_uid, error_msg } = response;
+    if (success) {
+      cartItems.forEach(async (item: DocumentData, idx) => {
+        if (userId) {
+          const cartItemsRef = doc(collection(db, "order"));
+          const cartItemsId = cartItemsRef.id;
+          const buyerCartItems: CartItemsType = {
+            merchantUid: merchant_uid,
+            id: cartItemsId,
+            sellerId: item.sellerId,
+            buyerId: userId,
+            productId: item.id,
+            productName: item.productName,
+            productTotalPrice: item.productPrice * cartItemsCount[idx],
+            productQunatity: cartItemsCount[idx],
+            Status: "PROCESSING",
+            createdAt: nowDate,
+            updatedAt: nowDate,
+          };
+          await setDoc(cartItemsRef, buyerCartItems);
+        }
+      });
+      await setClearToCart();
+      await navigate("/buyer/order-list");
+    } else {
+      alert(`결제 오류: ${error_msg}`);
+    }
+  };
+
+  const onPaymentSubmit = (orderDatas: any) => {
+    const { buyerEmail, receiverName, receiverPhoneNumber, address } =
+      orderDatas;
+    const { IMP } = window;
+    IMP.init(IMP_CODE);
+
+    const data = {
+      pg: "html5_inicis", // PG사
+      pay_method: "card", // 결제수단
+      merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
+      amount: totalPrice, // 결제금액
+      name: "아임포트 결제", // 주문명
+      buyer_email: buyerEmail, // 구매자 이메일
+      buyer_name: receiverName, // 구매자 이름
+      buyer_tel: receiverPhoneNumber, // 구매자 전화번호
+      buyer_addr: address, // 구매자 주소
+    };
+
+    IMP.request_pay(data, callback);
+
+    cartItems.forEach((item: DocumentData, idx: number) => {
+      const productRef = doc(db, "product", item.id);
+      updateDoc(productRef, {
+        productQunatity: item.productQunatity - cartItemsCount[idx],
+      });
+    });
   };
 
   return (
@@ -35,7 +113,7 @@ const OrderForm = ({
                 1. 주문자 정보
               </div>
               <div className="w-full">
-                {INPUT_LIST.slice(0, 2).map((ele, idx) => (
+                {INPUT_LIST.slice(0, 3).map((ele, idx) => (
                   <div key={`orderFormInputData_${idx}`}>
                     <Label className="flex justify-start items-center">
                       {ele.label}
@@ -60,7 +138,7 @@ const OrderForm = ({
                 2. 배송지 정보
               </div>
               <div className="w-full">
-                {INPUT_LIST.slice(2).map((ele, idx) => (
+                {INPUT_LIST.slice(3).map((ele, idx) => (
                   <div key={`orderFormInputData_${idx}`}>
                     <Label className="flex justify-start items-center">
                       {ele.label}

@@ -43,19 +43,23 @@ const ReadProduct = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-start items-start relative">
-      <div
-        className="flex absolute right-0 top-0 justify-center items-center w-24 h-8 bg-gray-400 font-bold hover:cursor-pointer"
-        onClick={handleCreateProduct}
-      >
-        상품 등록
+    <div className="w-full h-full flex flex-col justify-start items-start">
+      <div className="w-full flex justify-between mb-8">
+        <div className="text-xl font-extrabold">상품 관리</div>
+        <div
+          className="flex justify-center items-center w-24 h-8 bg-gray-400 font-bold hover:cursor-pointer"
+          onClick={handleCreateProduct}
+        >
+          상품 등록
+        </div>
       </div>
+
       {products?.length == 0 ? (
         <div className="size-full flex justify-center items-center">
           등록한 상품이 없습니다💬
         </div>
       ) : (
-        <div className="w-full grid grid-cols-4 gap-7 pt-16">
+        <div className="w-full grid grid-cols-4 gap-7">
           {products?.map((info, idx) => (
             <div
               key={`privewproduct_${idx}`}

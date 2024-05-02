@@ -23,6 +23,18 @@ export const OrderFormInputData:OrderFormType[]=[
         }
     },{
         type:"text",
+        label:"이메일",
+        value:"buyerEmail",
+        placeholder:"email@example.com",
+        register:{ 
+            required:{value:true,message:"이메일을 입력해주세요"},
+            pattern: {
+                value: /^\S+@\S+$/i,
+                message: "이메일 형식을 지켜주세요",
+            },
+        }
+    },{
+        type:"text",
         label:"수령인",
         value:"receiverName",
         placeholder:"이경연",
