@@ -43,7 +43,7 @@ const Product = ({
   };
 
   return (
-    <div className="common-padding">
+    <div className="common-padding ">
       <div className="w-full h-full flex flex-col justify-center items-center">
         <div className="w-full h-80 flex">
           <div className="w-1/2 h-full flex flex-col justify-center items-center pr-3">

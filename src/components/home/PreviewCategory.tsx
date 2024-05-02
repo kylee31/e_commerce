@@ -32,7 +32,7 @@ const PreviewCategory = ({ info }: { info: string }) => {
         </div>
       </div>
       {categoryInfo.length !== 0 ? (
-        <div className="w-full flex space-x-8">
+        <div className="w-full grid grid-flow-col grid-cols-4 gap-x-8">
           {categoryInfo.map((info: DocumentData, idx: number) => (
             <PreviewProduct
               key={`categoryInfoPreview_${idx}`}

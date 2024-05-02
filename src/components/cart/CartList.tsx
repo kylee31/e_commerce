@@ -13,10 +13,12 @@ import {
 import { useUserInfo } from "@/services/UserProvider";
 import { UserInfo } from "@/types/UserType";
 import AlertAnswer from "../common/AlertAnswer";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useCartItemsState } from "@/stores/cartStore";
 
 const CartList = () => {
+  const location = useLocation();
+  const isOrderPage = location.pathname.split("/")[2] === "order-sheet";
   const userInfo = useUserInfo();
   const isSeller = (userInfo as UserInfo).isSeller;
   const userNickname = (userInfo as UserInfo).nickname;
@@ -49,10 +51,10 @@ const CartList = () => {
             </SheetTitle>
             <SheetDescription>상품 목록</SheetDescription>
           </SheetHeader>
-          <div className="w-full h-96 flex justify-center items-center">
-            <CartTable />
+          <div className="w-full h-96">
+            <CartTable isEditPossible={isOrderPage ? false : true} />
           </div>
-          <SheetFooter className="">
+          <SheetFooter>
             <SheetClose asChild className="w-full">
               {isSeller === false ? (
                 <Button

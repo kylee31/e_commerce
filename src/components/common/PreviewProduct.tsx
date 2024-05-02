@@ -37,6 +37,8 @@ const PreviewProduct = ({
             src={info.productImages[0]}
             alt=""
             className="border border-gray-300 rounded-md"
+            width={150}
+            height={150}
           />
         </div>
         <CardTitle>{info.productName}</CardTitle>

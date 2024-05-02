@@ -17,6 +17,7 @@ import changePathname from "@/util/changePathname";
 import ReadCartItems from "@/pages/buyer/ReadCartItems";
 import OrderCartItems from "@/pages/buyer/OrderCartItems";
 import OrderManagement from "@/pages/seller/OrderManagement";
+import OrderSheet from "@/components/buyer/OrderSheet";
 
 const PageRouter = () => {
   const location = useLocation();
@@ -47,6 +48,7 @@ const PageRouter = () => {
           <Route element={<BuyerLayout />}>
             <Route path="" element={<ReadCartItems />} />
             <Route path="order-list" element={<OrderCartItems />} />
+            <Route path="order-sheet" element={<OrderSheet />} />
           </Route>
         </Route>
       </Route>

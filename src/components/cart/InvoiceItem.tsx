@@ -13,9 +13,11 @@ import { Link } from "react-router-dom";
 const InvoiceItem = ({
   info,
   isImage,
+  isEditPossible,
 }: {
   info: DocumentData;
   isImage?: boolean;
+  isEditPossible: boolean;
 }) => {
   const cartItems = useCartItemsState();
   const cartItemsCount = useCartItemsCountState();
@@ -94,19 +96,21 @@ const InvoiceItem = ({
             </div>
           )}
           <span onClick={handleEditQuantity} className="text-xs">
-            {isEdit ? "[완료]" : "[수정]"}
+            {isEditPossible && (isEdit ? "[완료]" : "[수정]")}
           </span>
         </div>
       </TableCell>
       <TableCell>
         <div className="w-full flex justify-between">
           {productSum}
-          <div
-            className="bg-black rounded-full text-white size-5 flex justify-center items-center hover:cursor-pointer"
-            onClick={handleDeleteCartItem}
-          >
-            x
-          </div>
+          {isEditPossible && (
+            <div
+              className="bg-black rounded-full text-white size-5 flex justify-center items-center hover:cursor-pointer"
+              onClick={handleDeleteCartItem}
+            >
+              x
+            </div>
+          )}
         </div>
       </TableCell>
     </TableRow>

@@ -15,9 +15,11 @@ import convertKRW from "@/util/convertKRW";
 const CartTable = ({
   isImage,
   className,
+  isEditPossible,
 }: {
   isImage?: boolean;
-  className: string;
+  className?: string;
+  isEditPossible: boolean;
 }) => {
   const cartItems = useCartItemsState();
   const totalPrice = useCalcTotalPrice();
@@ -39,6 +41,7 @@ const CartTable = ({
                 key={`invoiceItem_${idx}`}
                 info={info}
                 isImage={isImage}
+                isEditPossible={isEditPossible}
               />
             ))}
           </TableBody>
