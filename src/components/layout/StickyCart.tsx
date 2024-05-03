@@ -1,7 +1,7 @@
 import CartList from "@/components/cart/CartList";
-import { useCartStore } from "@/stores/cartStore";
+import { useCartItemsCountState } from "@/stores/cartStore";
 const StickyCart = () => {
-  const cartItemsCount = useCartStore((state) => state.cartItemsCount);
+  const cartItemsCount = useCartItemsCountState();
   const totalCount =
     cartItemsCount.length === 0
       ? 0

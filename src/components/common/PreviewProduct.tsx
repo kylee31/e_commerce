@@ -1,3 +1,4 @@
+import convertKRW from "@/util/convertKRW";
 import {
   Card,
   CardContent,
@@ -18,6 +19,8 @@ const PreviewProduct = ({
   isVisible: boolean;
   viewRef?: (node?: Element | null | undefined) => void;
 }) => {
+  const productPrice = convertKRW(info!.productPrice);
+
   if (info == undefined) {
     return <></>;
   }
@@ -34,6 +37,8 @@ const PreviewProduct = ({
             src={info.productImages[0]}
             alt=""
             className="border border-gray-300 rounded-md"
+            width={150}
+            height={150}
           />
         </div>
         <CardTitle>{info.productName}</CardTitle>
@@ -42,7 +47,7 @@ const PreviewProduct = ({
       <CardContent className="">
         <div className="w-full flex justify-between border-b">
           <span>가격💸</span>
-          {info.productPrice}원
+          {productPrice}원
         </div>
         {isVisible && (
           <div className="w-full flex justify-between border-b">

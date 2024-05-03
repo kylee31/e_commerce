@@ -1,5 +1,6 @@
 import { db } from "@/firebase";
 import {
+  DocumentData,
   collection,
   doc,
   getDoc,
@@ -13,8 +14,9 @@ import {
 
 export const getSellerProductInfo = async (productId: string) => {
   const docRef = doc(db, "product", productId);
-  const docData = await getDoc(docRef).then((doc) => doc.data());
-  return docData;
+  const docSnap = await getDoc(docRef);
+  const docData = docSnap.data();
+  return { docSnap, docData };
 };
 
 export const getProductAboutCategory = async (cate: string) => {
@@ -28,7 +30,25 @@ export const getProductAboutCategory = async (cate: string) => {
   return docData;
 };
 
-//인피니티 스크롤 snap
+export const getRecommendedProducts = async ({
+  productCategory,
+  productDocSnap,
+}: {
+  productCategory: string;
+  productDocSnap: DocumentData;
+}) => {
+  const q = query(
+    collection(db, "product"),
+    where("productCategory", "==", productCategory),
+    orderBy("productPrice", "desc"),
+    startAfter(productDocSnap),
+    limit(4)
+  );
+  const docSnap = await getDocs(q);
+  const docData = docSnap.docs.map((doc) => doc.data());
+  return docData;
+};
+
 export const getSellerProductSnap = async ({
   user,
   pageParam,
@@ -130,4 +150,21 @@ export const getCategoryProductSnap = async ({
 
   const docSnap = await getDocs(q);
   return docSnap;
+};
+
+export const getOrderItems = async ({
+  id,
+  user,
+}: {
+  id: string;
+  user: string | null;
+}) => {
+  const q = query(
+    collection(db, "order"),
+    where(id, "==", user),
+    orderBy("updatedAt", "desc")
+  );
+  const docSnap = await getDocs(q);
+  const docData = docSnap.docs.map((doc) => doc.data());
+  return docData;
 };

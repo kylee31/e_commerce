@@ -18,6 +18,7 @@ const AlertAnswer = ({
   falseButton,
   onTrueClick,
   onFalseClick,
+  className,
 }: {
   children: React.ReactNode;
   answer: string;
@@ -26,10 +27,13 @@ const AlertAnswer = ({
   falseButton: string;
   onTrueClick: () => void;
   onFalseClick?: () => void;
+  className?: string;
 }) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+      <AlertDialogTrigger asChild className={className}>
+        {children}
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{answer}</AlertDialogTitle>

@@ -33,9 +33,9 @@ const Category = () => {
       <div className="w-full h-10 border-2 mb-8 flex justify-start items-center">
         <CategorySortedBar handleSorted={handleSorted} />
       </div>
-      <div className="w-full grid grid-flow-row grid-cols-5 gap-5">
-        {categoryInfo &&
-          categoryInfo.map((info: DocumentData, idx: number) => (
+      {categoryInfo && categoryInfo.length > 0 ? (
+        <div className="w-full grid grid-flow-row grid-cols-5 gap-5">
+          {categoryInfo.map((info: DocumentData, idx: number) => (
             <PreviewProduct
               key={`productPreviewProduct_${idx}`}
               info={info}
@@ -44,7 +44,12 @@ const Category = () => {
               viewRef={viewRef}
             />
           ))}
-      </div>
+        </div>
+      ) : (
+        <div className="w-full h-full flex justify-center">
+          등록된 상품이 없습니다😥
+        </div>
+      )}
     </div>
   );
 };

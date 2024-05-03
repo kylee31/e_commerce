@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableFooter,
   TableHead,
@@ -9,17 +8,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import InvoiceItem from "./InvoiceItem";
-import { useCartStore } from "@/stores/cartStore";
+import { useCartItemsState } from "@/stores/cartStore";
 import useCalcTotalPrice from "@/hooks/useCalcTotalPrice";
+import convertKRW from "@/util/convertKRW";
 
-const CartTable = () => {
-  const cartItems = useCartStore((state) => state.cartItems);
-  const productTotalPrice = useCalcTotalPrice();
+const CartTable = ({
+  isImage,
+  className,
+  isEditPossible,
+}: {
+  isImage?: boolean;
+  className?: string;
+  isEditPossible: boolean;
+}) => {
+  const cartItems = useCartItemsState();
+  const totalPrice = useCalcTotalPrice();
+  const productTotalPrice = convertKRW(totalPrice);
   return (
     <div className="w-full h-full overflow-y-auto">
       {cartItems.length > 0 ? (
-        <Table>
-          <TableCaption>장바구니에 담은 상품 목록입니다.</TableCaption>
+        <Table className={className}>
           <TableHeader>
             <TableRow>
               <TableHead>상품명</TableHead>
@@ -29,7 +37,12 @@ const CartTable = () => {
           </TableHeader>
           <TableBody>
             {cartItems.map((info, idx) => (
-              <InvoiceItem key={`invoiceItem_${idx}`} info={info} />
+              <InvoiceItem
+                key={`invoiceItem_${idx}`}
+                info={info}
+                isImage={isImage}
+                isEditPossible={isEditPossible}
+              />
             ))}
           </TableBody>
           <TableFooter>
