@@ -1,4 +1,8 @@
-const ProductQunatity = ({ productQunatity }: { productQunatity: number }) => {
+const ProductQunatityCounter = ({
+  productQunatity,
+}: {
+  productQunatity: number;
+}) => {
   return (
     <div className="w-full flex justify-between mb-3 ">
       <span className="w-1/3 flex justify-start">수량</span>
@@ -13,4 +17,4 @@ const ProductQunatity = ({ productQunatity }: { productQunatity: number }) => {
   );
 };
 
-export default ProductQunatity;
+export default ProductQunatityCounter;

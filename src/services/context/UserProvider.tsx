@@ -1,5 +1,5 @@
 import { auth, db } from "@/firebase";
-import { Token } from "@/types/UserType";
+import { TokenType } from "@/types/UserType";
 import { getDocs, collection, query } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -13,7 +13,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
       if (authUser) {
-        localStorage.setItem("token", (authUser as Token).accessToken);
+        localStorage.setItem("token", (authUser as TokenType).accessToken);
         setUser(authUser.uid);
       } else {
         setUser(null);

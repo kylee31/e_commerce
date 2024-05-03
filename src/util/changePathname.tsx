@@ -7,10 +7,10 @@ const changePathname = (pathname: string) => {
   let locName = decodingPathName == "" ? "home" : decodingPathName;
 
   if (path[2] === "edit-product") {
-    locName = "edit product";
+    locName = "edit-product";
   }
   if (path[2] === "update-product") {
-    locName = "update product";
+    locName = "update-product";
   }
   if (ProductCategory.includes(decodeURI(path[2]))) {
     locName = decodeURI(path[2]);

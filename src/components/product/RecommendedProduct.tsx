@@ -16,23 +16,22 @@ const RecommendedProduct = ({
   });
   const navigate = useNavigate();
 
+  const handleClickProduct = (idx: number) => {
+    if (!recommendedProduct) return;
+    navigate(
+      `/category/${decodeURI(productCategory)}/${recommendedProduct[idx].id}`
+    );
+  };
+
   if (productCategory === undefined || recommendedProduct.length < 1) {
     return <></>;
   }
-
-  const handleClickProduct = (idx: number) => {
-    if (recommendedProduct) {
-      navigate(
-        `/category/${decodeURI(productCategory)}/${recommendedProduct[idx].id}`
-      );
-    }
-  };
 
   return (
     <div className="w-full flex flex-col items-start mb-5">
       <div>추천상품</div>
       <div className="grid grid-flow-col col-span-4 gap-5">
-        {recommendedProduct?.map((data, idx) => (
+        {recommendedProduct.map((data: DocumentData, idx) => (
           <PreviewProduct
             key={`recommendedProduct_${idx}`}
             info={data}

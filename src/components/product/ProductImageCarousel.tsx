@@ -14,7 +14,7 @@ const ProductImageCarousel = ({
   return (
     <Carousel className="w-3/4 h-full rounded-md border flex justify-center items-center text-sm mb-1">
       <CarouselContent>
-        {productImages.map((url: string, idx: number) => (
+        {productImages.map((url: string, idx) => (
           <CarouselItem
             key={`previewimg_${idx}`}
             className="w-full h-full flex flex-col justify-center items-center"

@@ -3,7 +3,7 @@ import { auth, db } from "@/firebase";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { setDoc, doc } from "firebase/firestore";
-import { SignUpInputs } from "@/types/SignType";
+import { SignUpInputListType, SignUpInputsType } from "@/types/SignType";
 import { SignUpInputData } from "@/services/data/SignData";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
@@ -18,7 +18,7 @@ const SignUp = () => {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<SignUpInputs>();
+  } = useForm<SignUpInputsType>();
 
   const [checkedBox, setCheckedBox] = useState(false);
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const SignUp = () => {
     checkedBox ? setCheckedBox(false) : setCheckedBox(true);
   };
 
-  const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
+  const onSubmit: SubmitHandler<SignUpInputsType> = async (data) => {
     try {
       //객체 리터럴 단축 속성명
       const { email, name, nickname, password } = data;
@@ -58,7 +58,7 @@ const SignUp = () => {
   return (
     <div className="w-full">
       <form className="mb-16" onSubmit={handleSubmit(onSubmit)}>
-        {INPUT_LIST.map((ele, idx) => (
+        {INPUT_LIST.map((ele: SignUpInputListType, idx) => (
           <div
             key={`signup_${idx}`}
             className="w-full flex flex-col items-start mb-3"

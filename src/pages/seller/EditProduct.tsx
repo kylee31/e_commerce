@@ -2,7 +2,7 @@ import AlertAnswer from "@/components/common/AlertAnswer";
 import SellerProduct from "@/components/seller/SellerProduct";
 import { Button } from "@/components/ui/button";
 import useGetProductInfo from "@/hooks/useGetProductInfo";
-import { deleteFirebaseData } from "@/services/firebase/deleteFirebaseData";
+import { deleteSellerProduct } from "@/services/productService";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditProduct = () => {
@@ -15,7 +15,7 @@ const EditProduct = () => {
   };
 
   const handleDeleteProduct = async () => {
-    await deleteFirebaseData(productInfo);
+    await deleteSellerProduct(productInfo);
     await navigate("/seller", { replace: true });
   };
 

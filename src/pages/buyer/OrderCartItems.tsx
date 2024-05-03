@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useGetOrderItemsInfo from "@/hooks/useGetOrderItemsInfo";
+import { DocumentData } from "firebase/firestore";
 
 const OrderCartItems = () => {
   const { orderItems } = useGetOrderItemsInfo("buyerId");
@@ -27,7 +28,7 @@ const OrderCartItems = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orderItems.map((item, idx) => (
+          {orderItems.map((item: DocumentData, idx) => (
             <OrderItem key={`orderItem_${idx}`} item={item} isSeller={false} />
           ))}
         </TableBody>

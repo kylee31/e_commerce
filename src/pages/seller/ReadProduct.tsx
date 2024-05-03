@@ -1,7 +1,8 @@
 import AlertAnswer from "@/components/common/AlertAnswer";
 import PreviewProduct from "@/components/common/PreviewProduct";
 import useInfiniteFetching from "@/hooks/useInfiniteFetching";
-import { deleteFirebaseData } from "@/services/firebase/deleteFirebaseData";
+import { deleteSellerProduct } from "@/services/productService";
+import { ProductInfiniteFetchingType } from "@/types/ProductType";
 import { useNavigate } from "react-router-dom";
 
 const ReadProduct = () => {
@@ -30,7 +31,7 @@ const ReadProduct = () => {
     if (!products) return;
     const productInfo = products[idx];
     setUpdateProducts(products.filter((_, productIdx) => productIdx != idx));
-    await deleteFirebaseData(productInfo);
+    await deleteSellerProduct(productInfo);
   };
 
   const handleEditProduct = (idx: number) => {
@@ -56,7 +57,7 @@ const ReadProduct = () => {
       </div>
       {products.length !== 0 ? (
         <div className="w-full grid grid-cols-4 gap-7">
-          {products.map((info, idx) => (
+          {products.map((info: ProductInfiniteFetchingType, idx) => (
             <div
               key={`privewproduct_${idx}`}
               className="w-full relative hover:cursor-pointer"

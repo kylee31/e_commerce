@@ -12,6 +12,7 @@ const ReadCartItems = () => {
       navigate("order-sheet");
     }
   };
+
   return (
     <div className="w-full">
       <div className="w-full flex justify-between">

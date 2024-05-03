@@ -2,7 +2,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { signInWithEmailAndPassword } from "firebase/auth/web-extension";
 import { auth } from "@/firebase";
 import { useNavigate } from "react-router-dom";
-import { AccountInputs } from "@/types/SignType";
+import { AccountInputListType, AccountInputsType } from "@/types/SignType";
 import { AccountInputData } from "@/services/data/SignData";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -15,11 +15,11 @@ const Account = () => {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<AccountInputs>();
+  } = useForm<AccountInputsType>();
 
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<AccountInputs> = async (data) => {
+  const onSubmit: SubmitHandler<AccountInputsType> = async (data) => {
     const [userEmail, userPassword] = [data.email, data.password];
     try {
       const userSignIn = await signInWithEmailAndPassword(
@@ -37,7 +37,7 @@ const Account = () => {
   return (
     <div className="w-full">
       <form onSubmit={handleSubmit(onSubmit)}>
-        {INPUT_LIST.map((ele, idx) => (
+        {INPUT_LIST.map((ele: AccountInputListType, idx) => (
           <div
             key={`signup_${idx}`}
             className="w-full flex flex-col items-start mb-3"
@@ -64,8 +64,8 @@ const Account = () => {
         </div>
       </form>
       <hr className="my-5 border-black" />
-      <span className="text-xs font-bold">회원가입 없이 한번에!</span>
       {/*TODO:소셜 로그인*/}
+      <span className="text-xs font-bold">회원가입 없이 한번에!</span>
       <div className="w-full border-2 mt-5">소셜 로그인</div>
     </div>
   );

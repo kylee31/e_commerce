@@ -31,7 +31,7 @@ const CategoryCarousel = ({
       className="w-full h-44 rounded-md border flex justify-center items-center text-sm mb-10 bg-gray-200"
     >
       <CarouselContent>
-        {category.map((info, idx) => (
+        {category.map((info: ProductCategoryType, idx) => (
           <CarouselItem
             key={`categoryImg_${idx}`}
             className="w-full h-full flex justify-center items-center"

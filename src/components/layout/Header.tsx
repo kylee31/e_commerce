@@ -1,5 +1,5 @@
 import { useUserInfo } from "@/services/context/UserProvider";
-import { UserInfo } from "@/types/UserType";
+import { UserInfoType } from "@/types/UserType";
 import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import CartList from "@/components/cart/CartList";
@@ -7,7 +7,7 @@ import CartList from "@/components/cart/CartList";
 const Header = () => {
   const token = localStorage.getItem("token");
   const userInfo = useUserInfo();
-  const isUserType = (userInfo as UserInfo).isSeller;
+  const isUserType = (userInfo as UserInfoType).isSeller;
   const navigate = useNavigate();
 
   const handlePage = () => {

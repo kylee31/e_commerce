@@ -2,7 +2,7 @@ import { useUser } from "@/services/context/UserProvider";
 import {
   getCategoryProductSnap,
   getSellerProductSnap,
-} from "@/services/firebase/getFirebaseData";
+} from "@/services/getFirebaseService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";

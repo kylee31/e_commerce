@@ -1,13 +1,15 @@
-import { db } from "@/firebase";
-import { productInputs } from "@/types/ProductType";
+import { db, storage } from "@/firebase";
+import { ProductInputsType } from "@/types/ProductType";
 import downloadUrl from "@/util/downloadUrl";
 import {
   DocumentData,
   collection,
+  deleteDoc,
   doc,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+import { deleteObject, ref } from "firebase/storage";
 
 export const createSellerProduct = async (
   productData: DocumentData,
@@ -31,7 +33,7 @@ export const createSellerProduct = async (
     const url = await downloadUrl({ img, productId, idx });
     urls.push(url);
   }
-  const productInfo: productInputs = {
+  const productInfo: ProductInputsType = {
     id: productId,
     sellerId: userId,
     productName,
@@ -76,7 +78,7 @@ export const updateSellerProduct = async (
     }
   }
   const productRef = doc(db, "product", productId);
-  const newProductInfo: productInputs = {
+  const newProductInfo: ProductInputsType = {
     productName,
     productCategory,
     productPrice: Number(productPrice),
@@ -87,4 +89,21 @@ export const updateSellerProduct = async (
     updatedAt: nowDate,
   };
   await updateDoc(productRef, newProductInfo);
+};
+
+export const deleteSellerProduct = async (
+  productInfo: DocumentData | undefined
+) => {
+  if (!productInfo) return;
+  const productRefId = productInfo.id;
+
+  //상품 삭제 시 저장된 이미지도 삭제하기
+  const deleteImages = () => {
+    for (let i = 0; i < productInfo.productImages.length; i++) {
+      const desertRef = ref(storage, `images/${productRefId}-${i}.png`);
+      deleteObject(desertRef);
+    }
+  };
+  await deleteDoc(doc(db, "product", productRefId));
+  await deleteImages();
 };

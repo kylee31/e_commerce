@@ -5,7 +5,7 @@ import CartTable from "@/components/cart/CartTable";
 import { OrderFormInputData } from "@/services/data/OrderData";
 import { useForm } from "react-hook-form";
 import { db } from "@/firebase";
-import { CartItemsType } from "@/types/CartType";
+import { CartItemsType, OrderFormType } from "@/types/CartType";
 import {
   DocumentData,
   collection,
@@ -113,7 +113,7 @@ const OrderForm = () => {
                 1. 주문자 정보
               </div>
               <div className="w-full">
-                {INPUT_LIST.slice(0, 3).map((ele, idx) => (
+                {INPUT_LIST.slice(0, 3).map((ele: OrderFormType, idx) => (
                   <div key={`orderFormInputData_${idx}`}>
                     <Label className="flex justify-start items-center">
                       {ele.label}
@@ -138,7 +138,7 @@ const OrderForm = () => {
                 2. 배송지 정보
               </div>
               <div className="w-full">
-                {INPUT_LIST.slice(3).map((ele, idx) => (
+                {INPUT_LIST.slice(3).map((ele: OrderFormType, idx) => (
                   <div key={`orderFormInputData_${idx}`}>
                     <Label className="flex justify-start items-center">
                       {ele.label}

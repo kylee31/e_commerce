@@ -6,6 +6,7 @@ import { useAddToCartAction, useCartItemsState } from "@/stores/cartStore";
 import { useState } from "react";
 import AlertAnswer from "../common/AlertAnswer";
 import convertKRW from "@/util/convertKRW";
+import { ProductFieldDataType } from "@/types/ProductType";
 
 const FIELD_LIST = productFieldData;
 
@@ -53,7 +54,7 @@ const Product = ({
           </div>
           <div className="w-1/2 h-full pl-3 flex justify-center items-center">
             <div className="w-full h-full">
-              {FIELD_LIST.map((ele, idx: number) => (
+              {FIELD_LIST.map((ele: ProductFieldDataType, idx) => (
                 <div
                   key={`productSchema_${idx}`}
                   className="w-full h-[12%] flex mb-2"

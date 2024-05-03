@@ -1,6 +1,6 @@
 import ProductForm from "@/components/seller/ProductForm";
 import useGetProductInfo from "@/hooks/useGetProductInfo";
-import { productInputs } from "@/types/ProductType";
+import { ProductInputsType } from "@/types/ProductType";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,11 +9,11 @@ import { updateSellerProduct } from "@/services/productService";
 const UpdateProduct = () => {
   const productId = useParams().id!;
   const { productInfo } = useGetProductInfo(productId);
-  const { handleSubmit, register, setValue } = useForm<productInputs>();
+  const { handleSubmit, register, setValue } = useForm<ProductInputsType>();
   const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<productInputs> = async (data, event) => {
+  const onSubmit: SubmitHandler<ProductInputsType> = async (data, event) => {
     const isUpdateImgs = data.productImages === undefined ? false : true;
 
     if (productInfo) {

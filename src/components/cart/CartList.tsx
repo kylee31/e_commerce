@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useUserInfo } from "@/services/context/UserProvider";
-import { UserInfo } from "@/types/UserType";
+import { UserInfoType } from "@/types/UserType";
 import AlertAnswer from "../common/AlertAnswer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCartItemsState } from "@/stores/cartStore";
@@ -20,8 +20,8 @@ const CartList = () => {
   const location = useLocation();
   const isOrderPage = location.pathname.split("/")[2] === "order-sheet";
   const userInfo = useUserInfo();
-  const isSeller = (userInfo as UserInfo).isSeller;
-  const userNickname = (userInfo as UserInfo).nickname;
+  const isSeller = (userInfo as UserInfoType).isSeller;
+  const userNickname = (userInfo as UserInfoType).nickname;
   const cartItems = useCartItemsState();
   const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ const CartList = () => {
         <SheetContent className="w-full flex flex-col justify-center">
           <SheetHeader className="flex flex-col justify-center items-center">
             <SheetTitle>
-              {(userInfo as UserInfo).isSeller === false &&
+              {(userInfo as UserInfoType).isSeller === false &&
                 userNickname + "님 "}
               장바구니
             </SheetTitle>
