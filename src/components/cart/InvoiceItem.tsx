@@ -1,34 +1,49 @@
 import { TableCell, TableRow } from "../ui/table";
 import { DocumentData } from "firebase/firestore";
-import { useCartStore } from "@/stores/cartStore";
+import {
+  useCartItemsCountState,
+  useCartItemsState,
+  useDeleteToCartAction,
+  useUpdateCountCartItemAction,
+} from "@/stores/cartStore";
 import { useState } from "react";
+import convertKRW from "@/util/convertKRW";
+import { Link } from "react-router-dom";
 
-const InvoiceItem = ({ info }: { info: DocumentData }) => {
-  const cartItems = useCartStore((state) => state.cartItems);
+const InvoiceItem = ({
+  info,
+  isImage,
+  isEditPossible,
+}: {
+  info: DocumentData;
+  isImage?: boolean;
+  isEditPossible: boolean;
+}) => {
+  const cartItems = useCartItemsState();
+  const cartItemsCount = useCartItemsCountState();
   const itemIndex = cartItems.indexOf(info);
-  const cartItemsCount = useCartStore((state) => state.cartItemsCount);
-  const productSum = info.productPrice * cartItemsCount[itemIndex];
-
-  const [isEdit, setIsEdit] = useState(false);
   const [count, setCount] = useState(cartItemsCount[itemIndex]);
-  const setIncreaseCartItem = useCartStore((state) => state.increaseCartItem);
-  const setDecreaseCartItem = useCartStore((state) => state.decreaseCartItem);
-  const setDeleteToCart = useCartStore((state) => state.deleteToCart);
+  const [isEdit, setIsEdit] = useState(false);
+  const productSum = convertKRW(info.productPrice * count);
+
+  const setUpdateCountCartItem = useUpdateCountCartItemAction();
+  const setDeleteToCart = useDeleteToCartAction();
 
   const handleEditQuantity = () => {
     setIsEdit(!isEdit);
+    if (isEdit) {
+      setUpdateCountCartItem(itemIndex, count);
+    }
   };
 
   const handlePlusCounter = () => {
     if (count < 100 && isEdit && count < info.productQunatity) {
       setCount(count + 1);
-      setIncreaseCartItem(itemIndex, 1);
     }
   };
   const handleMinusCounter = () => {
     if (count > 1 && isEdit) {
       setCount(count - 1);
-      setDecreaseCartItem(itemIndex, 1);
     }
   };
 
@@ -38,9 +53,31 @@ const InvoiceItem = ({ info }: { info: DocumentData }) => {
 
   return (
     <TableRow>
-      <TableCell>{info.productName}</TableCell>
       <TableCell>
-        <div className="w-full flex justify-between items-center">
+        <div className="flex items-center">
+          {isImage ? (
+            <>
+              <img
+                src={info.productImages[0]}
+                alt=""
+                width={80}
+                height={80}
+                className="mr-8"
+              />
+              <Link
+                to={`/category/${info.productCategory}/${info.id}`}
+                className="border-b border-black"
+              >
+                {info.productName}
+              </Link>
+            </>
+          ) : (
+            <>{info.productName}</>
+          )}
+        </div>
+      </TableCell>
+      <TableCell>
+        <div className="flex justify-between items-center">
           {isEdit && (
             <div
               onClick={handleMinusCounter}
@@ -49,7 +86,7 @@ const InvoiceItem = ({ info }: { info: DocumentData }) => {
               -
             </div>
           )}
-          <span>{cartItemsCount[itemIndex]}개</span>
+          <span>{count}개</span>
           {isEdit && (
             <div
               onClick={handlePlusCounter}
@@ -59,17 +96,21 @@ const InvoiceItem = ({ info }: { info: DocumentData }) => {
             </div>
           )}
           <span onClick={handleEditQuantity} className="text-xs">
-            {isEdit ? "[완료]" : "[수정]"}
+            {isEditPossible && (isEdit ? "[완료]" : "[수정]")}
           </span>
         </div>
       </TableCell>
-      <TableCell className="flex justify-between">
-        {productSum}
-        <div
-          className="bg-black rounded-full text-white size-5 flex justify-center items-center hover:cursor-pointer"
-          onClick={handleDeleteCartItem}
-        >
-          x
+      <TableCell>
+        <div className="w-full flex justify-between">
+          {productSum}
+          {isEditPossible && (
+            <div
+              className="bg-black rounded-full text-white size-5 flex justify-center items-center hover:cursor-pointer"
+              onClick={handleDeleteCartItem}
+            >
+              x
+            </div>
+          )}
         </div>
       </TableCell>
     </TableRow>

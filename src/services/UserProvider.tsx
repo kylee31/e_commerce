@@ -1,11 +1,7 @@
 import { auth, db } from "@/firebase";
-import { User } from "firebase/auth";
+import { Token } from "@/types/UserType";
 import { getDocs, collection, query } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
-
-type Token = User & {
-  accessToken: string;
-};
 
 const UserUidContext = createContext<string | null>(null);
 const UserInfoContext = createContext({});

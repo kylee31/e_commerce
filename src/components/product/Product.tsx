@@ -2,25 +2,27 @@ import { productFieldData } from "@/services/data/ProductData";
 import { DocumentData } from "firebase/firestore";
 import ProductImageCarousel from "./ProductImageCarousel";
 import { Button } from "../ui/button";
-import { useCartStore } from "@/stores/cartStore";
+import { useAddToCartAction, useCartItemsState } from "@/stores/cartStore";
 import { useState } from "react";
-import { useUserInfo } from "@/services/UserProvider";
-import { UserInfo } from "@/types/UserType";
 import AlertAnswer from "../common/AlertAnswer";
-import { useNavigate } from "react-router-dom";
+import convertKRW from "@/util/convertKRW";
 
 const FIELD_LIST = productFieldData;
 
-const Product = ({ productInfo }: { productInfo: DocumentData }) => {
-  const userInfo = useUserInfo();
-  const isSeller = (userInfo as UserInfo).isSeller;
-  const cartItems = useCartStore((state) => state.cartItems);
+const Product = ({
+  productInfo,
+  children,
+}: {
+  productInfo: DocumentData;
+  children?: React.ReactNode;
+}) => {
+  const productPrice = convertKRW(productInfo.productPrice);
+  const cartItems = useCartItemsState();
   const isIncludes = cartItems.some(
     (item: DocumentData) => item.id === productInfo.id
   );
-  const setAddToCart = useCartStore((state) => state.addToCart);
+  const setAddToCart = useAddToCartAction();
   const [count, setCount] = useState(1);
-  const navigate = useNavigate();
 
   const handlePlusCounter = () => {
     if (count < 100 && productInfo.productQunatity > count) {
@@ -33,10 +35,6 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
     }
   };
 
-  const handleIsLogin = () => {
-    navigate("/login");
-  };
-
   const handleAddToCartItem = () => {
     if (!isIncludes && count <= productInfo.productQunatity) {
       setAddToCart(productInfo, count);
@@ -45,7 +43,7 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
   };
 
   return (
-    <div className="common-padding">
+    <div className="common-padding ">
       <div className="w-full h-full flex flex-col justify-center items-center">
         <div className="w-full h-80 flex">
           <div className="w-1/2 h-full flex flex-col justify-center items-center pr-3">
@@ -62,7 +60,9 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
                 >
                   <span className="w-1/4 flex justify-start">{ele.label}</span>
                   <span className="size-full flex justify-end">
-                    {productInfo[ele.value]}
+                    {ele.value === "productPrice"
+                      ? productPrice
+                      : productInfo[ele.value]}
                   </span>
                 </div>
               ))}
@@ -91,49 +91,34 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
                   </div>
                 </div>
               </div>
-              {isSeller === false ? (
-                isIncludes ? (
-                  <AlertAnswer
-                    answer="이미 담겨있는 상품입니다. 장바구니에서 수량을 변경해주세요"
-                    trueButton="확인"
-                    falseButton="취소"
-                    onTrueClick={handleAddToCartItem}
-                  >
-                    <Button type="button" className="w-full mt-5">
-                      장바구니 담기
-                    </Button>
-                  </AlertAnswer>
-                ) : count <= productInfo.productQunatity ? (
-                  <AlertAnswer
-                    answer={`${count}개의 상품을 장바구니에 담을까요?`}
-                    trueButton="확인"
-                    falseButton="취소"
-                    onTrueClick={handleAddToCartItem}
-                  >
-                    <Button type="button" className="w-full mt-5">
-                      장바구니 담기
-                    </Button>
-                  </AlertAnswer>
-                ) : (
-                  <AlertAnswer
-                    answer="품절 상품입니다!"
-                    trueButton="확인"
-                    falseButton="취소"
-                    onTrueClick={handleAddToCartItem}
-                  >
-                    <Button type="button" className="w-full mt-5">
-                      장바구니 담기
-                    </Button>
-                  </AlertAnswer>
-                )
+              {isIncludes ? (
+                <AlertAnswer
+                  answer="이미 담겨있는 상품입니다. 장바구니에서 수량을 변경해주세요"
+                  trueButton="확인"
+                  falseButton="취소"
+                  onTrueClick={handleAddToCartItem}
+                >
+                  <Button type="button" className="w-full mt-5">
+                    장바구니 담기
+                  </Button>
+                </AlertAnswer>
+              ) : count <= productInfo.productQunatity ? (
+                <AlertAnswer
+                  answer={`${count}개의 상품을 장바구니에 담을까요?`}
+                  trueButton="확인"
+                  falseButton="취소"
+                  onTrueClick={handleAddToCartItem}
+                >
+                  <Button type="button" className="w-full mt-5">
+                    장바구니 담기
+                  </Button>
+                </AlertAnswer>
               ) : (
                 <AlertAnswer
-                  answer={`${
-                    isSeller === true ? "구매자 " : ""
-                  }로그인 후 이용해주세요!`}
-                  trueButton="로그인 하러가기"
+                  answer="품절된 상품입니다!"
+                  trueButton="확인"
                   falseButton="취소"
-                  onTrueClick={handleIsLogin}
+                  onTrueClick={handleAddToCartItem}
                 >
                   <Button type="button" className="w-full mt-5">
                     장바구니 담기
@@ -144,7 +129,7 @@ const Product = ({ productInfo }: { productInfo: DocumentData }) => {
           </div>
         </div>
         <hr className="w-full border-2 my-4" />
-        {"추천상품 보여주기"}
+        {children}
         <div className="w-full h-auto flex flex-col justify-center items-start">
           <span>설명</span>
           <div className="w-full h-auto bg-gray-100 mt-2 min-h-24 p-8 rounded-md overflow-auto break-words">

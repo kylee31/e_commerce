@@ -1,9 +1,10 @@
+import UserLink from "@/components/common/UserLink";
 import SignOut from "@/components/login/SignOut";
 import { useUserInfo } from "@/services/UserProvider";
 import { UserInfo } from "@/types/UserType";
 import { Outlet } from "react-router-dom";
 
-const Seller = () => {
+const SellerLayout = () => {
   const userInfo = useUserInfo();
   return (
     <div className="w-full h-full flex">
@@ -12,12 +13,16 @@ const Seller = () => {
           {(userInfo as UserInfo).name}님 (판매자💁‍♂️)
         </span>
         <SignOut />
+        <div className="w-full mt-10 flex flex-col">
+          <UserLink href={""}>상품 관리</UserLink>
+          <UserLink href={"order-management"}>주문 관리</UserLink>
+        </div>
       </div>
-      <div className="w-4/5 h-full flex flex-col justify-center items-center p-8">
+      <div className="w-4/5 h-full flex flex-col items-center p-8">
         <Outlet />
       </div>
     </div>
   );
 };
 
-export default Seller;
+export default SellerLayout;
