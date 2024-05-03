@@ -19,26 +19,27 @@ const EditProduct = () => {
     await navigate("/seller", { replace: true });
   };
 
-  //TODO:상품 클릭 데이터 prefetching
+  if (productInfo === undefined) {
+    return <></>;
+  }
+
   return (
     <div className="w-full h-full">
-      {productInfo && (
-        <div className="w-full h-full flex flex-col">
-          <SellerProduct productInfo={productInfo} />
-          <div className="w-full grid grid-cols-2 gap-3 mt-1">
-            <Button onClick={handleUpdateProduct}>수정</Button>
-            <AlertAnswer
-              onTrueClick={handleDeleteProduct}
-              answer="해당 상품을 삭제하시겠습니까?"
-              text="삭제 시 복구가 불가능합니다"
-              trueButton="삭제"
-              falseButton="취소"
-            >
-              <Button>삭제</Button>
-            </AlertAnswer>
-          </div>
+      <div className="w-full h-full flex flex-col">
+        <SellerProduct productInfo={productInfo} />
+        <div className="w-full grid grid-cols-2 gap-3 mt-1">
+          <Button onClick={handleUpdateProduct}>수정</Button>
+          <AlertAnswer
+            onTrueClick={handleDeleteProduct}
+            answer="해당 상품을 삭제하시겠습니까?"
+            text="삭제 시 복구가 불가능합니다"
+            trueButton="삭제"
+            falseButton="취소"
+          >
+            <Button>삭제</Button>
+          </AlertAnswer>
         </div>
-      )}
+      </div>
     </div>
   );
 };

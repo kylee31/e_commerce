@@ -1,4 +1,4 @@
-import { useUser } from "@/services/UserProvider";
+import { useUser } from "@/services/context/UserProvider";
 import {
   getCategoryProductSnap,
   getSellerProductSnap,

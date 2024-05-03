@@ -13,7 +13,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { useUser } from "@/services/UserProvider";
+import { useUser } from "@/services/context/UserProvider";
 import {
   useCartItemsCountState,
   useCartItemsState,

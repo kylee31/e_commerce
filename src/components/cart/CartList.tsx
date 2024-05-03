@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useUserInfo } from "@/services/UserProvider";
+import { useUserInfo } from "@/services/context/UserProvider";
 import { UserInfo } from "@/types/UserType";
 import AlertAnswer from "../common/AlertAnswer";
 import { useLocation, useNavigate } from "react-router-dom";

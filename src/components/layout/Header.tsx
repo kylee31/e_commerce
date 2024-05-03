@@ -1,4 +1,4 @@
-import { useUserInfo } from "@/services/UserProvider";
+import { useUserInfo } from "@/services/context/UserProvider";
 import { UserInfo } from "@/types/UserType";
 import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";

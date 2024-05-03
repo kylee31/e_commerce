@@ -1,6 +1,6 @@
 import UserLink from "@/components/common/UserLink";
 import SignOut from "@/components/login/SignOut";
-import { useUserInfo } from "@/services/UserProvider";
+import { useUserInfo } from "@/services/context/UserProvider";
 import { UserInfo } from "@/types/UserType";
 import { Outlet } from "react-router-dom";
 

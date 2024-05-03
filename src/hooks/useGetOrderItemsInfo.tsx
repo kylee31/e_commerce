@@ -1,7 +1,7 @@
 import { getOrderItems } from "@/services/firebase/getFirebaseData";
 import { DocumentData } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useUser } from "@/services/UserProvider";
+import { useUser } from "@/services/context/UserProvider";
 
 const useGetOrderItemsInfo = (id: string) => {
   const user = useUser();

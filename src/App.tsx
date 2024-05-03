@@ -1,6 +1,6 @@
 import "./styles/App.css";
 import PageRouter from "./routes/PageRouter";
-import { UserProvider } from "./services/UserProvider";
+import { UserProvider } from "./services/context/UserProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
