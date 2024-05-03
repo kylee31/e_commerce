@@ -13,13 +13,13 @@ import { useNavigate } from "react-router-dom";
 const CategoryCarousel = ({ info }: { info: ProductCategoryType[] }) => {
   const navigate = useNavigate();
 
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  );
+
   const handleClick = (cate: string) => {
     navigate(`/category/${cate}`);
   };
-
-  const plugin = React.useRef(
-    Autoplay({ delay: 3500, stopOnInteraction: true })
-  );
 
   return (
     <Carousel
