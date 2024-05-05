@@ -5,7 +5,7 @@ import StickyCart from "../components/layout/StickyCart";
 import { useUserInfo } from "@/services/context/UserProvider";
 import { UserInfoType } from "@/types/UserType";
 
-const Layout = () => {
+const MainLayout = () => {
   const userInfo = useUserInfo();
   const location = useLocation();
   const isSeller = (userInfo as UserInfoType).isSeller;
@@ -25,4 +25,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default MainLayout;

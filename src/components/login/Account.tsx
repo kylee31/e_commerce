@@ -1,12 +1,11 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { signInWithEmailAndPassword } from "firebase/auth/web-extension";
-import { auth } from "@/firebase";
 import { useNavigate } from "react-router-dom";
 import { AccountInputListType, AccountInputsType } from "@/types/SignType";
 import { AccountInputData } from "@/services/data/SignData";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { signInUser } from "@/services/loginService";
 
 const INPUT_LIST = AccountInputData;
 
@@ -16,18 +15,11 @@ const Account = () => {
     register,
     formState: { errors },
   } = useForm<AccountInputsType>();
-
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<AccountInputsType> = async (data) => {
-    const [userEmail, userPassword] = [data.email, data.password];
     try {
-      const userSignIn = await signInWithEmailAndPassword(
-        auth,
-        userEmail,
-        userPassword
-      );
-      const userOperationType = userSignIn.operationType;
+      const userOperationType = await signInUser(data);
       userOperationType && (await navigate("/"));
     } catch (error) {
       console.log(error, "error");

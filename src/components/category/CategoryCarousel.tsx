@@ -16,7 +16,6 @@ const CategoryCarousel = ({
   category: ProductCategoryType[];
 }) => {
   const navigate = useNavigate();
-
   const plugin = React.useRef(
     Autoplay({ delay: 3000, stopOnInteraction: true })
   );

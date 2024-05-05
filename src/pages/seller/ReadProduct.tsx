@@ -55,7 +55,7 @@ const ReadProduct = () => {
           상품 등록
         </div>
       </div>
-      {products.length !== 0 ? (
+      {products.length > 0 ? (
         <div className="w-full grid grid-cols-4 gap-7">
           {products.map((info: ProductInfiniteFetchingType, idx) => (
             <div

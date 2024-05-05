@@ -10,7 +10,7 @@ const Header = () => {
   const isUserType = (userInfo as UserInfoType).isSeller;
   const navigate = useNavigate();
 
-  const handlePage = () => {
+  const handleNavigatePage = () => {
     const userLink = token ? (isUserType ? "/seller" : "/buyer") : "/login";
     navigate(userLink);
   };
@@ -25,7 +25,7 @@ const Header = () => {
         <img
           src="/imgs/user.png"
           alt=""
-          onClick={handlePage}
+          onClick={handleNavigatePage}
           className="hover:cursor-pointer ml-7"
         />
       </div>

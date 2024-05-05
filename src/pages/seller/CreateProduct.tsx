@@ -13,6 +13,8 @@ const CreateProduct = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<ProductInputsType> = async (data, event) => {
+    if (!userId) return;
+
     if (data.productImages.length > 0) {
       setIsUploading(true);
       event?.preventDefault();
@@ -20,13 +22,11 @@ const CreateProduct = () => {
       return;
     }
 
-    if (userId) {
-      try {
-        await createSellerProduct(data, userId);
-        navigate("/seller");
-      } catch (error) {
-        console.error("error", error);
-      }
+    try {
+      await createSellerProduct(data, userId);
+      navigate("/seller");
+    } catch (error) {
+      console.error("error", error);
     }
   };
 

@@ -19,7 +19,7 @@ const EditProduct = () => {
     await navigate("/seller", { replace: true });
   };
 
-  if (productInfo === undefined) {
+  if (!productInfo) {
     return <></>;
   }
 

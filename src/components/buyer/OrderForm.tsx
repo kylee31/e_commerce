@@ -20,7 +20,7 @@ import {
   useClearToCartAction,
 } from "@/stores/cartStore";
 import { useNavigate } from "react-router-dom";
-import useCalcTotalPrice from "@/hooks/useCalcTotalPrice";
+import calcTotalPrice from "@/util/calcTotalPrice";
 
 declare global {
   interface Window {
@@ -40,9 +40,9 @@ const OrderForm = () => {
   const navigate = useNavigate();
   const userId = useUser();
   const nowDate = new Date();
-  const totalPrice = useCalcTotalPrice();
   const cartItems = useCartItemsState();
   const cartItemsCount = useCartItemsCountState();
+  const totalPrice = calcTotalPrice(cartItems, cartItemsCount);
   const setClearToCart = useClearToCartAction();
 
   const callback = async (response: any) => {

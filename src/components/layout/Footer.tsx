@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
-    <div className="bg-gray-300 w-full h-24 flex justify-start items-center p-6">
-      여기는 마지막
+    <div className="bg-gray-300 w-full h-24 flex justify-center items-center p-6 text-sm text-gray-500">
+      since 2024
     </div>
   );
 };

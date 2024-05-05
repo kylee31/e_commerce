@@ -14,21 +14,25 @@ const UpdateProduct = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<ProductInputsType> = async (data, event) => {
+    if (!productInfo) return;
+
     const isUpdateImgs = data.productImages === undefined ? false : true;
+    const uploadImgsLength = isUpdateImgs
+      ? data.productImages
+      : productInfo.productImages;
 
-    if (productInfo) {
-      const uploadImgsLength = isUpdateImgs
-        ? data.productImages
-        : productInfo.productImages;
+    if (uploadImgsLength.length > 0) {
+      setIsUploading(true);
+      event?.preventDefault();
+    } else {
+      return;
+    }
 
-      if (uploadImgsLength.length > 0) {
-        setIsUploading(true);
-        event?.preventDefault();
-      } else {
-        return;
-      }
+    try {
       await updateSellerProduct(data, productId, productInfo, isUpdateImgs);
       navigate("/seller", { replace: true });
+    } catch (error) {
+      console.log("error", error);
     }
   };
 

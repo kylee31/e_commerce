@@ -17,15 +17,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useCartItemsState } from "@/stores/cartStore";
 
 const CartList = () => {
-  const location = useLocation();
-  const isOrderPage = location.pathname.split("/")[2] === "order-sheet";
   const userInfo = useUserInfo();
   const isSeller = (userInfo as UserInfoType).isSeller;
+  const answer =
+    isSeller === true
+      ? "구매자 계정으로 로그인해주세요"
+      : "로그인 후 이용해주세요";
   const userNickname = (userInfo as UserInfoType).nickname;
   const cartItems = useCartItemsState();
+  const location = useLocation();
+  const isOrderPage = location.pathname.split("/")[2] === "order-sheet";
   const navigate = useNavigate();
 
-  const handleOrderProducts = () => {
+  const handleClickOrderButton = () => {
     if (isSeller === true) {
       navigate("/login");
     } else if (isSeller === false) {
@@ -34,6 +38,7 @@ const CartList = () => {
       navigate("/login");
     }
   };
+
   return (
     <div className="w-full h-full relative flex justify-end">
       <Sheet>
@@ -59,36 +64,19 @@ const CartList = () => {
               {isSeller === false ? (
                 <Button
                   type="button"
-                  onClick={handleOrderProducts}
+                  onClick={handleClickOrderButton}
                   className={`${
                     cartItems.length === 0 ? "invisible" : "visible"
                   }`}
                 >
                   주문하기
                 </Button>
-              ) : isSeller === true ? (
-                <AlertAnswer
-                  answer="구매자 계정으로 로그인해주세요"
-                  trueButton="로그인 하러가기"
-                  falseButton="취소"
-                  onTrueClick={handleOrderProducts}
-                  className="w-full"
-                >
-                  <Button
-                    type="button"
-                    className={`${
-                      cartItems.length === 0 ? "invisible" : "visible"
-                    }`}
-                  >
-                    주문하기
-                  </Button>
-                </AlertAnswer>
               ) : (
                 <AlertAnswer
-                  answer="로그인 후 이용해주세요"
+                  answer={answer}
                   trueButton="로그인 하러가기"
                   falseButton="취소"
-                  onTrueClick={handleOrderProducts}
+                  onTrueClick={handleClickOrderButton}
                   className="w-full"
                 >
                   <Button

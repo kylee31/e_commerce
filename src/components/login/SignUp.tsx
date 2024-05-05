@@ -1,8 +1,5 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "@/firebase";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { setDoc, doc } from "firebase/firestore";
 import { SignUpInputListType, SignUpInputsType } from "@/types/SignType";
 import { SignUpInputData } from "@/services/data/SignData";
 import { Button } from "../ui/button";
@@ -10,6 +7,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Checkbox } from "../ui/checkbox";
 import { useState } from "react";
+import { signUpUser } from "@/services/loginService";
 
 const INPUT_LIST = SignUpInputData;
 
@@ -19,10 +17,8 @@ const SignUp = () => {
     register,
     formState: { errors },
   } = useForm<SignUpInputsType>();
-
   const [checkedBox, setCheckedBox] = useState(false);
   const navigate = useNavigate();
-  const nowDate = new Date();
 
   const handleCheckedBox = () => {
     checkedBox ? setCheckedBox(false) : setCheckedBox(true);
@@ -30,25 +26,7 @@ const SignUp = () => {
 
   const onSubmit: SubmitHandler<SignUpInputsType> = async (data) => {
     try {
-      //객체 리터럴 단축 속성명
-      const { email, name, nickname, password } = data;
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const userId = userCredential.user.uid;
-      const userInfo = {
-        uid: userId,
-        email,
-        isSeller: checkedBox,
-        name,
-        nickname,
-        password,
-        createdAt: nowDate,
-        updatedAt: nowDate,
-      };
-      await setDoc(doc(db, "user", userId), userInfo);
+      await signUpUser(data, checkedBox);
       await navigate("/");
     } catch (error) {
       console.error(error);

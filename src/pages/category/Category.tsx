@@ -23,6 +23,7 @@ const Category = () => {
 
   const handleClickProduct = (idx: number) => {
     if (!categoryInfo) return;
+
     const productId = categoryInfo[idx].id;
     navigate(`/category/${categoryId}/${productId}`);
   };

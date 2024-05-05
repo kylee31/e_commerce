@@ -23,7 +23,7 @@ const RecommendedProduct = ({
     );
   };
 
-  if (productCategory === undefined || recommendedProduct.length < 1) {
+  if (!productCategory || recommendedProduct.length < 1) {
     return <></>;
   }
 
