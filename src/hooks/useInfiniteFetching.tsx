@@ -7,19 +7,21 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
+type useInfiniteFetchingType = {
+  getQueryKey: string;
+  type: string;
+  cate?: string;
+  sortedType?: string;
+  docLength: number;
+};
+
 const useInfiniteFetching = ({
   getQueryKey,
   type,
   docLength,
   sortedType,
   cate,
-}: {
-  getQueryKey: string;
-  type: string;
-  cate?: string;
-  sortedType?: string;
-  docLength: number;
-}) => {
+}: useInfiniteFetchingType) => {
   const user = useUser();
 
   const { ref: viewRef, inView } = useInView({

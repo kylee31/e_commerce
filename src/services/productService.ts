@@ -107,7 +107,7 @@ export const deleteSellerProduct = async (
   //상품 삭제 시 저장된 이미지도 삭제하기
   const deleteImages = () => {
     for (let i = 0; i < productInfo.productImages.length; i++) {
-      const desertRef = ref(storage, `images/${productRefId}-${i}.png`);
+      const desertRef = ref(storage, `images/${productRefId}-${i}.webp`);
       deleteObject(desertRef);
     }
   };

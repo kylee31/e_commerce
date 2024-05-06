@@ -44,7 +44,11 @@ const CartList = () => {
       <Sheet>
         <SheetTrigger>
           <div className="relative">
-            <img src="/imgs/cart.png" alt="" className="hover:cursor-pointer" />
+            <img
+              src="/imgs/cart.webp"
+              alt=""
+              className="hover:cursor-pointer"
+            />
           </div>
         </SheetTrigger>
         <SheetContent className="w-full flex flex-col justify-center">

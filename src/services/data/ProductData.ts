@@ -15,23 +15,23 @@ export const ProductCategory: string[] = [
 export const ProductCategoryInfo: ProductCategoryType[] = [
   {
     cate: "홈리빙",
-    url: "/imgs/logo2.png",
+    url: "/imgs/logo2.webp",
   },
   {
     cate: "공예",
-    url: "/imgs/logo.png",
+    url: "/imgs/logo.webp",
   },
   {
     cate: "반려동물",
-    url: "/imgs/logo3.png",
+    url: "/imgs/logo3.webp",
   },
   {
     cate: "식품",
-    url: "/imgs/logo2.png",
+    url: "/imgs/logo2.webp",
   },
   {
     cate: "기타",
-    url: "/imgs/logo.png",
+    url: "/imgs/logo.webp",
   },
 ];
 

@@ -23,7 +23,7 @@ const Header = () => {
       <div className="flex flex-row">
         <CartList />
         <img
-          src="/imgs/user.png"
+          src="/imgs/user.webp"
           alt=""
           onClick={handleNavigatePage}
           className="hover:cursor-pointer ml-7"
