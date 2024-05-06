@@ -4,7 +4,7 @@ import PrivateBuyerRoute from "./PrivateBuyerRoute";
 import SellerLayout from "@/layouts/SellerLayout";
 import BuyerLayout from "@/layouts/BuyerLayout";
 import ReadProduct from "@/pages/seller/ReadProduct";
-import Layout from "@/layouts/Layout";
+import MainLayout from "@/layouts/MainLayout";
 import CreateProduct from "@/pages/seller/CreateProduct";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
@@ -29,7 +29,7 @@ const PageRouter = () => {
   return (
     <Routes>
       {/*레이아웃 적용*/}
-      <Route element={<Layout />}>
+      <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/category/:cate" element={<Category />} />
         <Route path="/category/:cate/:id" element={<DetailProduct />} />

@@ -12,7 +12,7 @@ const downloadUrl = async ({
   idx: number;
 }) => {
   const convertImg = await fetch(img).then((file) => file.blob());
-  const storageRef = ref(storage, `images/${productId}-${idx}.png`);
+  const storageRef = ref(storage, `images/${productId}-${idx}.webp`);
   const uploadImg = await uploadBytes(storageRef, convertImg);
   const download = await getDownloadURL(uploadImg.ref);
   return download;

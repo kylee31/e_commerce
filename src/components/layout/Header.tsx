@@ -1,5 +1,5 @@
-import { useUserInfo } from "@/services/UserProvider";
-import { UserInfo } from "@/types/UserType";
+import { useUserInfo } from "@/services/context/UserProvider";
+import { UserInfoType } from "@/types/UserType";
 import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import CartList from "@/components/cart/CartList";
@@ -7,10 +7,10 @@ import CartList from "@/components/cart/CartList";
 const Header = () => {
   const token = localStorage.getItem("token");
   const userInfo = useUserInfo();
-  const isUserType = (userInfo as UserInfo).isSeller;
+  const isUserType = (userInfo as UserInfoType).isSeller;
   const navigate = useNavigate();
 
-  const handlePage = () => {
+  const handleNavigatePage = () => {
     const userLink = token ? (isUserType ? "/seller" : "/buyer") : "/login";
     navigate(userLink);
   };
@@ -23,9 +23,9 @@ const Header = () => {
       <div className="flex flex-row">
         <CartList />
         <img
-          src="/imgs/user.png"
+          src="/imgs/user.webp"
           alt=""
-          onClick={handlePage}
+          onClick={handleNavigatePage}
           className="hover:cursor-pointer ml-7"
         />
       </div>

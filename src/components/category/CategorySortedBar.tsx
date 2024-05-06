@@ -8,14 +8,14 @@ import {
 } from "../ui/select";
 
 type HandleSortedType = {
-  handleSorted: (cate: string) => void;
+  handleSortProduct: (cate: string) => void;
 };
 
-const CategorySortedBar = ({ handleSorted }: HandleSortedType) => {
+const CategorySortedBar = ({ handleSortProduct }: HandleSortedType) => {
   return (
     <Select
       defaultValue={"updatedAt"}
-      onValueChange={(cate) => handleSorted(cate)}
+      onValueChange={(cate) => handleSortProduct(cate)}
     >
       <SelectTrigger className="w-full border-gray-500">
         <SelectValue />

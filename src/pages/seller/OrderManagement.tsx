@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useGetOrderItemsInfo from "@/hooks/useGetOrderItemsInfo";
+import { DocumentData } from "firebase/firestore";
 
 const OrderManagement = () => {
   const { orderItems } = useGetOrderItemsInfo("sellerId");
@@ -27,7 +28,7 @@ const OrderManagement = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orderItems.map((item, idx) => (
+          {orderItems.map((item: DocumentData, idx) => (
             <OrderItem
               key={`sellerOrderItems_${idx}`}
               item={item}

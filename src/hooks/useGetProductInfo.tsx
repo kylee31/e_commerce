@@ -1,4 +1,4 @@
-import { getSellerProductInfo } from "@/services/firebase/getFirebaseData";
+import { getSellerProductInfo } from "@/services/productService";
 import { DocumentData } from "firebase/firestore";
 import { useEffect, useState } from "react";
 

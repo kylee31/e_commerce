@@ -8,9 +8,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import InvoiceItem from "./InvoiceItem";
-import { useCartItemsState } from "@/stores/cartStore";
-import useCalcTotalPrice from "@/hooks/useCalcTotalPrice";
+import { useCartItemsCountState, useCartItemsState } from "@/stores/cartStore";
 import convertKRW from "@/util/convertKRW";
+import calcTotalPrice from "@/util/calcTotalPrice";
 
 const CartTable = ({
   isImage,
@@ -22,8 +22,10 @@ const CartTable = ({
   isEditPossible: boolean;
 }) => {
   const cartItems = useCartItemsState();
-  const totalPrice = useCalcTotalPrice();
+  const cartItemsCount = useCartItemsCountState();
+  const totalPrice = calcTotalPrice(cartItems, cartItemsCount);
   const productTotalPrice = convertKRW(totalPrice);
+
   return (
     <div className="w-full h-full overflow-y-auto">
       {cartItems.length > 0 ? (
@@ -36,7 +38,7 @@ const CartTable = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {cartItems.map((info, idx) => (
+            {cartItems.map((info: object, idx) => (
               <InvoiceItem
                 key={`invoiceItem_${idx}`}
                 info={info}

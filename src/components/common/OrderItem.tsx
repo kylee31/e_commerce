@@ -1,4 +1,4 @@
-import { DocumentData, doc, getDoc, updateDoc } from "firebase/firestore";
+import { DocumentData } from "firebase/firestore";
 import {
   Select,
   SelectContent,
@@ -9,9 +9,12 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { db } from "@/firebase";
 import AlertAnswer from "./AlertAnswer";
 import { TableCell, TableRow } from "../ui/table";
+import {
+  cancleBuyerOrderStatus,
+  editOrderStatus,
+} from "@/services/orderService";
 
 const OrderStatus = {
   PROCESSING: "PROCESSING",
@@ -30,44 +33,33 @@ const OrderItem = ({
   const [changeOrderStatus, setChangeOrderStatus] = useState(
     OrderStatus.PROCESSING
   );
-  const [productOrderStatus, setProductOrderStatus] = useState(item.Status);
-  const [isEditOrderStatus, setIsEditOrderStatus] = useState(false);
-
-  const handleOrderCancle = async () => {
-    const productInfo = await getDoc(doc(db, "product", item.productId)).then(
-      (doc) => doc.data()
-    );
-    const orderDocRef = doc(db, "order", item.id);
-    const productDocRef = doc(db, "product", item.productId);
-    await updateDoc(orderDocRef, { Status: OrderStatus.CANCLED });
-    await updateDoc(productDocRef, {
-      productQunatity:
-        (productInfo as DocumentData).productQunatity + item.productQunatity,
-    });
-    await setProductOrderStatus(OrderStatus.CANCLED);
+  const [productOrderStatus, setProductOrderStatus] = useState<string>(
+    item.Status
+  );
+  const productOrderStatusText = {
+    [OrderStatus.PROCESSING]: "주문 완료",
+    [OrderStatus.PENDING]: "배송 대기",
+    [OrderStatus.SHIPPED]: "배송 진행",
+    [OrderStatus.CANCLED]: "주문 취소",
   };
+  const [isEditOrderStatus, setIsEditOrderStatus] = useState(false);
 
   const handleEditOrderStatus = async () => {
     if (isEditOrderStatus) {
-      const docRef = doc(db, "order", item.id);
-      await setProductOrderStatus(changeOrderStatus);
-      await updateDoc(docRef, { Status: changeOrderStatus }).then(() => {
-        setIsEditOrderStatus(false);
+      await editOrderStatus({
+        item,
+        changeOrderStatus,
+        setProductOrderStatus,
+        setIsEditOrderStatus,
       });
-      if (changeOrderStatus === OrderStatus.CANCLED) {
-        const productInfo = await getDoc(
-          doc(db, "product", item.productId)
-        ).then((doc) => doc.data());
-        const productDocRef = doc(db, "product", item.productId);
-        await updateDoc(productDocRef, {
-          productQunatity:
-            (productInfo as DocumentData).productQunatity +
-            item.productQunatity,
-        });
-      }
     } else {
       setIsEditOrderStatus(true);
     }
+  };
+
+  const handleOrderCancle = async () => {
+    await cancleBuyerOrderStatus({ item });
+    await setProductOrderStatus(OrderStatus.CANCLED);
   };
 
   return (
@@ -100,17 +92,24 @@ const OrderItem = ({
           </Select>
         ) : (
           <div className="w-full flex justify-between items-center">
-            {productOrderStatus}
-            {!isSeller && productOrderStatus !== OrderStatus.CANCLED && (
-              <AlertAnswer
-                answer="해당 상품 주문을 취소할까요?"
-                trueButton="진행"
-                falseButton="취소"
-                onTrueClick={handleOrderCancle}
+            {productOrderStatusText[productOrderStatus]}
+            <AlertAnswer
+              answer="해당 상품 주문을 취소할까요?"
+              trueButton="진행"
+              falseButton="취소"
+              onTrueClick={handleOrderCancle}
+            >
+              <Button
+                type="button"
+                className={`${
+                  !isSeller && productOrderStatus === OrderStatus.PROCESSING
+                    ? "visible"
+                    : "invisible"
+                }`}
               >
-                <Button type="button">주문 취소</Button>
-              </AlertAnswer>
-            )}
+                주문 취소
+              </Button>
+            </AlertAnswer>
           </div>
         )}
         {isSeller && (

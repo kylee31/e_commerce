@@ -21,7 +21,7 @@ const PreviewProduct = ({
 }) => {
   const productPrice = convertKRW(info!.productPrice);
 
-  if (info == undefined) {
+  if (!info) {
     return <></>;
   }
 
