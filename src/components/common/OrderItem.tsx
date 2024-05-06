@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AlertAnswer from "./AlertAnswer";
 import { TableCell, TableRow } from "../ui/table";
 import {
@@ -36,12 +36,13 @@ const OrderItem = ({
   const [productOrderStatus, setProductOrderStatus] = useState<string>(
     item.Status
   );
-  const [isEditOrderStatus, setIsEditOrderStatus] = useState(false);
-
-  const handleOrderCancle = async () => {
-    await cancleBuyerOrderStatus({ item });
-    await setProductOrderStatus(OrderStatus.CANCLED);
+  const productOrderStatusText = {
+    [OrderStatus.PROCESSING]: "주문 완료",
+    [OrderStatus.PENDING]: "배송 대기",
+    [OrderStatus.SHIPPED]: "배송 진행",
+    [OrderStatus.CANCLED]: "주문 취소",
   };
+  const [isEditOrderStatus, setIsEditOrderStatus] = useState(false);
 
   const handleEditOrderStatus = async () => {
     if (isEditOrderStatus) {
@@ -54,6 +55,11 @@ const OrderItem = ({
     } else {
       setIsEditOrderStatus(true);
     }
+  };
+
+  const handleOrderCancle = async () => {
+    await cancleBuyerOrderStatus({ item });
+    await setProductOrderStatus(OrderStatus.CANCLED);
   };
 
   return (
@@ -86,17 +92,24 @@ const OrderItem = ({
           </Select>
         ) : (
           <div className="w-full flex justify-between items-center">
-            {productOrderStatus}
-            {!isSeller && productOrderStatus !== OrderStatus.CANCLED && (
-              <AlertAnswer
-                answer="해당 상품 주문을 취소할까요?"
-                trueButton="진행"
-                falseButton="취소"
-                onTrueClick={handleOrderCancle}
+            {productOrderStatusText[productOrderStatus]}
+            <AlertAnswer
+              answer="해당 상품 주문을 취소할까요?"
+              trueButton="진행"
+              falseButton="취소"
+              onTrueClick={handleOrderCancle}
+            >
+              <Button
+                type="button"
+                className={`${
+                  !isSeller && productOrderStatus === OrderStatus.PROCESSING
+                    ? "visible"
+                    : "invisible"
+                }`}
               >
-                <Button type="button">주문 취소</Button>
-              </AlertAnswer>
-            )}
+                주문 취소
+              </Button>
+            </AlertAnswer>
           </div>
         )}
         {isSeller && (

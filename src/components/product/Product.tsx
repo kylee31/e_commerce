@@ -51,7 +51,7 @@ const Product = ({
                   <span className="w-1/4 flex justify-start">{ele.label}</span>
                   <span className="size-full flex justify-end">
                     {ele.value === "productPrice"
-                      ? productPrice
+                      ? `${productPrice}원`
                       : productInfo[ele.value]}
                   </span>
                 </div>
@@ -59,7 +59,11 @@ const Product = ({
               <div className="w-full h-[12%] flex mb-2">
                 <span className="w-1/4 flex justify-start">재고</span>
                 <span className="size-full flex justify-end">
-                  {productInfo.productQunatity}
+                  {productInfo.productQunatity === 0 ? (
+                    <div className="text-red-500">품절</div>
+                  ) : (
+                    `${productInfo.productQunatity}개`
+                  )}
                 </span>
               </div>
               <hr className="border-2 my-4" />

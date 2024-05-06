@@ -18,12 +18,13 @@ export const cancleBuyerOrderStatus = async ({
 }: {
   item: DocumentData;
 }) => {
+  const nowDate = new Date();
   const productInfo = await getDoc(doc(db, "product", item.productId)).then(
     (doc) => doc.data()
   );
   const orderDocRef = doc(db, "order", item.id);
   const productDocRef = doc(db, "product", item.productId);
-  await updateDoc(orderDocRef, { Status: "CANCLED" });
+  await updateDoc(orderDocRef, { Status: "CANCLED", updatedAt: nowDate });
   await updateDoc(productDocRef, {
     productQunatity:
       (productInfo as DocumentData).productQunatity + item.productQunatity,
@@ -41,9 +42,13 @@ export const editOrderStatus = async ({
   setProductOrderStatus: React.Dispatch<any>;
   setIsEditOrderStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const nowDate = new Date();
   const docRef = doc(db, "order", item.id);
   await setProductOrderStatus(changeOrderStatus);
-  await updateDoc(docRef, { Status: changeOrderStatus }).then(() => {
+  await updateDoc(docRef, {
+    Status: changeOrderStatus,
+    updatedAt: nowDate,
+  }).then(() => {
     setIsEditOrderStatus(false);
   });
   if (changeOrderStatus === "CANCLED") {
