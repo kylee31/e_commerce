@@ -1,12 +1,12 @@
 import { productFieldData } from "@/services/data/ProductData";
 import { DocumentData } from "firebase/firestore";
 import ProductImageCarousel from "./ProductImageCarousel";
-import { Button } from "../ui/button";
 import { useAddToCartAction, useCartItemsState } from "@/stores/cartStore";
 import { useState } from "react";
-import AlertAnswer from "../common/AlertAnswer";
 import convertKRW from "@/util/convertKRW";
 import { ProductFieldDataType } from "@/types/ProductType";
+import AddToCartItemButton from "./AddToCartItemButton";
+import ProductQunatityCounter from "../common/ProductQunatityCounter";
 
 const FIELD_LIST = productFieldData;
 
@@ -24,17 +24,6 @@ const Product = ({
   );
   const setAddToCart = useAddToCartAction();
   const [count, setCount] = useState(1);
-
-  const handlePlusCounter = () => {
-    if (count < 100 && productInfo.productQunatity > count) {
-      setCount(count + 1);
-    }
-  };
-  const handleMinusCounter = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
-  };
 
   const handleAddToCartItem = () => {
     if (!isIncludes && count <= productInfo.productQunatity) {
@@ -76,56 +65,19 @@ const Product = ({
               <hr className="border-2 my-4" />
               <div className="w-full flex justify-between mb-3 ">
                 <span className="w-1/2 flex justify-start">수량</span>
-                <div className="w-full flex justify-between items-center">
-                  <div
-                    onClick={handleMinusCounter}
-                    className="size-8 bg-gray-300 flex justify-center items-center font-bold text-3xl"
-                  >
-                    -
-                  </div>
-                  <span>{count}</span>
-                  <div
-                    onClick={handlePlusCounter}
-                    className="size-8 bg-gray-300 flex justify-center items-center font-bold text-3xl"
-                  >
-                    +
-                  </div>
-                </div>
+                <ProductQunatityCounter
+                  isEdit={true}
+                  count={count}
+                  setCount={setCount}
+                  productInfo={productInfo}
+                />
               </div>
-              {isIncludes ? (
-                <AlertAnswer
-                  answer="이미 담겨있는 상품입니다. 장바구니에서 수량을 변경해주세요"
-                  trueButton="확인"
-                  falseButton="취소"
-                  onTrueClick={handleAddToCartItem}
-                >
-                  <Button type="button" className="w-full mt-5">
-                    장바구니 담기
-                  </Button>
-                </AlertAnswer>
-              ) : count <= productInfo.productQunatity ? (
-                <AlertAnswer
-                  answer={`${count}개의 상품을 장바구니에 담을까요?`}
-                  trueButton="확인"
-                  falseButton="취소"
-                  onTrueClick={handleAddToCartItem}
-                >
-                  <Button type="button" className="w-full mt-5">
-                    장바구니 담기
-                  </Button>
-                </AlertAnswer>
-              ) : (
-                <AlertAnswer
-                  answer="품절된 상품입니다!"
-                  trueButton="확인"
-                  falseButton="취소"
-                  onTrueClick={handleAddToCartItem}
-                >
-                  <Button type="button" className="w-full mt-5">
-                    장바구니 담기
-                  </Button>
-                </AlertAnswer>
-              )}
+              <AddToCartItemButton
+                isIncludes={isIncludes}
+                count={count}
+                productInfo={productInfo}
+                handleAddToCartItem={handleAddToCartItem}
+              />
             </div>
           </div>
         </div>

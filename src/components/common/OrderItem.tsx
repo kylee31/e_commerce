@@ -1,4 +1,4 @@
-import { DocumentData, doc, getDoc, updateDoc } from "firebase/firestore";
+import { DocumentData } from "firebase/firestore";
 import {
   Select,
   SelectContent,
@@ -8,10 +8,13 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Button } from "../ui/button";
-import { useState } from "react";
-import { db } from "@/firebase";
+import { useEffect, useState } from "react";
 import AlertAnswer from "./AlertAnswer";
 import { TableCell, TableRow } from "../ui/table";
+import {
+  cancleBuyerOrderStatus,
+  editOrderStatus,
+} from "@/services/orderService";
 
 const OrderStatus = {
   PROCESSING: "PROCESSING",
@@ -30,41 +33,24 @@ const OrderItem = ({
   const [changeOrderStatus, setChangeOrderStatus] = useState(
     OrderStatus.PROCESSING
   );
-  const [productOrderStatus, setProductOrderStatus] = useState(item.Status);
+  const [productOrderStatus, setProductOrderStatus] = useState<string>(
+    item.Status
+  );
   const [isEditOrderStatus, setIsEditOrderStatus] = useState(false);
 
   const handleOrderCancle = async () => {
-    const productInfo = await getDoc(doc(db, "product", item.productId)).then(
-      (doc) => doc.data()
-    );
-    const orderDocRef = doc(db, "order", item.id);
-    const productDocRef = doc(db, "product", item.productId);
-    await updateDoc(orderDocRef, { Status: OrderStatus.CANCLED });
-    await updateDoc(productDocRef, {
-      productQunatity:
-        (productInfo as DocumentData).productQunatity + item.productQunatity,
-    });
+    await cancleBuyerOrderStatus({ item });
     await setProductOrderStatus(OrderStatus.CANCLED);
   };
 
   const handleEditOrderStatus = async () => {
     if (isEditOrderStatus) {
-      const docRef = doc(db, "order", item.id);
-      await setProductOrderStatus(changeOrderStatus);
-      await updateDoc(docRef, { Status: changeOrderStatus }).then(() => {
-        setIsEditOrderStatus(false);
+      await editOrderStatus({
+        item,
+        changeOrderStatus,
+        setProductOrderStatus,
+        setIsEditOrderStatus,
       });
-      if (changeOrderStatus === OrderStatus.CANCLED) {
-        const productInfo = await getDoc(
-          doc(db, "product", item.productId)
-        ).then((doc) => doc.data());
-        const productDocRef = doc(db, "product", item.productId);
-        await updateDoc(productDocRef, {
-          productQunatity:
-            (productInfo as DocumentData).productQunatity +
-            item.productQunatity,
-        });
-      }
     } else {
       setIsEditOrderStatus(true);
     }

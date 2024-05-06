@@ -4,15 +4,7 @@ import { Label } from "@radix-ui/react-label";
 import CartTable from "@/components/cart/CartTable";
 import { OrderFormInputData } from "@/services/data/OrderData";
 import { useForm } from "react-hook-form";
-import { db } from "@/firebase";
-import { CartItemsType, OrderFormType } from "@/types/CartType";
-import {
-  DocumentData,
-  collection,
-  doc,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { OrderFormType } from "@/types/CartType";
 import { useUser } from "@/services/context/UserProvider";
 import {
   useCartItemsCountState,
@@ -21,6 +13,10 @@ import {
 } from "@/stores/cartStore";
 import { useNavigate } from "react-router-dom";
 import calcTotalPrice from "@/util/calcTotalPrice";
+import {
+  postFirebaseOrderItems,
+  updateFirebaseOrderItemsCount,
+} from "@/services/orderService";
 
 declare global {
   interface Window {
@@ -39,7 +35,6 @@ const OrderForm = () => {
   } = useForm();
   const navigate = useNavigate();
   const userId = useUser();
-  const nowDate = new Date();
   const cartItems = useCartItemsState();
   const cartItemsCount = useCartItemsCountState();
   const totalPrice = calcTotalPrice(cartItems, cartItemsCount);
@@ -48,25 +43,12 @@ const OrderForm = () => {
   const callback = async (response: any) => {
     const { success, merchant_uid, error_msg } = response;
     if (success) {
-      cartItems.forEach(async (item: DocumentData, idx) => {
-        if (userId) {
-          const cartItemsRef = doc(collection(db, "order"));
-          const cartItemsId = cartItemsRef.id;
-          const buyerCartItems: CartItemsType = {
-            merchantUid: merchant_uid,
-            id: cartItemsId,
-            sellerId: item.sellerId,
-            buyerId: userId,
-            productId: item.id,
-            productName: item.productName,
-            productTotalPrice: item.productPrice * cartItemsCount[idx],
-            productQunatity: cartItemsCount[idx],
-            Status: "PROCESSING",
-            createdAt: nowDate,
-            updatedAt: nowDate,
-          };
-          await setDoc(cartItemsRef, buyerCartItems);
-        }
+      if (!userId) return;
+      await postFirebaseOrderItems({
+        cartItems,
+        cartItemsCount,
+        userId,
+        merchant_uid,
       });
       await setClearToCart();
       await navigate("/buyer/order-list");
@@ -75,9 +57,10 @@ const OrderForm = () => {
     }
   };
 
-  const onPaymentSubmit = (orderDatas: any) => {
+  const onPaymentSubmit = async (orderDatas: any) => {
     const { buyerEmail, receiverName, receiverPhoneNumber, address } =
       orderDatas;
+
     const { IMP } = window;
     IMP.init(IMP_CODE);
 
@@ -95,12 +78,7 @@ const OrderForm = () => {
 
     IMP.request_pay(data, callback);
 
-    cartItems.forEach((item: DocumentData, idx: number) => {
-      const productRef = doc(db, "product", item.id);
-      updateDoc(productRef, {
-        productQunatity: item.productQunatity - cartItemsCount[idx],
-      });
-    });
+    await updateFirebaseOrderItemsCount({ cartItems, cartItemsCount });
   };
 
   return (

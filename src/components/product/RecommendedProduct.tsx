@@ -30,7 +30,7 @@ const RecommendedProduct = ({
   return (
     <div className="w-full flex flex-col items-start mb-5">
       <div>추천상품</div>
-      <div className="grid grid-flow-col col-span-4 gap-5">
+      <div className="w-full grid grid-flow-col col-span-4 gap-8">
         {recommendedProduct.map((data: DocumentData, idx) => (
           <PreviewProduct
             key={`recommendedProduct_${idx}`}

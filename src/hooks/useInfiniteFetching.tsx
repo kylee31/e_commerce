@@ -1,8 +1,8 @@
 import { useUser } from "@/services/context/UserProvider";
 import {
-  getCategoryProductSnap,
   getSellerProductSnap,
-} from "@/services/getFirebaseService";
+  getCategoryProductSnap,
+} from "@/services/productService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -29,11 +29,10 @@ const useInfiniteFetching = ({
   const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
     queryKey: [getQueryKey],
     queryFn: ({ pageParam }: { pageParam: any }) => {
-      if (type == "product") {
-        return getSellerProductSnap({ user, pageParam });
-      } else if (type == "category" && cate && sortedType) {
+      if (type == "category" && cate && sortedType) {
         return getCategoryProductSnap({ cate, sortedType, pageParam });
-      } else return getSellerProductSnap({ user, pageParam });
+      }
+      return getSellerProductSnap({ user, pageParam });
     },
     getNextPageParam: (querySnapshot) => {
       if (querySnapshot.docs.length < docLength) {

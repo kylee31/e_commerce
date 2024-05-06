@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import convertKRW from "@/util/convertKRW";
 import { Link } from "react-router-dom";
+import InvoiceQunatityCounter from "./InvoiceQunatityCounter";
 
 const InvoiceItem = ({
   info,
@@ -36,17 +37,6 @@ const InvoiceItem = ({
     }
   };
 
-  const handlePlusCounter = () => {
-    if (count < 100 && isEdit && count < info.productQunatity) {
-      setCount(count + 1);
-    }
-  };
-  const handleMinusCounter = () => {
-    if (count > 1 && isEdit) {
-      setCount(count - 1);
-    }
-  };
-
   const handleDeleteCartItem = () => {
     setDeleteToCart(itemIndex);
   };
@@ -56,7 +46,7 @@ const InvoiceItem = ({
       <TableCell>
         <div className="flex items-center">
           {isImage ? (
-            <>
+            <div className="w-full flex justify-start items-center">
               <img
                 src={info.productImages[0]}
                 alt=""
@@ -70,31 +60,20 @@ const InvoiceItem = ({
               >
                 {info.productName}
               </Link>
-            </>
+            </div>
           ) : (
-            <>{info.productName}</>
+            <div>{info.productName}</div>
           )}
         </div>
       </TableCell>
       <TableCell>
         <div className="flex justify-between items-center">
-          {isEdit && (
-            <div
-              onClick={handleMinusCounter}
-              className="size-8 bg-gray-300 flex justify-center items-center font-bold text-3xl"
-            >
-              -
-            </div>
-          )}
-          <span>{count}개</span>
-          {isEdit && (
-            <div
-              onClick={handlePlusCounter}
-              className="size-8 bg-gray-300 flex justify-center items-center font-bold text-3xl"
-            >
-              +
-            </div>
-          )}
+          <InvoiceQunatityCounter
+            isEdit={isEdit}
+            info={info}
+            count={count}
+            setCount={setCount}
+          />
           <span onClick={handleEditQuantity} className="text-xs">
             {isEditPossible && (isEdit ? "[완료]" : "[수정]")}
           </span>

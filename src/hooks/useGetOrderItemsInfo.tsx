@@ -1,4 +1,4 @@
-import { getOrderItems } from "@/services/getFirebaseService";
+import { getOrderItems } from "@/services/orderService";
 import { DocumentData } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useUser } from "@/services/context/UserProvider";

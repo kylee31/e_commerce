@@ -95,6 +95,7 @@ const ProductForm = ({
       }
     }
   };
+
   if (updateProduct == undefined && isUpdate) {
     return <></>;
   }

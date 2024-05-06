@@ -1,7 +1,7 @@
 import { productFieldData } from "@/services/data/ProductData";
 import { DocumentData } from "firebase/firestore";
 import ProductImageCarousel from "../product/ProductImageCarousel";
-import ProductQunatityCounter from "./ProductQunatityCounter";
+import ProductQunatityCounter from "../common/ProductQunatityCounter";
 import convertKRW from "@/util/convertKRW";
 import { ProductFieldDataType } from "@/types/ProductType";
 
@@ -34,9 +34,12 @@ const SellerProduct = ({ productInfo }: { productInfo: DocumentData }) => {
               </div>
             ))}
             <hr className="border-2 my-4" />
-            <ProductQunatityCounter
-              productQunatity={productInfo.productQunatity}
-            />
+            <div className="w-full flex justify-between mb-3 ">
+              <span className="w-1/2 flex justify-start">수량</span>
+              <ProductQunatityCounter
+                productQunatity={productInfo.productQunatity}
+              />
+            </div>
           </div>
         </div>
       </div>
