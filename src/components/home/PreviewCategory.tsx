@@ -12,9 +12,9 @@ const PreviewCategory = ({ info }: { info: string }) => {
   };
 
   const handleClickProduct = (idx: number) => {
-    if (categoryInfo) {
-      navigate(`/category/${info}/${categoryInfo[idx].id}`);
-    }
+    if (!categoryInfo) return;
+    const categoryId = categoryInfo[idx].id;
+    navigate(`/category/${info}/${categoryId}`);
   };
 
   if (categoryInfo == undefined) {
@@ -31,7 +31,7 @@ const PreviewCategory = ({ info }: { info: string }) => {
           </span>
         </div>
       </div>
-      {categoryInfo.length !== 0 ? (
+      {categoryInfo.length > 0 ? (
         <div className="w-full grid grid-flow-col grid-cols-4 gap-x-8">
           {categoryInfo.map((info: DocumentData, idx: number) => (
             <PreviewProduct

@@ -1,11 +1,11 @@
 import CartList from "@/components/cart/CartList";
 import { useCartItemsCountState } from "@/stores/cartStore";
+import sumTotalCartProductCount from "@/util/sumTotalCartProductCount";
+
 const StickyCart = () => {
   const cartItemsCount = useCartItemsCountState();
-  const totalCount =
-    cartItemsCount.length === 0
-      ? 0
-      : cartItemsCount.reduce((result, num) => (result += num));
+  const totalCount = sumTotalCartProductCount(cartItemsCount);
+
   return (
     <div className="fixed bottom-10 right-10 p-3 bg-gray-400 rounded-full">
       <div className="relative">

@@ -6,7 +6,7 @@ import {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
-import { productInputs } from "@/types/ProductType";
+import { ProductInputListType, ProductInputsType } from "@/types/ProductType";
 import { DocumentData } from "firebase/firestore";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -30,6 +30,7 @@ import {
 } from "../ui/select";
 
 const INPUT_LIST = ProductInputData;
+const PRODUCT_CATEGORY = ProductCategory;
 
 const ProductForm = ({
   handleSubmit,
@@ -40,11 +41,11 @@ const ProductForm = ({
   isUpdate,
   isUploading,
 }: {
-  handleSubmit: UseFormHandleSubmit<productInputs, undefined>;
-  onSubmit: SubmitHandler<productInputs>;
+  handleSubmit: UseFormHandleSubmit<ProductInputsType, undefined>;
+  onSubmit: SubmitHandler<ProductInputsType>;
   updateProduct?: DocumentData;
-  register: UseFormRegister<productInputs>;
-  setValue: UseFormSetValue<productInputs>;
+  register: UseFormRegister<ProductInputsType>;
+  setValue: UseFormSetValue<ProductInputsType>;
   isUploading: boolean;
   isUpdate: boolean;
 }) => {
@@ -94,6 +95,7 @@ const ProductForm = ({
       }
     }
   };
+
   if (updateProduct == undefined && isUpdate) {
     return <></>;
   }
@@ -110,7 +112,7 @@ const ProductForm = ({
             {images.length != 0 ? (
               <Carousel className="w-3/4 h-full rounded-md flex justify-center items-center text-sm mb-1 border">
                 <CarouselContent>
-                  {images.map((url, idx) => (
+                  {images.map((url: string, idx) => (
                     <CarouselItem
                       key={`previewimg_${idx}`}
                       className="w-full h-full flex flex-col justify-center items-center"
@@ -152,7 +154,7 @@ const ProductForm = ({
         <div className="w-1/2 h-full flex justify-center items-center pl-3">
           <div className="w-full">
             <div className="w-full flex mb-3"></div>
-            {INPUT_LIST.map((ele, idx) => {
+            {INPUT_LIST.map((ele: ProductInputListType, idx) => {
               const isCategory = ele.value == "productCategory";
               return (
                 <div key={`product_${idx}`} className="w-full flex mb-3">
@@ -173,7 +175,7 @@ const ProductForm = ({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {ProductCategory.map((cate, idx) => (
+                          {PRODUCT_CATEGORY.map((cate: string, idx) => (
                             <SelectItem key={`productCate_${idx}`} value={cate}>
                               {cate}
                             </SelectItem>

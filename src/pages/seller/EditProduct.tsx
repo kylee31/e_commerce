@@ -2,7 +2,7 @@ import AlertAnswer from "@/components/common/AlertAnswer";
 import SellerProduct from "@/components/seller/SellerProduct";
 import { Button } from "@/components/ui/button";
 import useGetProductInfo from "@/hooks/useGetProductInfo";
-import { deleteFirebaseData } from "@/services/firebase/deleteFirebaseData";
+import { deleteSellerProduct } from "@/services/productService";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditProduct = () => {
@@ -15,30 +15,31 @@ const EditProduct = () => {
   };
 
   const handleDeleteProduct = async () => {
-    await deleteFirebaseData(productInfo);
+    await deleteSellerProduct(productInfo);
     await navigate("/seller", { replace: true });
   };
 
-  //TODO:상품 클릭 데이터 prefetching
+  if (!productInfo) {
+    return <></>;
+  }
+
   return (
     <div className="w-full h-full">
-      {productInfo && (
-        <div className="w-full h-full flex flex-col">
-          <SellerProduct productInfo={productInfo} />
-          <div className="w-full grid grid-cols-2 gap-3 mt-1">
-            <Button onClick={handleUpdateProduct}>수정</Button>
-            <AlertAnswer
-              onTrueClick={handleDeleteProduct}
-              answer="해당 상품을 삭제하시겠습니까?"
-              text="삭제 시 복구가 불가능합니다"
-              trueButton="삭제"
-              falseButton="취소"
-            >
-              <Button>삭제</Button>
-            </AlertAnswer>
-          </div>
+      <div className="w-full h-full flex flex-col">
+        <SellerProduct productInfo={productInfo} />
+        <div className="w-full grid grid-cols-2 gap-3 mt-1">
+          <Button onClick={handleUpdateProduct}>수정</Button>
+          <AlertAnswer
+            onTrueClick={handleDeleteProduct}
+            answer="해당 상품을 삭제하시겠습니까?"
+            text="삭제 시 복구가 불가능합니다"
+            trueButton="삭제"
+            falseButton="취소"
+          >
+            <Button>삭제</Button>
+          </AlertAnswer>
         </div>
-      )}
+      </div>
     </div>
   );
 };

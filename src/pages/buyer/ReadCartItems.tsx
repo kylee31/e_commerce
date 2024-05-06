@@ -5,13 +5,14 @@ import { useCartItemsState } from "@/stores/cartStore";
 import { useNavigate } from "react-router-dom";
 
 const ReadCartItems = () => {
-  const navigate = useNavigate();
   const cartItems = useCartItemsState();
-  const handleGoOrderSheet = () => {
+  const navigate = useNavigate();
+  const handleNavigateOrderSheet = () => {
     if (cartItems.length > 0) {
       navigate("order-sheet");
     }
   };
+
   return (
     <div className="w-full">
       <div className="w-full flex justify-between">
@@ -22,7 +23,7 @@ const ReadCartItems = () => {
             text="배송지 작성 및 결제 단계로 넘어갑니다"
             trueButton="진행"
             falseButton="취소"
-            onTrueClick={handleGoOrderSheet}
+            onTrueClick={handleNavigateOrderSheet}
           >
             <Button type="button">주문하기</Button>
           </AlertAnswer>

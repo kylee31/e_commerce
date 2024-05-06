@@ -1,7 +1,8 @@
 import AlertAnswer from "@/components/common/AlertAnswer";
 import PreviewProduct from "@/components/common/PreviewProduct";
 import useInfiniteFetching from "@/hooks/useInfiniteFetching";
-import { deleteFirebaseData } from "@/services/firebase/deleteFirebaseData";
+import { deleteSellerProduct } from "@/services/productService";
+import { ProductInfiniteFetchingType } from "@/types/ProductType";
 import { useNavigate } from "react-router-dom";
 
 const ReadProduct = () => {
@@ -20,27 +21,28 @@ const ReadProduct = () => {
     navigate("create-product");
   };
 
-  const handleEditProduct = (idx: number) => {
-    if (products) {
-      const productId = products[idx].id;
-      navigate(`edit-product/${productId}`);
-    }
-  };
-
   const handleUpdateProduct = (idx: number) => {
-    if (products) {
-      const productId = products[idx].id;
-      navigate(`/seller/update-product/${productId}`);
-    }
+    if (!products) return;
+    const productId = products[idx].id;
+    navigate(`/seller/update-product/${productId}`);
   };
 
   const handleDeleteProduct = async (idx: number) => {
-    if (products) {
-      const productInfo = products[idx];
-      setUpdateProducts(products.filter((_, productIdx) => productIdx != idx));
-      await deleteFirebaseData(productInfo);
-    }
+    if (!products) return;
+    const productInfo = products[idx];
+    setUpdateProducts(products.filter((_, productIdx) => productIdx != idx));
+    await deleteSellerProduct(productInfo);
   };
+
+  const handleEditProduct = (idx: number) => {
+    if (!products) return;
+    const productId = products[idx].id;
+    navigate(`edit-product/${productId}`);
+  };
+
+  if (!products) {
+    return <></>;
+  }
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start">
@@ -53,14 +55,9 @@ const ReadProduct = () => {
           상품 등록
         </div>
       </div>
-
-      {products?.length == 0 ? (
-        <div className="size-full flex justify-center items-center">
-          등록한 상품이 없습니다💬
-        </div>
-      ) : (
+      {products.length > 0 ? (
         <div className="w-full grid grid-cols-4 gap-7">
-          {products?.map((info, idx) => (
+          {products.map((info: ProductInfiniteFetchingType, idx) => (
             <div
               key={`privewproduct_${idx}`}
               className="w-full relative hover:cursor-pointer"
@@ -68,7 +65,7 @@ const ReadProduct = () => {
             >
               <div className="w-full mt-2 absolute flex justify-end pr-2 text-xs">
                 <div onClick={() => handleUpdateProduct(idx)} className="mr-2">
-                  <div>빠른 수정</div>
+                  빠른 수정
                 </div>
                 <AlertAnswer
                   answer="해당 상품을 삭제하시겠습니까?"
@@ -88,6 +85,10 @@ const ReadProduct = () => {
               />
             </div>
           ))}
+        </div>
+      ) : (
+        <div className="size-full flex justify-center items-center">
+          등록한 상품이 없습니다💬
         </div>
       )}
     </div>

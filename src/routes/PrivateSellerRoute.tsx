@@ -1,11 +1,10 @@
-import { useUserInfo } from "@/services/UserProvider";
-import { UserInfo } from "@/types/UserType";
+import { useUserInfo } from "@/services/context/UserProvider";
+import { UserInfoType } from "@/types/UserType";
 import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateSellerRoute = () => {
-  //seller 구분하기 (isSeller값을 받아서 true이면 seller, 전제 조건 따로 확인 필요없음)
   const userInfo = useUserInfo();
-  const isSeller = (userInfo as UserInfo).isSeller;
+  const isSeller = (userInfo as UserInfoType).isSeller;
   const token = localStorage.getItem("token");
 
   if (token && isSeller === undefined) {

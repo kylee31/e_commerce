@@ -1,11 +1,19 @@
-import { useUser } from "@/services/UserProvider";
+import { useUser } from "@/services/context/UserProvider";
 import {
-  getCategoryProductSnap,
   getSellerProductSnap,
-} from "@/services/firebase/getFirebaseData";
+  getCategoryProductSnap,
+} from "@/services/productService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+
+type useInfiniteFetchingType = {
+  getQueryKey: string;
+  type: string;
+  cate?: string;
+  sortedType?: string;
+  docLength: number;
+};
 
 const useInfiniteFetching = ({
   getQueryKey,
@@ -13,13 +21,7 @@ const useInfiniteFetching = ({
   docLength,
   sortedType,
   cate,
-}: {
-  getQueryKey: string;
-  type: string;
-  cate?: string;
-  sortedType?: string;
-  docLength: number;
-}) => {
+}: useInfiniteFetchingType) => {
   const user = useUser();
 
   const { ref: viewRef, inView } = useInView({
@@ -29,11 +31,10 @@ const useInfiniteFetching = ({
   const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
     queryKey: [getQueryKey],
     queryFn: ({ pageParam }: { pageParam: any }) => {
-      if (type == "product") {
-        return getSellerProductSnap({ user, pageParam });
-      } else if (type == "category" && cate && sortedType) {
+      if (type == "category" && cate && sortedType) {
         return getCategoryProductSnap({ cate, sortedType, pageParam });
-      } else return getSellerProductSnap({ user, pageParam });
+      }
+      return getSellerProductSnap({ user, pageParam });
     },
     getNextPageParam: (querySnapshot) => {
       if (querySnapshot.docs.length < docLength) {

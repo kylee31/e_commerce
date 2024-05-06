@@ -10,22 +10,26 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useUserInfo } from "@/services/UserProvider";
-import { UserInfo } from "@/types/UserType";
+import { useUserInfo } from "@/services/context/UserProvider";
+import { UserInfoType } from "@/types/UserType";
 import AlertAnswer from "../common/AlertAnswer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCartItemsState } from "@/stores/cartStore";
 
 const CartList = () => {
+  const userInfo = useUserInfo();
+  const isSeller = (userInfo as UserInfoType).isSeller;
+  const answer =
+    isSeller === true
+      ? "구매자 계정으로 로그인해주세요"
+      : "로그인 후 이용해주세요";
+  const userNickname = (userInfo as UserInfoType).nickname;
+  const cartItems = useCartItemsState();
   const location = useLocation();
   const isOrderPage = location.pathname.split("/")[2] === "order-sheet";
-  const userInfo = useUserInfo();
-  const isSeller = (userInfo as UserInfo).isSeller;
-  const userNickname = (userInfo as UserInfo).nickname;
-  const cartItems = useCartItemsState();
   const navigate = useNavigate();
 
-  const handleOrderProducts = () => {
+  const handleClickOrderButton = () => {
     if (isSeller === true) {
       navigate("/login");
     } else if (isSeller === false) {
@@ -34,18 +38,23 @@ const CartList = () => {
       navigate("/login");
     }
   };
+
   return (
     <div className="w-full h-full relative flex justify-end">
       <Sheet>
         <SheetTrigger>
           <div className="relative">
-            <img src="/imgs/cart.png" alt="" className="hover:cursor-pointer" />
+            <img
+              src="/imgs/cart.webp"
+              alt=""
+              className="hover:cursor-pointer"
+            />
           </div>
         </SheetTrigger>
         <SheetContent className="w-full flex flex-col justify-center">
           <SheetHeader className="flex flex-col justify-center items-center">
             <SheetTitle>
-              {(userInfo as UserInfo).isSeller === false &&
+              {(userInfo as UserInfoType).isSeller === false &&
                 userNickname + "님 "}
               장바구니
             </SheetTitle>
@@ -59,36 +68,19 @@ const CartList = () => {
               {isSeller === false ? (
                 <Button
                   type="button"
-                  onClick={handleOrderProducts}
+                  onClick={handleClickOrderButton}
                   className={`${
                     cartItems.length === 0 ? "invisible" : "visible"
                   }`}
                 >
                   주문하기
                 </Button>
-              ) : isSeller === true ? (
-                <AlertAnswer
-                  answer="구매자 계정으로 로그인해주세요"
-                  trueButton="로그인 하러가기"
-                  falseButton="취소"
-                  onTrueClick={handleOrderProducts}
-                  className="w-full"
-                >
-                  <Button
-                    type="button"
-                    className={`${
-                      cartItems.length === 0 ? "invisible" : "visible"
-                    }`}
-                  >
-                    주문하기
-                  </Button>
-                </AlertAnswer>
               ) : (
                 <AlertAnswer
-                  answer="로그인 후 이용해주세요"
+                  answer={answer}
                   trueButton="로그인 하러가기"
                   falseButton="취소"
-                  onTrueClick={handleOrderProducts}
+                  onTrueClick={handleClickOrderButton}
                   className="w-full"
                 >
                   <Button

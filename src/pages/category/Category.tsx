@@ -1,7 +1,7 @@
 import CategorySortedBar from "@/components/category/CategorySortedBar";
 import PreviewProduct from "@/components/common/PreviewProduct";
 import useInfiniteFetching from "@/hooks/useInfiniteFetching";
-import { DocumentData } from "firebase/firestore";
+import { ProductInfiniteFetchingType } from "@/types/ProductType";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -17,25 +17,30 @@ const Category = () => {
   });
   const navigate = useNavigate();
 
-  const handleSorted = (cate: string) => {
+  const handleSortProduct = (cate: string) => {
     setSortedType(cate);
   };
 
   const handleClickProduct = (idx: number) => {
-    if (categoryInfo) {
-      navigate(`/category/${categoryId}/${categoryInfo[idx].id}`);
-    }
+    if (!categoryInfo) return;
+
+    const productId = categoryInfo[idx].id;
+    navigate(`/category/${categoryId}/${productId}`);
   };
+
+  if (!categoryInfo) {
+    return <></>;
+  }
 
   return (
     <div className="w-full common-padding">
       <div className="font-extrabold text-3xl mb-10">{categoryId}</div>
       <div className="w-full h-10 border-2 mb-8 flex justify-start items-center">
-        <CategorySortedBar handleSorted={handleSorted} />
+        <CategorySortedBar handleSortProduct={handleSortProduct} />
       </div>
-      {categoryInfo && categoryInfo.length > 0 ? (
+      {categoryInfo.length > 0 ? (
         <div className="w-full grid grid-flow-row grid-cols-5 gap-5">
-          {categoryInfo.map((info: DocumentData, idx: number) => (
+          {categoryInfo.map((info: ProductInfiniteFetchingType, idx) => (
             <PreviewProduct
               key={`productPreviewProduct_${idx}`}
               info={info}

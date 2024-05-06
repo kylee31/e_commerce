@@ -8,11 +8,7 @@ const DetailProduct = () => {
   const { productInfo, productDocSnap } = useGetProductInfo(productId);
   const productCategory = productInfo ? productInfo.productCategory : "";
 
-  if (
-    productInfo === undefined ||
-    productCategory === undefined ||
-    productDocSnap === undefined
-  ) {
+  if (!productInfo || !productCategory || !productDocSnap) {
     return <></>;
   }
 

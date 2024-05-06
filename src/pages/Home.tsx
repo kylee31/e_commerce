@@ -7,7 +7,8 @@ import {
 } from "@/services/data/ProductData";
 import { useEffect } from "react";
 
-const PRODUCT_CATEGORY_LIST = ProductCategoryInfo;
+const PRODUCT_CATEGORY_WITH_URL = ProductCategoryInfo;
+const PRODUCT_CATEGORY = ProductCategory;
 
 const Home = () => {
   useEffect(() => {
@@ -24,14 +25,14 @@ const Home = () => {
   return (
     <div className="w-full h-full flex justify-center common-padding">
       <div>
-        <CategoryCarousel info={PRODUCT_CATEGORY_LIST} />
+        <CategoryCarousel category={PRODUCT_CATEGORY_WITH_URL} />
         <div className="w-full grid grid-flow-col gap-3 mb-10">
-          {ProductCategory.map((tag: string, idx: number) => (
+          {PRODUCT_CATEGORY.map((tag: string, idx) => (
             <CategoryTag key={`categoryTag_${idx}`} tag={tag} />
           ))}
         </div>
         <div className="w-full h-auto space-y-10">
-          {ProductCategory.map((info, idx) => (
+          {PRODUCT_CATEGORY.map((info: string, idx) => (
             <PreviewCategory key={`previewCategory_${idx}`} info={info} />
           ))}
         </div>
