@@ -28,6 +28,7 @@ const useInfiniteFetching = ({
     threshold: 1,
   });
 
+  //TODO:seller에 해당, 하나의 데이터 삭제 시 다음 데이터 불러오기?
   const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
     queryKey: [getQueryKey],
     queryFn: ({ pageParam }: { pageParam: any }) => {

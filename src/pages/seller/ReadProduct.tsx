@@ -29,9 +29,13 @@ const ReadProduct = () => {
 
   const handleDeleteProduct = async (idx: number) => {
     if (!products) return;
-    const productInfo = products[idx];
-    setUpdateProducts(products.filter((_, productIdx) => productIdx != idx));
-    await deleteSellerProduct(productInfo);
+    try {
+      const productInfo = products[idx];
+      setUpdateProducts(products.filter((_, productIdx) => productIdx != idx));
+      await deleteSellerProduct(productInfo);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   const handleEditProduct = (idx: number) => {

@@ -26,7 +26,9 @@ const CartList = () => {
   const userNickname = (userInfo as UserInfoType).nickname;
   const cartItems = useCartItemsState();
   const location = useLocation();
-  const isOrderPage = location.pathname.split("/")[2] === "order-sheet";
+  const isOrderPage =
+    location.pathname.split("/")[2] === "order-sheet" ||
+    location.pathname === "/buyer";
   const navigate = useNavigate();
 
   const handleClickOrderButton = () => {

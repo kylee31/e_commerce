@@ -15,8 +15,12 @@ const EditProduct = () => {
   };
 
   const handleDeleteProduct = async () => {
-    await deleteSellerProduct(productInfo);
-    await navigate("/seller", { replace: true });
+    try {
+      await deleteSellerProduct(productInfo);
+      await navigate("/seller", { replace: true });
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   if (!productInfo) {

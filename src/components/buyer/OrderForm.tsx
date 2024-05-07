@@ -77,7 +77,6 @@ const OrderForm = () => {
     };
 
     IMP.request_pay(data, callback);
-
     await updateFirebaseOrderItemsCount({ cartItems, cartItemsCount });
   };
 
