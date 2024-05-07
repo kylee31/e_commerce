@@ -2,11 +2,13 @@ import { DocumentData } from "firebase/firestore";
 
 const InvoiceQunatityCounter = ({
   isEdit,
+  isOutOfStock,
   count,
   info,
   setCount,
 }: {
   isEdit: boolean;
+  isOutOfStock: boolean;
   count: number;
   info: DocumentData;
   setCount: (count: number) => void;
@@ -32,7 +34,7 @@ const InvoiceQunatityCounter = ({
           -
         </div>
       )}
-      <span>{count}개</span>
+      <span>{!isOutOfStock ? `${count}개` : "재고 부족"}</span>
       {isEdit && (
         <div
           onClick={handlePlusCounter}

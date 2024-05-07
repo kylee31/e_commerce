@@ -103,7 +103,7 @@ export const postFirebaseOrderItems = async ({
   });
 };
 
-export const updateFirebaseOrderItemsCount = ({
+export const updateFirebaseOrderItemsCount = async ({
   cartItems,
   cartItemsCount,
 }: {
@@ -111,12 +111,24 @@ export const updateFirebaseOrderItemsCount = ({
   cartItemsCount: number[];
 }) => {
   try {
-    cartItems.forEach(async (item: DocumentData, idx: number) => {
+    //TODO: 결제 전 재고 변동 사항 업데이트 시 남은 수량 있는지 확인하고 재고 부족 시 알림창 띄우는 로직 추가하기
+    let result = false;
+    for (let idx = 0; idx < cartItems.length; idx++) {
+      const item = cartItems[idx] as DocumentData;
       const productRef = doc(db, "product", item.id);
-      await updateDoc(productRef, {
-        productQunatity: item.productQunatity - cartItemsCount[idx],
-      });
-    });
+      const NewProductInfo = await getDoc(productRef).then((doc) => doc.data());
+      const isSoldOut =
+        (NewProductInfo as DocumentData).productQunatity - cartItemsCount[idx] <
+        0;
+      if (isSoldOut) {
+        result = true;
+      } else {
+        await updateDoc(productRef, {
+          productQunatity: item.productQunatity - cartItemsCount[idx],
+        });
+      }
+    }
+    return result;
   } catch (error) {
     console.log("updateFirebaseOrderItemsCount", error);
   }

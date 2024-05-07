@@ -6,10 +6,11 @@ import {
   useDeleteToCartAction,
   useUpdateCountCartItemAction,
 } from "@/stores/cartStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import convertKRW from "@/util/convertKRW";
 import { Link } from "react-router-dom";
 import InvoiceQunatityCounter from "./InvoiceQunatityCounter";
+import useGetProductInfo from "@/hooks/useGetProductInfo";
 
 const InvoiceItem = ({
   info,
@@ -23,6 +24,11 @@ const InvoiceItem = ({
   const cartItems = useCartItemsState();
   const cartItemsCount = useCartItemsCountState();
   const itemIndex = cartItems.indexOf(info);
+  const { productInfo } = useGetProductInfo(info.id);
+  const newProductQunatity = productInfo
+    ? (productInfo as DocumentData).productQunatity
+    : 0;
+  const isOutOfStock = newProductQunatity - cartItemsCount[itemIndex] < 0;
   const [count, setCount] = useState(cartItemsCount[itemIndex]);
   const [isEdit, setIsEdit] = useState(false);
   const productSum = convertKRW(info.productPrice * count);
@@ -40,6 +46,10 @@ const InvoiceItem = ({
   const handleDeleteCartItem = () => {
     setDeleteToCart(itemIndex);
   };
+
+  useEffect(() => {
+    setCount(cartItemsCount[itemIndex]);
+  }, [cartItemsCount, itemIndex]);
 
   return (
     <TableRow>
@@ -70,12 +80,13 @@ const InvoiceItem = ({
         <div className="flex justify-between items-center">
           <InvoiceQunatityCounter
             isEdit={isEdit}
+            isOutOfStock={isOutOfStock}
             info={info}
             count={count}
             setCount={setCount}
           />
           <span onClick={handleEditQuantity} className="text-xs">
-            {isEditPossible && (isEdit ? "[완료]" : "[수정]")}
+            {isEditPossible && !isOutOfStock && (isEdit ? "[완료]" : "[수정]")}
           </span>
         </div>
       </TableCell>
@@ -85,7 +96,7 @@ const InvoiceItem = ({
           {isEditPossible && (
             <div
               className="bg-black rounded-full text-white size-5 flex justify-center items-center hover:cursor-pointer"
-              onClick={handleDeleteCartItem}
+              onClick={() => handleDeleteCartItem()}
             >
               x
             </div>
