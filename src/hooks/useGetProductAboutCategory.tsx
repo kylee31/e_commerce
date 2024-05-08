@@ -1,18 +1,20 @@
-import { getProductAboutCategory } from "@/services/productService";
-import { DocumentData } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { getProductAboutCategorySnap } from "@/services/productService";
+import { useQuery } from "@tanstack/react-query";
 
 const useGetProductAboutCategory = (info: string) => {
-  const [categoryInfo, setCategoryInfo] = useState<DocumentData>();
+  const { data: categoryInfo, isLoading } = useQuery({
+    queryKey: ["PreviewProductAboutCategory", info],
+    queryFn: async () => {
+      const productAboutCategory = await getProductAboutCategorySnap(info);
+      const productAboutCategoryData = productAboutCategory.docs.map((doc) =>
+        doc.data()
+      );
+      return productAboutCategoryData;
+    },
+    refetchOnWindowFocus: false,
+  });
 
-  useEffect(() => {
-    const getCategoryInfo = async () => {
-      const productAboutCategory = await getProductAboutCategory(info);
-      setCategoryInfo(productAboutCategory.slice(0, 4));
-    };
-    getCategoryInfo();
-  }, [info]);
-  return { categoryInfo };
+  return { categoryInfo, isLoading };
 };
 
 export default useGetProductAboutCategory;

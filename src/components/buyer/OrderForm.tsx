@@ -14,6 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import calcTotalPrice from "@/util/calcTotalPrice";
 import {
+  cancleBuyerPaymentProcess,
   postFirebaseOrderItems,
   updateFirebaseOrderItemsCount,
 } from "@/services/orderService";
@@ -53,6 +54,7 @@ const OrderForm = () => {
       await setClearToCart();
       await navigate("/buyer/order-list");
     } else {
+      cancleBuyerPaymentProcess({ cartItems });
       alert(`결제 오류: ${error_msg}`);
     }
   };
@@ -80,7 +82,7 @@ const OrderForm = () => {
       cartItemsCount,
     });
     if (isSoldOut) {
-      //TODO: alert 수정 alert창이 닫힌 후 navigate이 실행되어야 하는데 그렇지 않음
+      //TODO: alert 수정 alert창이 닫힌 후 navigate이 실행되어야 하는데 그렇지 않음, 수정 필요
       alert("재고 부족 상품이 존재합니다");
       setTimeout(() => navigate("/buyer"), 0);
     } else {

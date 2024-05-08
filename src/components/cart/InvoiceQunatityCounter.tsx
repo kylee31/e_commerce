@@ -34,7 +34,13 @@ const InvoiceQunatityCounter = ({
           -
         </div>
       )}
-      <span>{!isOutOfStock ? `${count}개` : "재고 부족"}</span>
+      <span>
+        {!isOutOfStock ? (
+          `${count}개`
+        ) : (
+          <span className="text-red-400">재고 부족</span>
+        )}
+      </span>
       {isEdit && (
         <div
           onClick={handlePlusCounter}

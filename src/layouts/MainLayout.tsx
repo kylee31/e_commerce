@@ -20,7 +20,9 @@ const MainLayout = () => {
         <Outlet />
         {isSeller === false && !isBuyerPage && <StickyCart />}
       </main>
-      <Footer />
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 };

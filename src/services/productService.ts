@@ -158,15 +158,15 @@ export const getSellerProductInfo = async (productId: string) => {
   return { docSnap, docData };
 };
 
-export const getProductAboutCategory = async (cate: string) => {
+export const getProductAboutCategorySnap = async (cate: string) => {
   const q = query(
     collection(db, "product"),
     where("productCategory", "==", cate),
-    orderBy("updatedAt", "desc")
+    orderBy("updatedAt", "desc"),
+    limit(4)
   );
   const docSnap = await getDocs(q);
-  const docData = docSnap.docs.map((doc) => doc.data());
-  return docData;
+  return docSnap;
 };
 
 export const getRecommendedProducts = async ({

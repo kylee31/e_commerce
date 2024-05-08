@@ -30,7 +30,7 @@ const useInfiniteFetching = ({
 
   //TODO:seller에 해당, 하나의 데이터 삭제 시 다음 데이터 불러오기?
   const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
-    queryKey: [getQueryKey],
+    queryKey: [getQueryKey, cate],
     queryFn: ({ pageParam }: { pageParam: any }) => {
       if (type == "category" && cate && sortedType) {
         return getCategoryProductSnap({ cate, sortedType, pageParam });
@@ -45,6 +45,7 @@ const useInfiniteFetching = ({
       }
     },
     initialPageParam: null,
+    refetchOnWindowFocus: false,
   });
 
   const [datas, setDatas] = useState<{ [x: string]: any }[]>();

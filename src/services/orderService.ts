@@ -103,6 +103,17 @@ export const postFirebaseOrderItems = async ({
   });
 };
 
+export const cancleBuyerPaymentProcess = ({
+  cartItems,
+}: {
+  cartItems: object[];
+}) => {
+  cartItems.forEach(async (item: DocumentData) => {
+    const docRef = doc(db, "product", item.id);
+    await updateDoc(docRef, { productQunatity: item.productQunatity });
+  });
+};
+
 export const updateFirebaseOrderItemsCount = async ({
   cartItems,
   cartItemsCount,
@@ -134,7 +145,7 @@ export const updateFirebaseOrderItemsCount = async ({
   }
 };
 
-export const getOrderItems = async ({
+export const getOrderItemsSnap = async ({
   id,
   user,
 }: {
@@ -147,6 +158,5 @@ export const getOrderItems = async ({
     orderBy("updatedAt", "desc")
   );
   const docSnap = await getDocs(q);
-  const docData = docSnap.docs.map((doc) => doc.data());
-  return docData;
+  return docSnap;
 };
