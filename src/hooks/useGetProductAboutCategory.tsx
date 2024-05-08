@@ -11,7 +11,7 @@ const useGetProductAboutCategory = (info: string) => {
       );
       return productAboutCategoryData;
     },
-    refetchOnWindowFocus: false,
+    staleTime: 50000,
   });
 
   return { categoryInfo, isLoading };

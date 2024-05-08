@@ -11,6 +11,7 @@ const useGetOrderItemsInfo = (id: string) => {
       const getItemsData = getItems.docs.map((doc) => doc.data());
       return getItemsData;
     },
+    staleTime: 50000,
   });
 
   return { orderItems, isLoading };

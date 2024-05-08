@@ -13,6 +13,10 @@ import { DocumentData } from "firebase/firestore";
 const OrderManagement = () => {
   const { orderItems } = useGetOrderItemsInfo("sellerId");
 
+  if (!orderItems) {
+    return <></>;
+  }
+
   return (
     <div className="w-full">
       <div className="w-full flex justify-between">
