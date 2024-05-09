@@ -4,6 +4,7 @@ import useInfiniteFetching from "@/hooks/useInfiniteFetching";
 import { deleteSellerProduct } from "@/services/productService";
 import { ProductInfiniteFetchingType } from "@/types/ProductType";
 import { useNavigate } from "react-router-dom";
+import useProductMutation from "@/hooks/useProductMutation";
 
 const ReadProduct = () => {
   const {
@@ -15,6 +16,10 @@ const ReadProduct = () => {
     type: "product",
     docLength: 12,
   });
+  const deleteProductMutation = useProductMutation({
+    mutationFunction: deleteSellerProduct,
+  });
+
   const navigate = useNavigate();
 
   const handleCreateProduct = () => {
@@ -32,7 +37,7 @@ const ReadProduct = () => {
     try {
       const productInfo = products[idx];
       setUpdateProducts(products.filter((_, productIdx) => productIdx != idx));
-      await deleteSellerProduct(productInfo);
+      deleteProductMutation.mutateAsync({ productData: productInfo });
     } catch (error) {
       console.log("error", error);
     }

@@ -1,5 +1,5 @@
 import CartList from "@/components/cart/CartList";
-import { useCartItemsCountState } from "@/stores/cartStore";
+import { useCartItemsCountState } from "@/services/stores/cartStore";
 import sumTotalCartProductCount from "@/util/sumTotalCartProductCount";
 
 const StickyCart = () => {

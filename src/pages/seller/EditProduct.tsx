@@ -4,10 +4,17 @@ import { Button } from "@/components/ui/button";
 import useGetProductInfo from "@/hooks/useGetProductInfo";
 import { deleteSellerProduct } from "@/services/productService";
 import { useNavigate, useParams } from "react-router-dom";
+import useProductMutation from "@/hooks/useProductMutation";
 
 const EditProduct = () => {
   const productId = useParams().id!;
   const { productInfo } = useGetProductInfo(productId);
+  const deleteProductMutation = useProductMutation({
+    mutationFunction: deleteSellerProduct,
+    nav: "/seller",
+    navOption: { replace: true },
+  });
+
   const navigate = useNavigate();
 
   const handleUpdateProduct = () => {
@@ -16,8 +23,7 @@ const EditProduct = () => {
 
   const handleDeleteProduct = async () => {
     try {
-      await deleteSellerProduct(productInfo);
-      await navigate("/seller", { replace: true });
+      deleteProductMutation.mutateAsync({ productData: productInfo });
     } catch (error) {
       console.log("error", error);
     }

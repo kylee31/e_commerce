@@ -145,7 +145,7 @@ export const updateFirebaseOrderItemsCount = async ({
   }
 };
 
-export const getOrderItemsSnap = async ({
+export const getOrderItems = async ({
   id,
   user,
 }: {
@@ -158,5 +158,6 @@ export const getOrderItemsSnap = async ({
     orderBy("updatedAt", "desc")
   );
   const docSnap = await getDocs(q);
-  return docSnap;
+  const docData = docSnap.docs.map((doc) => doc.data());
+  return docData;
 };

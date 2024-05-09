@@ -4,13 +4,16 @@ import { createSellerProduct } from "@/services/productService";
 import { ProductInputsType } from "@/types/ProductType";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import useProductMutation from "@/hooks/useProductMutation";
 
 const CreateProduct = () => {
   const userId = useUser();
   const { handleSubmit, register, setValue } = useForm<ProductInputsType>();
   const [isUploading, setIsUploading] = useState(false);
-  const navigate = useNavigate();
+  const createProductMutation = useProductMutation({
+    mutationFunction: createSellerProduct,
+    nav: "/seller",
+  });
 
   const onSubmit: SubmitHandler<ProductInputsType> = async (data, event) => {
     if (!userId) return;
@@ -23,8 +26,7 @@ const CreateProduct = () => {
     }
 
     try {
-      await createSellerProduct(data, userId);
-      navigate("/seller");
+      createProductMutation.mutateAsync({ productData: data, userId });
     } catch (error) {
       console.error("error", error);
     }

@@ -8,7 +8,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import InvoiceItem from "./InvoiceItem";
-import { useCartItemsCountState, useCartItemsState } from "@/stores/cartStore";
+import {
+  useCartItemsCountState,
+  useCartItemsState,
+} from "@/services/stores/cartStore";
 import convertKRW from "@/util/convertKRW";
 import calcTotalPrice from "@/util/calcTotalPrice";
 

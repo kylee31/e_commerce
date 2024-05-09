@@ -10,7 +10,7 @@ import {
   useCartItemsCountState,
   useCartItemsState,
   useClearToCartAction,
-} from "@/stores/cartStore";
+} from "@/services/stores/cartStore";
 import { useNavigate } from "react-router-dom";
 import calcTotalPrice from "@/util/calcTotalPrice";
 import {

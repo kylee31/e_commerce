@@ -1,7 +1,10 @@
 import { productFieldData } from "@/services/data/ProductData";
 import { DocumentData } from "firebase/firestore";
 import ProductImageCarousel from "./ProductImageCarousel";
-import { useAddToCartAction, useCartItemsState } from "@/stores/cartStore";
+import {
+  useAddToCartAction,
+  useCartItemsState,
+} from "@/services/stores/cartStore";
 import { useState } from "react";
 import convertKRW from "@/util/convertKRW";
 import { ProductFieldDataType } from "@/types/ProductType";

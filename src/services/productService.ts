@@ -48,16 +48,19 @@ export const convertBlobToDownloadURL = async ({
 }) => {
   const convertImg = await fetch(img).then((file) => file.blob()); //blob string을 blob객체로 변환
   const resizingImg = (await resizeFile(convertImg)) as Blob; //이미지 리사이징
-  const storageRef = ref(storage, `images/${productId}-${idx}.webp`);
+  const storageRef = ref(storage, `images/${productId}-${idx}`);
   const uploadImg = await uploadBytes(storageRef, resizingImg);
   const download = await getDownloadURL(uploadImg.ref);
   return download;
 };
 
-export const createSellerProduct = async (
-  productData: DocumentData,
-  userId: string
-) => {
+export const createSellerProduct = async ({
+  productData,
+  userId,
+}: {
+  productData: DocumentData;
+  userId: string;
+}) => {
   const nowDate = new Date();
   const {
     productName,
@@ -91,12 +94,17 @@ export const createSellerProduct = async (
   await setDoc(productRef, productInfo);
 };
 
-export const updateSellerProduct = async (
-  productData: DocumentData,
-  productId: string,
-  productInfo: DocumentData,
-  isUpdateImgs: boolean
-) => {
+export const updateSellerProduct = async ({
+  productData,
+  productId,
+  productInfo,
+  isUpdateImgs,
+}: {
+  productData: DocumentData;
+  productId: string;
+  productInfo: DocumentData;
+  isUpdateImgs: boolean;
+}) => {
   const nowDate = new Date();
   const {
     productName,
@@ -134,16 +142,18 @@ export const updateSellerProduct = async (
   await updateDoc(productRef, newProductInfo);
 };
 
-export const deleteSellerProduct = async (
-  productInfo: DocumentData | undefined
-) => {
-  if (!productInfo) return;
-  const productRefId = productInfo.id;
+export const deleteSellerProduct = async ({
+  productData,
+}: {
+  productData: DocumentData | undefined;
+}) => {
+  if (!productData) return;
+  const productRefId = productData.id;
 
   //TODO:seller가 상품 이미지 삭제 시 storage에 저장된 이미지도 삭제하기
   const deleteImages = () => {
-    for (let i = 0; i < productInfo.productImages.length; i++) {
-      const desertRef = ref(storage, `images/${productRefId}-${i}.webp`);
+    for (let i = 0; i < productData.productImages.length; i++) {
+      const desertRef = ref(storage, `images/${productRefId}-${i}`);
       deleteObject(desertRef);
     }
   };

@@ -3,23 +3,23 @@ import PrivateSellerRoute from "./PrivateSellerRoute";
 import PrivateBuyerRoute from "./PrivateBuyerRoute";
 import SellerLayout from "@/layouts/SellerLayout";
 import BuyerLayout from "@/layouts/BuyerLayout";
-import ReadProduct from "@/pages/seller/ReadProduct";
 import MainLayout from "@/layouts/MainLayout";
-import CreateProduct from "@/pages/seller/CreateProduct";
 import Home from "@/pages/Home";
-import Login from "@/pages/Login";
-import EditProduct from "@/pages/seller/EditProduct";
-import { useEffect } from "react";
-import UpdateProduct from "@/pages/seller/UpdateProduct";
 import Category from "@/pages/category/Category";
 import DetailProduct from "@/pages/product/DetailProduct";
+import Login from "@/pages/Login";
 import changePathname from "@/util/changePathname";
-import ReadCartItems from "@/pages/buyer/ReadCartItems";
-import OrderCartItems from "@/pages/buyer/OrderCartItems";
-import OrderManagement from "@/pages/seller/OrderManagement";
-import OrderSheet from "@/pages/buyer/OrderSheet";
+import { Suspense, lazy, useEffect } from "react";
 
 const PageRouter = () => {
+  const CreateProduct = lazy(() => import("@/pages/seller/CreateProduct"));
+  const ReadProduct = lazy(() => import("@/pages/seller/ReadProduct"));
+  const UpdateProduct = lazy(() => import("@/pages/seller/UpdateProduct"));
+  const EditProduct = lazy(() => import("@/pages/seller/EditProduct"));
+  const OrderManagement = lazy(() => import("@/pages/seller/OrderManagement"));
+  const ReadCartItems = lazy(() => import("@/pages/buyer/ReadCartItems"));
+  const OrderCartItems = lazy(() => import("@/pages/buyer/OrderCartItems"));
+  const OrderSheet = lazy(() => import("@/pages/buyer/OrderSheet"));
   const location = useLocation();
 
   useEffect(() => {
@@ -36,19 +36,75 @@ const PageRouter = () => {
         {/*판매자 private*/}
         <Route path="/seller" element={<PrivateSellerRoute />}>
           <Route element={<SellerLayout />}>
-            <Route path="" element={<ReadProduct />} />
-            <Route path="create-product" element={<CreateProduct />} />
-            <Route path="edit-product/:id" element={<EditProduct />} />
-            <Route path="update-product/:id" element={<UpdateProduct />} />
-            <Route path="order-management" element={<OrderManagement />} />
+            <Route
+              path=""
+              element={
+                <Suspense fallback={<></>}>
+                  <ReadProduct />
+                </Suspense>
+              }
+            />
+            <Route
+              path="create-product"
+              element={
+                <Suspense fallback={<></>}>
+                  <CreateProduct />
+                </Suspense>
+              }
+            />
+            <Route
+              path="edit-product/:id"
+              element={
+                <Suspense fallback={<></>}>
+                  <EditProduct />
+                </Suspense>
+              }
+            />
+            <Route
+              path="update-product/:id"
+              element={
+                <Suspense fallback={<></>}>
+                  <UpdateProduct />
+                </Suspense>
+              }
+            />
+            <Route
+              path="order-management"
+              element={
+                <Suspense fallback={<></>}>
+                  <OrderManagement />
+                </Suspense>
+              }
+            />
           </Route>
         </Route>
         {/*구매자 private*/}
         <Route path="/buyer" element={<PrivateBuyerRoute />}>
           <Route element={<BuyerLayout />}>
-            <Route path="" element={<ReadCartItems />} />
-            <Route path="order-list" element={<OrderCartItems />} />
-            <Route path="order-sheet" element={<OrderSheet />} />
+            <Route
+              path=""
+              element={
+                <Suspense fallback={<></>}>
+                  <ReadCartItems />
+                </Suspense>
+              }
+            />
+            <Route
+              path="order-list"
+              element={
+                <Suspense fallback={<></>}>
+                  <OrderCartItems />
+                </Suspense>
+              }
+            />
+            <Route
+              path="order-sheet"
+              element={
+                <Suspense fallback={<></>}>
+                  <OrderSheet />
+                </Suspense>
+              }
+            />
           </Route>
         </Route>
       </Route>

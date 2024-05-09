@@ -14,7 +14,7 @@ import { useUserInfo } from "@/services/context/UserProvider";
 import { UserInfoType } from "@/types/UserType";
 import AlertAnswer from "../common/AlertAnswer";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useCartItemsState } from "@/stores/cartStore";
+import { useCartItemsState } from "@/services/stores/cartStore";
 
 const CartList = () => {
   const userInfo = useUserInfo();

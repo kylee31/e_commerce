@@ -5,7 +5,7 @@ import {
   useCartItemsState,
   useDeleteToCartAction,
   useUpdateCountCartItemAction,
-} from "@/stores/cartStore";
+} from "@/services/stores/cartStore";
 import { useEffect, useState } from "react";
 import convertKRW from "@/util/convertKRW";
 import { Link } from "react-router-dom";

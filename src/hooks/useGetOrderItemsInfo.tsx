@@ -1,20 +1,21 @@
-import { getOrderItemsSnap } from "@/services/orderService";
+import { getOrderItems } from "@/services/orderService";
+import { DocumentData } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useUser } from "@/services/context/UserProvider";
-import { useQuery } from "@tanstack/react-query";
 
 const useGetOrderItemsInfo = (id: string) => {
   const user = useUser();
-  const { data: orderItems, isLoading } = useQuery({
-    queryKey: ["orderItems", user],
-    queryFn: async () => {
-      const getItems = await getOrderItemsSnap({ id, user });
-      const getItemsData = getItems.docs.map((doc) => doc.data());
-      return getItemsData;
-    },
-    staleTime: 50000,
-  });
+  const [orderItems, setOrderItems] = useState<DocumentData[]>([]);
 
-  return { orderItems, isLoading };
+  useEffect(() => {
+    const getFirebaseOrderItems = async () => {
+      const getItems = await getOrderItems({ id, user });
+      setOrderItems(getItems);
+    };
+    getFirebaseOrderItems();
+  }, [id, user]);
+
+  return { orderItems };
 };
 
 export default useGetOrderItemsInfo;
