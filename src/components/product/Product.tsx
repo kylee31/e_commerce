@@ -5,7 +5,7 @@ import {
   useAddToCartAction,
   useCartItemsState,
 } from "@/services/stores/cartStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import convertKRW from "@/util/convertKRW";
 import { ProductFieldDataType } from "@/types/ProductType";
 import AddToCartItemButton from "./AddToCartItemButton";
@@ -27,6 +27,10 @@ const Product = ({
   );
   const setAddToCart = useAddToCartAction();
   const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    setCount(1);
+  }, [productInfo]);
 
   const handleAddToCartItem = () => {
     if (!isIncludes && count <= productInfo.productQunatity) {

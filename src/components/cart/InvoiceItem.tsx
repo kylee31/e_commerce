@@ -8,9 +8,9 @@ import {
 } from "@/services/stores/cartStore";
 import { useEffect, useState } from "react";
 import convertKRW from "@/util/convertKRW";
-import { Link } from "react-router-dom";
 import InvoiceQunatityCounter from "./InvoiceQunatityCounter";
 import useGetProductInfo from "@/hooks/useGetProductInfo";
+import InvoiceItemName from "./InvoiceItemName";
 
 const InvoiceItem = ({
   info,
@@ -55,25 +55,7 @@ const InvoiceItem = ({
     <TableRow>
       <TableCell>
         <div className="flex items-center">
-          {isImage ? (
-            <div className="w-full flex justify-start items-center">
-              <img
-                src={info.productImages[0]}
-                alt=""
-                width={80}
-                height={80}
-                className="mr-8"
-              />
-              <Link
-                to={`/category/${info.productCategory}/${info.id}`}
-                className="border-b border-black"
-              >
-                {info.productName}
-              </Link>
-            </div>
-          ) : (
-            <div>{info.productName}</div>
-          )}
+          <InvoiceItemName isImage={isImage} info={info} />
         </div>
       </TableCell>
       <TableCell>
