@@ -70,7 +70,7 @@ const ReadProduct = () => {
             <div
               key={`privewproduct_${idx}`}
               className="w-full relative hover:cursor-pointer"
-              ref={viewRef}
+              ref={idx === products.length - 1 ? viewRef : undefined}
             >
               <div className="w-full mt-2 absolute flex justify-end pr-2 text-xs">
                 <div onClick={() => handleUpdateProduct(idx)} className="mr-2">

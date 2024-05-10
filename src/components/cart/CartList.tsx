@@ -44,14 +44,8 @@ const CartList = () => {
   return (
     <div className="w-full h-full relative flex justify-end">
       <Sheet>
-        <SheetTrigger>
-          <div className="relative">
-            <img
-              src="/imgs/cart.webp"
-              alt=""
-              className="hover:cursor-pointer"
-            />
-          </div>
+        <SheetTrigger className="relative" aria-label="cart button">
+          <img src="/imgs/cart.webp" alt="" className="hover:cursor-pointer" />
         </SheetTrigger>
         <SheetContent className="w-full flex flex-col justify-center">
           <SheetHeader className="flex flex-col justify-center items-center">

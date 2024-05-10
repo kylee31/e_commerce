@@ -46,7 +46,7 @@ const Category = () => {
               info={info}
               isVisible={false}
               onClick={() => handleClickProduct(idx)}
-              viewRef={viewRef}
+              viewRef={idx === categoryInfo.length - 1 ? viewRef : undefined}
             />
           ))}
         </div>
