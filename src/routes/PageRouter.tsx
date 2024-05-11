@@ -10,6 +10,12 @@ import DetailProduct from "@/pages/product/DetailProduct";
 import Login from "@/pages/Login";
 import changePathname from "@/util/changePathname";
 import { Suspense, lazy, useEffect } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "@/firebase";
+import {
+  useCategoryProductEnabledAction,
+  usePreviewProductEnabledAction,
+} from "@/services/stores/productEnableStore";
 
 const PageRouter = () => {
   const CreateProduct = lazy(() => import("@/pages/seller/CreateProduct"));
@@ -22,9 +28,20 @@ const PageRouter = () => {
   const OrderSheet = lazy(() => import("@/pages/buyer/OrderSheet"));
   const location = useLocation();
 
+  const setPreviewProductEnabled = usePreviewProductEnabledAction();
+  const setCategoryProductEnabled = useCategoryProductEnabledAction();
+
   useEffect(() => {
     changePathname(location.pathname);
   }, [location]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "product"), () => {
+      setPreviewProductEnabled(true);
+      setCategoryProductEnabled(true);
+    });
+    return () => unsubscribe();
+  }, [setPreviewProductEnabled, setCategoryProductEnabled]);
 
   return (
     <Routes>

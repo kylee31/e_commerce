@@ -14,19 +14,9 @@ const useProductMutation = ({
   const navigate = useNavigate();
   return useMutation({
     mutationFn: (args: any) => mutationFunction({ ...args }),
-    onMutate: (args: any) => {
-      return { ...args };
-    },
-    onSuccess: (_, context) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["sellerProducts"],
-        refetchType: "all",
-      });
-      queryClient.invalidateQueries({
-        queryKey: [
-          "PreviewProductAboutCategory",
-          context.productData.productCategory,
-        ],
         refetchType: "all",
       });
       nav && navigate(nav, navOption);

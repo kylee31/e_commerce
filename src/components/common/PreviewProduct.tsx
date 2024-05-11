@@ -27,12 +27,12 @@ const PreviewProduct = ({
 
   return (
     <Card
-      className="w-full h-full border-gray-300 flex flex-col justify-end"
+      className="w-full h-full border-gray-300 flex flex-col justify-end overflow-hidden"
       onClick={onClick}
       ref={viewRef}
     >
       <CardHeader className="h-full">
-        <div className="h-full flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <img
             src={info.productImages[0]}
             alt=""

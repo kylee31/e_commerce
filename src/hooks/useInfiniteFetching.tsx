@@ -3,6 +3,10 @@ import {
   getSellerProductSnap,
   getCategoryProductSnap,
 } from "@/services/productService";
+import {
+  useCategoryProductEnabledAction,
+  useCategoryProductEnabledState,
+} from "@/services/stores/productEnableStore";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -23,12 +27,14 @@ const useInfiniteFetching = ({
   cate,
 }: useInfiniteFetchingType) => {
   const user = useUser();
+  const isCategoryProductEnabled = useCategoryProductEnabledState();
+  const setCategoryProductEnabled = useCategoryProductEnabledAction();
 
   const { ref: viewRef, inView } = useInView({
     threshold: 1,
   });
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, hasNextPage, fetchNextPage, refetch } = useInfiniteQuery({
     queryKey: cate ? [getQueryKey, cate, sortedType] : [getQueryKey],
     queryFn: ({ pageParam }: { pageParam: any }) => {
       if (type == "category" && cate && sortedType) {
@@ -44,7 +50,8 @@ const useInfiniteFetching = ({
       }
     },
     initialPageParam: null,
-    staleTime: 50000,
+    refetchOnMount: type === "category" ? true : false,
+    enabled: type === "category" ? isCategoryProductEnabled : undefined,
   });
 
   const [datas, setDatas] = useState<{ [x: string]: any }[]>();
@@ -64,7 +71,13 @@ const useInfiniteFetching = ({
     }
   }, [inView, hasNextPage, fetchNextPage, sortedType]);
 
-  return { datas, setDatas, viewRef };
+  useEffect(() => {
+    if (type === "category" && isCategoryProductEnabled) {
+      setCategoryProductEnabled(false);
+    }
+  }, [type, isCategoryProductEnabled, setCategoryProductEnabled]);
+
+  return { datas, refetch, setDatas, viewRef };
 };
 
 export default useInfiniteFetching;
