@@ -17,4 +17,25 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes("node_modules")) {
+            if (id.includes("@radix-ui")) {
+              return "@radix-ui";
+            } else if (id.includes("firebase")) {
+              if (id.includes("firestore")) {
+                return "firestore";
+              } else {
+                return "firebase";
+              }
+            } else {
+              return "vendor";
+            }
+          }
+        },
+      },
+    },
+  },
 });
