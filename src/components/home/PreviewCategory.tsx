@@ -17,7 +17,7 @@ const PreviewCategory = ({ info }: { info: string }) => {
     navigate(`/category/${info}/${categoryId}`);
   };
 
-  if (categoryInfo == undefined) {
+  if (!categoryInfo) {
     return <></>;
   }
 

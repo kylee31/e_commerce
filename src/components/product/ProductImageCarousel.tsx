@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Carousel,
   CarouselContent,
@@ -6,11 +7,11 @@ import {
   CarouselPrevious,
 } from "../ui/carousel";
 
-const ProductImageCarousel = ({
+const ProductImageCarousel = React.memo(function ProductImageCarousel({
   productImages,
 }: {
   productImages: string[];
-}) => {
+}) {
   return (
     <Carousel className="w-3/4 h-full rounded-md border flex justify-center items-center text-sm mb-1">
       <CarouselContent>
@@ -27,6 +28,6 @@ const ProductImageCarousel = ({
       <CarouselNext type="button" />
     </Carousel>
   );
-};
+});
 
 export default ProductImageCarousel;

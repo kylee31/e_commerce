@@ -8,18 +8,19 @@ const ProductQunatityCounter = ({
   productQunatity,
 }: {
   isEdit: boolean;
-  count: number;
-  setCount: (count: number) => void;
+  count?: number;
+  setCount?: (count: number) => void;
   productInfo?: DocumentData;
   productQunatity?: number;
 }) => {
   const handlePlusCounter = () => {
-    if (!productInfo) return;
+    if (!productInfo || !count || !setCount) return;
     if (isEdit && count < 100 && productInfo.productQunatity > count) {
       setCount(count + 1);
     }
   };
   const handleMinusCounter = () => {
+    if (!count || !setCount) return;
     if (isEdit && count > 1) {
       setCount(count - 1);
     }

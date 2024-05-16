@@ -112,7 +112,7 @@ const OrderItem = ({
             </AlertAnswer>
           </div>
         )}
-        {isSeller && (
+        {isSeller && productOrderStatus !== OrderStatus.CANCLED && (
           <div>
             <Button onClick={handleEditOrderStatus}>
               {isEditOrderStatus ? "완료" : "수정"}

@@ -8,15 +8,17 @@ import {
 } from "../ui/select";
 
 type HandleSortedType = {
+  selectedValue: string;
   handleSortProduct: (cate: string) => void;
 };
 
-const CategorySortedBar = ({ handleSortProduct }: HandleSortedType) => {
+const CategorySortedBar = ({
+  selectedValue,
+  handleSortProduct,
+}: HandleSortedType) => {
+  //TODO: 상품 조회 후 뒤로가기 해도 해당 정렬 조건으로 유지될 수 있도록 수정하기
   return (
-    <Select
-      defaultValue={"updatedAt"}
-      onValueChange={(cate) => handleSortProduct(cate)}
-    >
+    <Select defaultValue={selectedValue} onValueChange={handleSortProduct}>
       <SelectTrigger className="w-full border-gray-500">
         <SelectValue />
       </SelectTrigger>

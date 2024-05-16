@@ -1,8 +1,11 @@
 import { productFieldData } from "@/services/data/ProductData";
 import { DocumentData } from "firebase/firestore";
 import ProductImageCarousel from "./ProductImageCarousel";
-import { useAddToCartAction, useCartItemsState } from "@/stores/cartStore";
-import { useState } from "react";
+import {
+  useAddToCartAction,
+  useCartItemsState,
+} from "@/services/stores/cartStore";
+import { useEffect, useState } from "react";
 import convertKRW from "@/util/convertKRW";
 import { ProductFieldDataType } from "@/types/ProductType";
 import AddToCartItemButton from "./AddToCartItemButton";
@@ -24,6 +27,10 @@ const Product = ({
   );
   const setAddToCart = useAddToCartAction();
   const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    setCount(1);
+  }, [productInfo]);
 
   const handleAddToCartItem = () => {
     if (!isIncludes && count <= productInfo.productQunatity) {

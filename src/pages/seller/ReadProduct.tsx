@@ -4,6 +4,7 @@ import useInfiniteFetching from "@/hooks/useInfiniteFetching";
 import { deleteSellerProduct } from "@/services/productService";
 import { ProductInfiniteFetchingType } from "@/types/ProductType";
 import { useNavigate } from "react-router-dom";
+import useProductMutation from "@/hooks/useProductMutation";
 
 const ReadProduct = () => {
   const {
@@ -15,6 +16,10 @@ const ReadProduct = () => {
     type: "product",
     docLength: 12,
   });
+  const deleteProductMutation = useProductMutation({
+    mutationFunction: deleteSellerProduct,
+  });
+
   const navigate = useNavigate();
 
   const handleCreateProduct = () => {
@@ -29,9 +34,13 @@ const ReadProduct = () => {
 
   const handleDeleteProduct = async (idx: number) => {
     if (!products) return;
-    const productInfo = products[idx];
-    setUpdateProducts(products.filter((_, productIdx) => productIdx != idx));
-    await deleteSellerProduct(productInfo);
+    try {
+      const productInfo = products[idx];
+      setUpdateProducts(products.filter((_, productIdx) => productIdx != idx));
+      deleteProductMutation.mutateAsync({ productData: productInfo });
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   const handleEditProduct = (idx: number) => {
@@ -61,7 +70,7 @@ const ReadProduct = () => {
             <div
               key={`privewproduct_${idx}`}
               className="w-full relative hover:cursor-pointer"
-              ref={viewRef}
+              ref={idx === products.length - 1 ? viewRef : undefined}
             >
               <div className="w-full mt-2 absolute flex justify-end pr-2 text-xs">
                 <div onClick={() => handleUpdateProduct(idx)} className="mr-2">
