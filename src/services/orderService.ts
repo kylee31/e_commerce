@@ -19,16 +19,20 @@ export const cancleBuyerOrderStatus = async ({
   item: DocumentData;
 }) => {
   const nowDate = new Date();
-  const productInfo = await getDoc(doc(db, "product", item.productId)).then(
-    (doc) => doc.data()
-  );
-  const orderDocRef = doc(db, "order", item.id);
-  const productDocRef = doc(db, "product", item.productId);
-  await updateDoc(orderDocRef, { Status: "CANCLED", updatedAt: nowDate });
-  await updateDoc(productDocRef, {
-    productQunatity:
-      (productInfo as DocumentData).productQunatity + item.productQunatity,
-  });
+  try {
+    const productInfo = await getDoc(doc(db, "product", item.productId)).then(
+      (doc) => doc.data()
+    );
+    const orderDocRef = doc(db, "order", item.id);
+    const productDocRef = doc(db, "product", item.productId);
+    await updateDoc(orderDocRef, { Status: "CANCLED", updatedAt: nowDate });
+    await updateDoc(productDocRef, {
+      productQunatity:
+        (productInfo as DocumentData).productQunatity + item.productQunatity,
+    });
+  } catch (error) {
+    console.log("cancleBuyerOrderStatus", error);
+  }
 };
 
 export const editOrderStatus = async ({
@@ -43,23 +47,27 @@ export const editOrderStatus = async ({
   setIsEditOrderStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const nowDate = new Date();
-  const docRef = doc(db, "order", item.id);
-  await setProductOrderStatus(changeOrderStatus);
-  await updateDoc(docRef, {
-    Status: changeOrderStatus,
-    updatedAt: nowDate,
-  }).then(() => {
-    setIsEditOrderStatus(false);
-  });
-  if (changeOrderStatus === "CANCLED") {
-    const productInfo = await getDoc(doc(db, "product", item.productId)).then(
-      (doc) => doc.data()
-    );
-    const productDocRef = doc(db, "product", item.productId);
-    await updateDoc(productDocRef, {
-      productQunatity:
-        (productInfo as DocumentData).productQunatity + item.productQunatity,
+  try {
+    const docRef = doc(db, "order", item.id);
+    await setProductOrderStatus(changeOrderStatus);
+    await updateDoc(docRef, {
+      Status: changeOrderStatus,
+      updatedAt: nowDate,
+    }).then(() => {
+      setIsEditOrderStatus(false);
     });
+    if (changeOrderStatus === "CANCLED") {
+      const productInfo = await getDoc(doc(db, "product", item.productId)).then(
+        (doc) => doc.data()
+      );
+      const productDocRef = doc(db, "product", item.productId);
+      await updateDoc(productDocRef, {
+        productQunatity:
+          (productInfo as DocumentData).productQunatity + item.productQunatity,
+      });
+    }
+  } catch (error) {
+    console.log("editOrderStatus", error);
   }
 };
 
@@ -95,19 +103,45 @@ export const postFirebaseOrderItems = async ({
   });
 };
 
-export const updateFirebaseOrderItemsCount = ({
+export const cancleBuyerPaymentProcess = ({
+  cartItems,
+}: {
+  cartItems: object[];
+}) => {
+  cartItems.forEach(async (item: DocumentData) => {
+    const docRef = doc(db, "product", item.id);
+    await updateDoc(docRef, { productQunatity: item.productQunatity });
+  });
+};
+
+export const updateFirebaseOrderItemsCount = async ({
   cartItems,
   cartItemsCount,
 }: {
   cartItems: object[];
   cartItemsCount: number[];
 }) => {
-  cartItems.forEach(async (item: DocumentData, idx: number) => {
-    const productRef = doc(db, "product", item.id);
-    await updateDoc(productRef, {
-      productQunatity: item.productQunatity - cartItemsCount[idx],
-    });
-  });
+  try {
+    let result = false;
+    for (let idx = 0; idx < cartItems.length; idx++) {
+      const item = cartItems[idx] as DocumentData;
+      const productRef = doc(db, "product", item.id);
+      const NewProductInfo = await getDoc(productRef).then((doc) => doc.data());
+      const isSoldOut =
+        (NewProductInfo as DocumentData).productQunatity - cartItemsCount[idx] <
+        0;
+      if (isSoldOut) {
+        result = true;
+      } else {
+        await updateDoc(productRef, {
+          productQunatity: item.productQunatity - cartItemsCount[idx],
+        });
+      }
+    }
+    return result;
+  } catch (error) {
+    console.log("updateFirebaseOrderItemsCount", error);
+  }
 };
 
 export const getOrderItems = async ({

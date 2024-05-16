@@ -3,6 +3,10 @@ import {
   getSellerProductSnap,
   getCategoryProductSnap,
 } from "@/services/productService";
+import {
+  useCategoryProductEnabledAction,
+  useCategoryProductEnabledState,
+} from "@/services/stores/productEnableStore";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -23,13 +27,15 @@ const useInfiniteFetching = ({
   cate,
 }: useInfiniteFetchingType) => {
   const user = useUser();
+  const isCategoryProductEnabled = useCategoryProductEnabledState();
+  const setCategoryProductEnabled = useCategoryProductEnabledAction();
 
   const { ref: viewRef, inView } = useInView({
     threshold: 1,
   });
 
-  const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
-    queryKey: [getQueryKey],
+  const { data, hasNextPage, fetchNextPage, refetch } = useInfiniteQuery({
+    queryKey: cate ? [getQueryKey, cate, sortedType] : [getQueryKey],
     queryFn: ({ pageParam }: { pageParam: any }) => {
       if (type == "category" && cate && sortedType) {
         return getCategoryProductSnap({ cate, sortedType, pageParam });
@@ -44,6 +50,8 @@ const useInfiniteFetching = ({
       }
     },
     initialPageParam: null,
+    refetchOnMount: type === "category" ? true : false,
+    enabled: type === "category" ? isCategoryProductEnabled : undefined,
   });
 
   const [datas, setDatas] = useState<{ [x: string]: any }[]>();
@@ -61,15 +69,15 @@ const useInfiniteFetching = ({
     if (inView && hasNextPage) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage, fetchNextPage]);
+  }, [inView, hasNextPage, fetchNextPage, sortedType]);
 
   useEffect(() => {
-    if (sortedType) {
-      refetch();
+    if (type === "category" && isCategoryProductEnabled) {
+      setCategoryProductEnabled(false);
     }
-  }, [sortedType, refetch]);
+  }, [type, isCategoryProductEnabled, setCategoryProductEnabled]);
 
-  return { datas, setDatas, viewRef };
+  return { datas, refetch, setDatas, viewRef };
 };
 
 export default useInfiniteFetching;

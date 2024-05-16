@@ -10,10 +10,11 @@ import {
   useCartItemsCountState,
   useCartItemsState,
   useClearToCartAction,
-} from "@/stores/cartStore";
+} from "@/services/stores/cartStore";
 import { useNavigate } from "react-router-dom";
 import calcTotalPrice from "@/util/calcTotalPrice";
 import {
+  cancleBuyerPaymentProcess,
   postFirebaseOrderItems,
   updateFirebaseOrderItemsCount,
 } from "@/services/orderService";
@@ -53,6 +54,7 @@ const OrderForm = () => {
       await setClearToCart();
       await navigate("/buyer/order-list");
     } else {
+      cancleBuyerPaymentProcess({ cartItems });
       alert(`결제 오류: ${error_msg}`);
     }
   };
@@ -75,10 +77,17 @@ const OrderForm = () => {
       buyer_tel: receiverPhoneNumber, // 구매자 전화번호
       buyer_addr: address, // 구매자 주소
     };
-
-    IMP.request_pay(data, callback);
-
-    await updateFirebaseOrderItemsCount({ cartItems, cartItemsCount });
+    const isSoldOut = await updateFirebaseOrderItemsCount({
+      cartItems,
+      cartItemsCount,
+    });
+    if (isSoldOut) {
+      //TODO: alert 수정 alert창이 닫힌 후 navigate이 실행되어야 하는데 그렇지 않음, 수정 필요
+      alert("재고 부족 상품이 존재합니다");
+      setTimeout(() => navigate("/buyer"), 0);
+    } else {
+      IMP.request_pay(data, callback);
+    }
   };
 
   return (

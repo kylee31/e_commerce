@@ -2,8 +2,8 @@ import CategorySortedBar from "@/components/category/CategorySortedBar";
 import PreviewProduct from "@/components/common/PreviewProduct";
 import useInfiniteFetching from "@/hooks/useInfiniteFetching";
 import { ProductInfiniteFetchingType } from "@/types/ProductType";
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 const Category = () => {
   const categoryId = useParams().cate!;
@@ -15,9 +15,16 @@ const Category = () => {
     sortedType,
     docLength: 10,
   });
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const sortedData = searchParams.get("sorted") || "updatedAt";
+    setSortedType(sortedData);
+  }, [searchParams]);
+
   const handleSortProduct = (cate: string) => {
+    setSearchParams({ sorted: cate });
     setSortedType(cate);
   };
 
@@ -36,7 +43,10 @@ const Category = () => {
     <div className="w-full common-padding">
       <div className="font-extrabold text-3xl mb-10">{categoryId}</div>
       <div className="w-full h-10 border-2 mb-8 flex justify-start items-center">
-        <CategorySortedBar handleSortProduct={handleSortProduct} />
+        <CategorySortedBar
+          selectedValue={sortedType}
+          handleSortProduct={handleSortProduct}
+        />
       </div>
       {categoryInfo.length > 0 ? (
         <div className="w-full grid grid-flow-row grid-cols-5 gap-5">
@@ -46,7 +56,7 @@ const Category = () => {
               info={info}
               isVisible={false}
               onClick={() => handleClickProduct(idx)}
-              viewRef={viewRef}
+              viewRef={idx === categoryInfo.length - 1 ? viewRef : undefined}
             />
           ))}
         </div>

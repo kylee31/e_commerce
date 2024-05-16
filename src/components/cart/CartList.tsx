@@ -14,7 +14,7 @@ import { useUserInfo } from "@/services/context/UserProvider";
 import { UserInfoType } from "@/types/UserType";
 import AlertAnswer from "../common/AlertAnswer";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useCartItemsState } from "@/stores/cartStore";
+import { useCartItemsState } from "@/services/stores/cartStore";
 
 const CartList = () => {
   const userInfo = useUserInfo();
@@ -26,7 +26,9 @@ const CartList = () => {
   const userNickname = (userInfo as UserInfoType).nickname;
   const cartItems = useCartItemsState();
   const location = useLocation();
-  const isOrderPage = location.pathname.split("/")[2] === "order-sheet";
+  const isOrderPage =
+    location.pathname.split("/")[2] === "order-sheet" ||
+    location.pathname === "/buyer";
   const navigate = useNavigate();
 
   const handleClickOrderButton = () => {
@@ -42,14 +44,8 @@ const CartList = () => {
   return (
     <div className="w-full h-full relative flex justify-end">
       <Sheet>
-        <SheetTrigger>
-          <div className="relative">
-            <img
-              src="/imgs/cart.webp"
-              alt=""
-              className="hover:cursor-pointer"
-            />
-          </div>
+        <SheetTrigger className="relative" aria-label="cart button">
+          <img src="/imgs/cart.webp" alt="" className="hover:cursor-pointer" />
         </SheetTrigger>
         <SheetContent className="w-full flex flex-col justify-center">
           <SheetHeader className="flex flex-col justify-center items-center">

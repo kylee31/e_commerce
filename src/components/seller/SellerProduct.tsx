@@ -37,6 +37,7 @@ const SellerProduct = ({ productInfo }: { productInfo: DocumentData }) => {
             <div className="w-full flex justify-between mb-3 ">
               <span className="w-1/2 flex justify-start">수량</span>
               <ProductQunatityCounter
+                isEdit={false}
                 productQunatity={productInfo.productQunatity}
               />
             </div>

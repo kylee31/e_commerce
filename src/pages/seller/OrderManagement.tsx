@@ -2,6 +2,7 @@ import OrderItem from "@/components/common/OrderItem";
 import {
   Table,
   TableBody,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -11,6 +12,10 @@ import { DocumentData } from "firebase/firestore";
 
 const OrderManagement = () => {
   const { orderItems } = useGetOrderItemsInfo("sellerId");
+
+  if (!orderItems) {
+    return <></>;
+  }
 
   return (
     <div className="w-full">
@@ -28,13 +33,19 @@ const OrderManagement = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orderItems.map((item: DocumentData, idx) => (
-            <OrderItem
-              key={`sellerOrderItems_${idx}`}
-              item={item}
-              isSeller={true}
-            />
-          ))}
+          {orderItems.length > 0 ? (
+            orderItems.map((item: DocumentData, idx) => (
+              <OrderItem
+                key={`sellerOrderItems_${idx}`}
+                item={item}
+                isSeller={true}
+              />
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5}>주문 내역이 없습니다</TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>

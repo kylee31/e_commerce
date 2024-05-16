@@ -1,12 +1,13 @@
 import CartTable from "@/components/cart/CartTable";
 import AlertAnswer from "@/components/common/AlertAnswer";
 import { Button } from "@/components/ui/button";
-import { useCartItemsState } from "@/stores/cartStore";
+import { useCartItemsState } from "@/services/stores/cartStore";
 import { useNavigate } from "react-router-dom";
 
 const ReadCartItems = () => {
   const cartItems = useCartItemsState();
   const navigate = useNavigate();
+
   const handleNavigateOrderSheet = () => {
     if (cartItems.length > 0) {
       navigate("order-sheet");
