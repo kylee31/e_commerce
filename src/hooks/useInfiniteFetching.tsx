@@ -51,7 +51,7 @@ const useInfiniteFetching = ({
     },
     initialPageParam: null,
     refetchOnMount: type === "category" ? true : false,
-    enabled: type === "category" ? isCategoryProductEnabled : undefined,
+    enabled: type === "category" ? isCategoryProductEnabled : true,
   });
 
   const [datas, setDatas] = useState<{ [x: string]: any }[]>();
@@ -75,7 +75,7 @@ const useInfiniteFetching = ({
     if (type === "category" && isCategoryProductEnabled) {
       setCategoryProductEnabled(false);
     }
-  }, [type, isCategoryProductEnabled, setCategoryProductEnabled]);
+  }, [sortedType, type, isCategoryProductEnabled, setCategoryProductEnabled]);
 
   return { datas, refetch, setDatas, viewRef };
 };
