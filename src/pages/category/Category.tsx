@@ -1,6 +1,7 @@
 import CategorySortedBar from "@/components/category/CategorySortedBar";
 import PreviewProduct from "@/components/common/PreviewProduct";
 import useInfiniteFetching from "@/hooks/useInfiniteFetching";
+import { useCategoryProductEnabledAction } from "@/services/stores/productEnableStore";
 import { ProductInfiniteFetchingType } from "@/types/ProductType";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -17,6 +18,11 @@ const Category = () => {
   });
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const setCategoryProductEnabled = useCategoryProductEnabledAction();
+
+  useEffect(() => {
+    setCategoryProductEnabled(true);
+  }, [setCategoryProductEnabled]);
 
   useEffect(() => {
     const sortedData = searchParams.get("sorted") || "updatedAt";
