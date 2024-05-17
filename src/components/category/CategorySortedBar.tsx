@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -6,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { useCategoryProductEnabledAction } from "@/services/stores/productEnableStore";
 
 type HandleSortedType = {
   selectedValue: string;
@@ -16,6 +18,12 @@ const CategorySortedBar = ({
   selectedValue,
   handleSortProduct,
 }: HandleSortedType) => {
+  const setCategoryProductEnabled = useCategoryProductEnabledAction();
+
+  useEffect(() => {
+    setCategoryProductEnabled(true);
+  }, [selectedValue, setCategoryProductEnabled]);
+
   //TODO: 상품 조회 후 뒤로가기 해도 해당 정렬 조건으로 유지될 수 있도록 수정하기
   return (
     <Select defaultValue={selectedValue} onValueChange={handleSortProduct}>
