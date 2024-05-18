@@ -20,9 +20,6 @@
 | 로그인, 회원가입 | | | 번들 사이즈 축소 |
 | 판매자 상품 CRUD | | | |
 
-**+ performance 성능 향상 :** code split, 이미지 리사이징, React.memo 적용, 프로덕션 환경에서 Lighthouse Performance 성능 82점→93점 향상<br/>
-**+ 실시간 데이터 동기화 :** 판매자 상품 등록 시 실시간 데이터 반영하기 위해 react-query 사용하여 DB 변경 감지로 데이터 refetching
-
   <br/>
 
 ## 디렉토리 구조, 아키텍처
@@ -65,40 +62,51 @@
 
 ## 트러블슈팅
 
-❗ (작성중, gitbook으로 따로 빼서 작성하기..?)
-
+<summary><b>최적화 (이미지 리사이징, code split, 번들 사이즈 축소 등</b>)</summary>
+[문제] store에 올라가는 이미지 크기 클라이언트 측에서 리사이징, lazy, React.memo 적용 등<br/>
+[원인] <br/>
+[결과] <br/>
++ performance 성능 향상 : code split, 이미지 리사이징, React.memo 적용, 프로덕션 환경에서 Lighthouse Performance 성능 82점→93점 향상<br/>
+</details>
 <details>
 <summary><b>데이터 캐싱 및 실시간 데이터 동기화</b></summary>
 [문제] 판매자가 상품 관리(등록,수정,삭제,변경) 시, 카테고리 아이템 리스트에 실시간으로 변경된 사항 미반영<br/>
 [원인] useQuery를 사용하여 아이템 데이터가 캐싱되어 있어, 상품 변경사항이 생기면 클라이언트 측에서 DB 변경 사항을 감지하고 refetch해주는 동작이 필요하다고 판단<br/>
 [해결] 판매자 CRUD는 useMutation으로 관리, 데이터 변경 사항 반영 / 아이템 리스트 경우, router 컴포넌트에서 firebase onSnapshot으로 DB 구독, 변경사항이 발생하면
 useQuery의 enabled(활성화) 옵션을 전역 상태(boolean)로 관리하여 쿼리 실행
++ 실시간 데이터 동기화 : 판매자 상품 등록 시 실시간 데이터 반영하기 위해 react-query 사용하여 DB 변경 감지로 쿼리 실행, 데이터 refetching
 <br/>
 </details>
 <details>
 <summary><b>비즈니스, 뷰 로직 분리</b></summary>
+[문제] form 컴포넌트 작성 시 sumbit 과정이 혼합되어 작성됨<br/>
+[원인] <br/>
+[결과] <br/>
+</details>
+<details>
+<details>
+<summary><b>데이터에 따른 전역 상태 관리 라이브러리 적용 (context api, zustand)</b></summary>
 [문제] <br/>
 [원인] <br/>
 [결과] <br/>
 </details>
 <details>
-<summary><b>최적화 (이미지 리사이징, code split, 번들 사이즈 축소 등</b>)</summary>
-내용
-</details>
-<details>
-<summary><b>데이터에 따른 전역 상태 관리 라이브러리 적용 (context api, zustand)</b></summary>
-내용
-</details>
-<details>
 <summary><b>firebase NoSQL 연동, 데이터 관리 (커스텀 훅)</b></summary>
-내용
+[문제] <br/>
+[원인] <br/>
+[결과] <br/>
+</details>
+<summary><b>UI 개선 (반응형, 스켈레톤)</b></summary>
+[문제] <br/>
+[원인] <br/>
+[결과] <br/>
 </details>
 <br/>
 
 ## 현재 이슈, 코드 및 기능 개선사항
 
 [UI 개선] 반응형 웹 사이즈 조정 필요(flex,grid로 유연한 크기 적용은 완료)<br/>
-[UI 개선] 메인 랜딩 페이지 스켈레톤 UI 적용하기
+[UI 개선] 메인 랜딩 페이지 스켈레톤 UI 적용하기 (2024.05.17 완료)
 <br/><br/>
 
 ## 프로젝트 개발환경
