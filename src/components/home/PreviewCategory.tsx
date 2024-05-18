@@ -2,6 +2,7 @@ import PreviewProduct from "../common/PreviewProduct";
 import { useNavigate } from "react-router-dom";
 import { DocumentData } from "firebase/firestore";
 import useGetProductAboutCategory from "@/hooks/useGetProductAboutCategory";
+import SkeletonPreviewProduct from "./SkeletonPreviewProduct";
 
 const PreviewCategory = ({ info }: { info: string }) => {
   const { categoryInfo } = useGetProductAboutCategory(info);
@@ -17,10 +18,6 @@ const PreviewCategory = ({ info }: { info: string }) => {
     navigate(`/category/${info}/${categoryId}`);
   };
 
-  if (!categoryInfo) {
-    return <></>;
-  }
-
   return (
     <div className="w-full bg-gray-100 p-10">
       <div className="w-full flex justify-between mb-4">
@@ -31,7 +28,11 @@ const PreviewCategory = ({ info }: { info: string }) => {
           </span>
         </div>
       </div>
-      {categoryInfo.length > 0 ? (
+      {!categoryInfo ? (
+        <div className="w-full grid grid-flow-col grid-cols-4 gap-x-8">
+          <SkeletonPreviewProduct />
+        </div>
+      ) : categoryInfo.length > 0 ? (
         <div className="w-full grid grid-flow-col grid-cols-4 gap-x-8">
           {categoryInfo.map((info: DocumentData, idx: number) => (
             <PreviewProduct
