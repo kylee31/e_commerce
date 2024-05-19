@@ -29,6 +29,7 @@ const SignUp = () => {
       await signUpUser(data, checkedBox);
       await navigate("/");
     } catch (error) {
+      alert("error");
       console.error(error);
     }
   };
