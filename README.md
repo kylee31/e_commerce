@@ -3,6 +3,20 @@
 상품 관리(CRUD) 및 실시간 상품 데이터 반영, 주문 및 결제 연동 커머스 웹 사이트
 <br/><br/>
 
+## 설치 및 실행
+
+```
+## npm
+git clone https://github.com/kylee31/e_commerce.git
+npm install
+npm run dev
+
+## yarn
+git clone https://github.com/kylee31/e_commerce.git
+yarn install
+yarn dev
+```
+
 ## 기술스택 및 구현 기능
 
 <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black"/> <img src="https://img.shields.io/badge/Typescript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/Tailwindcss-06B6D4?style=flat-square&logo=Tailwindcss&logoColor=white"/> <img src="https://img.shields.io/badge/Shadcn/ui-000000?style=flat-square&logo=shadcn/ui&logoColor=white"/> <img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/> <img src="https://img.shields.io/badge/Context API-61DAFB?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/zustand-4951F5?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white"/> <img src="https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=white"/>
