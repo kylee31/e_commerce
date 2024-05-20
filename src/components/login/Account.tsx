@@ -22,6 +22,7 @@ const Account = () => {
       const userOperationType = await signInUser(data);
       userOperationType && (await navigate("/"));
     } catch (error) {
+      alert("error");
       console.log(error, "error");
     }
   };
