@@ -1,9 +1,7 @@
 import { auth, db } from "@/firebase";
 import { AccountInputsType, SignUpInputsType } from "@/types/SignType";
 import {
-  browserLocalPersistence,
   createUserWithEmailAndPassword,
-  setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -11,7 +9,6 @@ import { doc, setDoc } from "firebase/firestore";
 export const signInUser = async (data: AccountInputsType) => {
   const [userEmail, userPassword] = [data.email, data.password];
   await signInWithEmailAndPassword(auth, userEmail, userPassword);
-  await setPersistence(auth, browserLocalPersistence);
 };
 
 export const signUpUser = async (
@@ -37,5 +34,4 @@ export const signUpUser = async (
     updatedAt: nowDate,
   };
   await setDoc(doc(db, "user", userId), userInfo);
-  await setPersistence(auth, browserLocalPersistence);
 };
