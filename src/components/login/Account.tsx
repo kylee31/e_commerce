@@ -19,8 +19,8 @@ const Account = () => {
 
   const onSubmit: SubmitHandler<AccountInputsType> = async (data) => {
     try {
-      const userOperationType = await signInUser(data);
-      userOperationType && (await navigate("/"));
+      await signInUser(data);
+      navigate("/");
     } catch (error) {
       alert("error");
       console.log(error, "error");

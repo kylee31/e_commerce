@@ -27,7 +27,7 @@ const SignUp = () => {
   const onSubmit: SubmitHandler<SignUpInputsType> = async (data) => {
     try {
       await signUpUser(data, checkedBox);
-      await navigate("/");
+      navigate("/");
     } catch (error) {
       alert("error");
       console.error(error);

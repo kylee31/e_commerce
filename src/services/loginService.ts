@@ -8,13 +8,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 export const signInUser = async (data: AccountInputsType) => {
   const [userEmail, userPassword] = [data.email, data.password];
-  const userSignIn = await signInWithEmailAndPassword(
-    auth,
-    userEmail,
-    userPassword
-  );
-  const userOperationType = userSignIn.operationType;
-  return { userOperationType };
+  await signInWithEmailAndPassword(auth, userEmail, userPassword);
 };
 
 export const signUpUser = async (
