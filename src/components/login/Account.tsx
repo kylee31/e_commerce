@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { signInUser } from "@/services/loginService";
+import { getErrorMessage } from "@/util/getErrorMessage.";
 
 const INPUT_LIST = AccountInputData;
 
@@ -21,9 +22,11 @@ const Account = () => {
     try {
       await signInUser(data);
       navigate("/");
-    } catch (error) {
-      alert("error");
-      console.log(error, "error");
+    } catch (error: any) {
+      //TODO: 에러 메시지 분기처리
+      const errorMessage = getErrorMessage(error);
+      //console.log(errorMessage);
+      alert(errorMessage);
     }
   };
 

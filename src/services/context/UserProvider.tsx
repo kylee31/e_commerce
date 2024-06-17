@@ -11,7 +11,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userInfo, setUserInfo] = useState<object>({});
 
   useEffect(() => {
-    console.log("dd");
     auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         localStorage.setItem("token", (authUser as TokenType).accessToken);
