@@ -11,8 +11,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userInfo, setUserInfo] = useState<object>({});
 
   useEffect(() => {
-    console.log("dd");
-    auth.onAuthStateChanged((authUser) => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         localStorage.setItem("token", (authUser as TokenType).accessToken);
         setUser(authUser.uid);
@@ -21,6 +20,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setUserInfo({});
       }
     });
+    return () => unsubscribe();
   }, [user]);
 
   useEffect(() => {

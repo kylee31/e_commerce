@@ -14,14 +14,26 @@ const useGetRecommendedProduct = ({
   );
 
   useEffect(() => {
+    let isMount = true;
+
     const recommendedProduct = async () => {
-      const data = await getRecommendedProducts({
-        productCategory,
-        productDocSnap,
-      });
-      setRecommendedProduct(data);
+      try {
+        const data = await getRecommendedProducts({
+          productCategory,
+          productDocSnap,
+        });
+        if (isMount) {
+          setRecommendedProduct(data);
+        }
+      } catch (error) {
+        console.log("error fetching recommended products: ", error);
+      }
     };
     recommendedProduct();
+
+    return () => {
+      isMount = false;
+    };
   }, [productDocSnap, productCategory]);
 
   return { recommendedProduct };
