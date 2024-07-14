@@ -15,8 +15,7 @@ const changePathname = (pathname: string) => {
   if (ProductCategory.includes(decodeURI(path[2]))) {
     locName = decodeURI(path[2]);
   }
-
-  document.title = `${locName} | Logo`;
+  return `${locName} | Logo`;
 };
 
 export default changePathname;
