@@ -32,7 +32,7 @@ const PageRouter = () => {
   const setCategoryProductEnabled = useCategoryProductEnabledAction();
 
   useEffect(() => {
-    changePathname(location.pathname);
+    document.title = changePathname(location.pathname);
   }, [location]);
 
   useEffect(() => {
