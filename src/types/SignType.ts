@@ -1,7 +1,7 @@
 export type AccountInputsType = {
   email: string;
   password: string;
-  register: object;
+  register?: object;
 };
 
 export type SignUpInputsType = AccountInputsType & {
