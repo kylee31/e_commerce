@@ -28,10 +28,7 @@ const Home = () => {
         <CategoryCarousel category={PRODUCT_CATEGORY_WITH_URL} />
         <div className="w-full grid grid-flow-col gap-3 mb-10">
           {PRODUCT_CATEGORY.map((tag: string, idx) => (
-            <>
-              <CategoryTag key={`categoryTag_${idx}`} tag={tag} />
-              <div>testing5</div>
-            </>
+            <CategoryTag key={`categoryTag_${idx}`} tag={tag} />
           ))}
         </div>
         <div className="w-full h-auto space-y-10">
