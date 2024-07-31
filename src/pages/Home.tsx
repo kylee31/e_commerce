@@ -30,7 +30,7 @@ const Home = () => {
           {PRODUCT_CATEGORY.map((tag: string, idx) => (
             <>
               <CategoryTag key={`categoryTag_${idx}`} tag={tag} />
-              <div>testing3</div>
+              <div>testing</div>
             </>
           ))}
         </div>
